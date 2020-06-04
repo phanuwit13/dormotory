@@ -30,18 +30,7 @@
   background-color: #dfdfdf;
 }
 
-mat-form-field {
-  width: 80px;
-}
 .example-full-width {
-  width: 160px;
-}
-.time-month {
-  margin-left: 160px;
-  width: 160px;
-}
-.term {
-  margin-left: 320px;
   width: 160px;
 }
 .sl {
@@ -58,16 +47,22 @@ mat-form-field {
 .page {
   text-align: center;
 }
-.radioBt {
-  width: 200px;
-}
-.selectLabel-mount {
+
+.dateInput {
   width: 100px;
 }
-.selectLabel-term {
-  width: 70px;
+.selectLabel-mount {
+  width: 134px;
 }
-.inputDate {
+.selectLabel-term {
   width: 85px;
-  padding-bottom: 8px;
+}
+.term {
+  margin-top: 8px;
+}
+.selectType {
+  margin-top: 10px;
+}
+.selectRule {
+  margin-top: -10px;
 }

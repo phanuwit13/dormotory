@@ -98,9 +98,9 @@
 
           <div>
             <mat-radio-group aria-label="Select an option">
-              <mat-radio-button value="1" class="radioBt"
+              <mat-radio-button value="1"
                 >วันที่
-                <input matInput [matDatepicker]="picker" class="inputDate" />
+                <input matInput [matDatepicker]="picker" class="dateInput" />
                 <mat-datepicker-toggle
                   matSuffix
                   [for]="picker"
@@ -108,7 +108,7 @@
                 <mat-datepicker touchUi #picker></mat-datepicker>
               </mat-radio-button>
               <br />
-              <mat-radio-button value="2" class="radioBt"
+              <mat-radio-button value="2"
                 >เดือน
                 <mat-select
                   [formControl]="months"
@@ -123,7 +123,7 @@
                 </mat-select></mat-radio-button
               >
               <br />
-              <mat-radio-button value="3" class="radioBt">
+              <mat-radio-button value="3" class="term">
                 ภาคการศึกษา<mat-select class="selectLabel-term">
                   <mat-option [value]="getTerm().yearThai">
                     {{ getTerm().yearThai }}/{{ getTerm().term }}
@@ -132,8 +132,11 @@
               >
             </mat-radio-group>
             <br />
-            <mat-checkbox class="example-margin">หอพักชาย</mat-checkbox>
-            <mat-checkbox class="example-margin">หอพักหญิง</mat-checkbox>
+            <div class="selectType">
+              <mat-checkbox class="example-margin">หอพักชาย</mat-checkbox>
+              <mat-checkbox class="example-margin">หอพักหญิง</mat-checkbox>
+            </div>
+
             <br />
             <mat-form-field class="selectRule">
               <mat-select
@@ -193,7 +196,7 @@
               </mat-select>
             </mat-form-field>
             <br />
-            <mat-form-field>
+            <mat-form-field class="selectRule">
               <input
                 matInput
                 formControlName="groupStd"
