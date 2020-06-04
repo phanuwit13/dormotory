@@ -1,0 +1,73 @@
+.contain {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  margin: 1%;
+}
+.top {
+  grid-column: span 12;
+}
+.main {
+  grid-column: span 12;
+}
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+.table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+.table tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+.table tr:hover {
+  background-color: #dfdfdf;
+}
+
+mat-form-field {
+  width: 80px;
+}
+.example-full-width {
+  width: 160px;
+}
+.time-month {
+  margin-left: 160px;
+  width: 160px;
+}
+.term {
+  margin-left: 320px;
+  width: 160px;
+}
+.sl {
+  margin-right: 20px;
+  float: left;
+  width: 481px;
+}
+.btn {
+  margin: 0px 5px;
+}
+.btn:hover {
+  opacity: 0.8;
+}
+.page {
+  text-align: center;
+}
+.radioBt {
+  width: 200px;
+}
+.selectLabel-mount {
+  width: 100px;
+}
+.selectLabel-term {
+  width: 70px;
+}
+.inputDate {
+  width: 85px;
+  padding-bottom: 8px;
+}

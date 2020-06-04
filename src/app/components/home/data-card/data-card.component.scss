@@ -1,0 +1,99 @@
+.contain {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  margin: 1%;
+}
+.top {
+  grid-column: span 12;
+}
+.main {
+  grid-column: span 12;
+}
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+.table td,
+.table th {
+  padding: 0.6rem;
+  vertical-align: middle;
+}
+.table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+.table tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+.table tr:hover {
+  background-color: #dfdfdf;
+}
+
+#photo {
+  font-size: 100px;
+  width: 100px;
+  height: 120px;
+  text-align: left;
+  border: 1px solid #000000;
+  margin-left: 5px;
+  margin-top: -45px;
+}
+.gencard {
+  margin-left: 20px;
+}
+.frame {
+  border: 1px solid #000000;
+}
+.detailcard p {
+  margin-bottom: 0px;
+  padding-left: 20px;
+  font-weight: 500;
+  padding-top: 6.5px;
+}
+#bd {
+  font-size: 40px;
+}
+.modal-content {
+  //width: 400px;
+}
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 418px;
+  }
+}
+.cardTitle {
+  font-size: 16px;
+  font-weight: bold;
+}
+.btn {
+  margin: 0px 2px;
+}
+.btn:hover {
+  opacity: 0.8;
+}
+.page {
+  text-align: center;
+}
+.dropdown-item:hover {
+  color: #ffffff;
+
+  cursor: pointer;
+}
+.create:hover {
+  background-color: #007bff;
+}
+.edit:hover {
+  background-color: #fdc92d;
+}
+.del:hover {
+  background-color: #fe6254;
+}
+th span {
+  cursor: pointer;
+}

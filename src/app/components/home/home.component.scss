@@ -1,0 +1,38 @@
+$gray: rgb(247, 247, 247);
+
+.mat-drawer-container {
+  height: 100%;
+}
+.menu {
+  border-radius: 8px;
+  background: #ff5722;
+  color: #ffffff;
+}
+.titleText {
+  font-size: 18px;
+  color: #302f2f;
+  padding-top: 19px;
+  padding-left: 10px;
+}
+.head {
+  height: 100px;
+  background-color: $gray;
+  padding-top: 29px;
+  padding-left: 10px;
+  overflow: hidden;
+}
+.logo {
+  background-color: $gray;
+  height: 100px;
+}
+.mat-list-base {
+  padding-top: 0px;
+}
+.mat-nav-list .mat-list-item:focus {
+  background-color: #ff5722;
+  color: white;
+}
+.mat-nav-list .mat-list-item:hover {
+  background-color: #ff5722;
+  color: white;
+}

@@ -1,0 +1,33 @@
+import { HttpService } from "src/app/services/http.service";
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import { Observable } from "rxjs";
+import { map, shareReplay } from "rxjs/operators";
+
+@Component({
+  selector: "app-home",
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.scss"],
+})
+export class HomeComponent implements OnInit {
+  public userLogin: any = null;
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(
+      map((result) => result.matches),
+      shareReplay()
+    );
+  events: string[] = [];
+  opened: boolean;
+
+  constructor(
+    private http: HttpService,
+    private router: Router,
+    private breakpointObserver: BreakpointObserver
+  ) {}
+
+  ngOnInit() {
+    this.userLogin = JSON.parse(window.localStorage.getItem("userlogin"));
+  }
+}

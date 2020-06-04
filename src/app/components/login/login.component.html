@@ -1,0 +1,54 @@
+<div id="page-container">
+  <div id="content-wrap">
+    <div class="host">
+      <mat-card>
+        <mat-card-title>ลงชื่อเข้าใช้งาน</mat-card-title>
+        <mat-card-subtitle
+          >เว็บแอปพลิเคชันตรวจสอบและคัดกรองบุคคลเข้าหอพักนักศึกษา</mat-card-subtitle
+        >
+        <mat-card-content>
+          <form [formGroup]="formLogin" (ngSubmit)="onSubmitLogin()">
+            <p>
+              <mat-form-field>
+                <input
+                  type="text"
+                  matInput
+                  placeholder="ชื่อผู้ใช้"
+                  formControlName="username"
+                />
+              </mat-form-field>
+            </p>
+
+            <p>
+              <mat-form-field>
+                <input
+                  type="password"
+                  matInput
+                  placeholder="รหัสผ่าน"
+                  formControlName="password"
+                />
+              </mat-form-field>
+            </p>
+
+            <div class="button">
+              <button type="submit" mat-raised-button color="accent" mat-button>
+                เข้าสู่ระบบ
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <footer id="footer">
+    <p class="ft">
+      <a href="https://www.facebook.com/RMUTI.Dormitory/"
+        >สำนักงานหอพักนักศึกษา</a
+      >
+    </p>
+    <span>
+      มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน ถนนสุรนารายณ์ ต.ในเมือง อ.เมือง
+      จ.นครราชสีมา 30000
+    </span>
+  </footer>
+</div>

@@ -1,0 +1,44 @@
+.host {
+  display: flex;
+  justify-content: center;
+  padding: 100px 0px;
+}
+
+.mat-form-field {
+  width: 100%;
+  min-width: 300px;
+}
+
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+}
+.button {
+  display: flex;
+  justify-content: center;
+}
+#page-container {
+  position: relative;
+  min-height: 100vh;
+  background-color: darkgray;
+}
+
+#content-wrap {
+  padding-bottom: 10%; /* Footer height */
+}
+
+#footer {
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10%; /* Footer height */
+  background-color: #222222;
+  color: white;
+  overflow: hidden;
+}
+.ft {
+  padding-top: 1%;
+  margin-bottom: 0;
+}

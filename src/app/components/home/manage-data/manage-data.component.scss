@@ -1,0 +1,76 @@
+.containerContent {
+  padding-left: 30px;
+  padding-right: 10px;
+  padding-bottom: 50px;
+  width: 100%;
+}
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td,
+#customers th {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  color: #000000;
+}
+
+#customers tr:nth-child(even) {
+  background-color: #ffffff;
+}
+#customers tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+#customers tr:hover {
+  background-color: #dfdfdf;
+}
+
+#customers th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+  background-color: #f0f0f0;
+}
+.mat-radio-outer-circle {
+  border-color: #dfdfdf;
+}
+.Search {
+  width: 25%;
+  margin-left: 30px;
+  height: 35px;
+  border: 2px solid #f8b64c;
+  border-radius: 10px;
+}
+mat-form-field {
+  width: 80px;
+}
+#photo {
+  font-size: 100px;
+  width: 100px;
+  height: 150px;
+  text-align: left;
+  border: 1px solid #000000;
+}
+.gencard {
+  margin-left: 20px;
+}
+.frame {
+  border: 1px solid #000000;
+}
+.detailcard p {
+  margin-bottom: 0px;
+}
+#bd {
+  font-size: 40px;
+}
+.modal-content {
+  //width: 400px;
+}
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 400px;
+  }
+}

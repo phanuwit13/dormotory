@@ -1,0 +1,85 @@
+<div class="containerContent">
+  <div style="color: black;">
+    <form action="">
+      <mat-tab-group class="sl">
+        <mat-tab label="หัวข้อกฏระเบียบ">
+          <mat-form-field class="example-full-width">
+            <mat-select>
+              <mat-option
+                *ngFor="let x of ruleChoice; let i = index"
+                [value]="i + 1"
+                >{{ i + 1 + ". " + x.rules_name }}</mat-option
+              >
+            </mat-select>
+            <mat-datepicker touchUi #picker></mat-datepicker> </mat-form-field
+        ></mat-tab>
+        <mat-tab label="รายเดือน">
+          <mat-form-field class="time-month">
+            <mat-select [formControl]="months" multiple>
+              <mat-option *ngFor="let months of monthsList" [value]="months">{{
+                months
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-tab>
+        <mat-tab label="รายภาคการศึกษา">
+          <mat-form-field class="term">
+            <mat-select>
+              <mat-option [value]="getTerm().yearThai">
+                {{ getTerm().yearThai }}/{{ getTerm().term }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-tab>
+      </mat-tab-group>
+
+      <mat-checkbox color="primary">หอพักชาย</mat-checkbox> &nbsp;
+      <mat-checkbox color="primary">หอพักหญิง</mat-checkbox>
+      ชั้น
+      <mat-form-field>
+        <mat-select [formControl]="floor" multiple>
+          <mat-option *ngFor="let floor of floorList" [value]="floor">{{
+            floor
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <input type="text" class="Search" placeholder="Search.." />
+
+      &nbsp;
+      <button mat-raised-button color="primary">ค้นหา</button>
+    </form>
+  </div>
+  <table id="customers">
+    <thead>
+      <tr>
+        <th>วันที่กระทำผิด</th>
+        <th>เวลา</th>
+        <th>เลขห้อง</th>
+        <th>รหัสนักศึกษา</th>
+        <th>ชื่อ - สกุล</th>
+        <th>คณะ</th>
+        <th>สาขา</th>
+        <th>ระดับ</th>
+        <th>กระทำผิดกฏ</th>
+        <th>รายละเอียด</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of userData">
+        <td>{{ x.date_rule }}</td>
+        <td>{{ x.time_rule }}</td>
+        <td>{{ x.room_number }}</td>
+        <td>{{ x.std_code }}</td>
+        <td>{{ x.nameTitle + x.fname + " " + x.lname }}</td>
+        <td>{{ x.name }}</td>
+        <td>{{ x.acronym + "." + x.groupStd }}</td>
+        <td>{{ x.level }}</td>
+        <td *ngIf="x.rules_name != 'อื่นๆ'">{{ x.rules_name }}</td>
+        <td *ngIf="x.rules_name == 'อื่นๆ'">{{ x.other }}</td>
+        <td>{{ x.details }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- {{ t.toJSON() }} -->
+</div>
