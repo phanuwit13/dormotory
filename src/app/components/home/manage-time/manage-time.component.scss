@@ -1,0 +1,14 @@
+.contain {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  margin: 1%;
+}
+.start {
+  grid-column: span 5;
+}
+.end {
+  grid-column: span 5;
+}
+.center {
+  grid-column: span 2;
+}

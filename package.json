@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --aot -o --port 2000 --poll=2000",
+    "start": "ng serve --aot -o --poll=2000",
     "build": "ng build  --aot --prod --build-optimizer --base-href=/project/dormitory/scaner/",
     "test": "ng test",
     "lint": "ng lint",

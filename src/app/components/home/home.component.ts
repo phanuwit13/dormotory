@@ -12,6 +12,7 @@ import { map, shareReplay } from "rxjs/operators";
 })
 export class HomeComponent implements OnInit {
   public userLogin: any = null;
+  private oldPath: string = "/login";
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
@@ -31,4 +32,8 @@ export class HomeComponent implements OnInit {
     this.userLogin = await JSON.parse(window.localStorage.getItem("userLogin"));
     console.log(this.userLogin);
   }
+  logOut = async () => {
+    await window.localStorage.clear();
+    this.http.navRouter(this.oldPath);
+  };
 }
