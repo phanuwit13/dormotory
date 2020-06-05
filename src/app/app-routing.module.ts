@@ -1,3 +1,4 @@
+import { CheckLoginGuard } from "./guard/check-login.guard";
 import { RoomHistoryComponent } from "./components/home/room-history/room-history.component";
 import { DataCardComponent } from "./components/home/data-card/data-card.component";
 import { AddtimeComponent } from "./components/home/addtime/addtime.component";
@@ -19,6 +20,7 @@ const routes: Routes = [
   {
     path: "home",
     component: HomeComponent,
+    canActivate: [CheckLoginGuard],
     children: [
       { path: "card", component: DataCardComponent },
       { path: "room-history", component: RoomHistoryComponent },
@@ -29,7 +31,11 @@ const routes: Routes = [
       { path: "import", component: ImportdataComponent },
     ],
   },
-  { path: "addtime", component: AddtimeComponent },
+  {
+    path: "addtime",
+    component: AddtimeComponent,
+    canActivate: [CheckLoginGuard],
+  },
   {
     path: "",
     redirectTo: "/login",

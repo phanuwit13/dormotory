@@ -6,11 +6,12 @@ import { Router } from "@angular/router";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.scss"]
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit {
   public formLogin: FormGroup;
   public userLogin: any = null;
+  private oldPath: string = "/home";
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpService,
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.formLogin = this.formBuilder.group({
       username: ["", Validators.required],
-      password: ["", Validators.required]
+      password: ["", Validators.required],
     });
 
     this.userLogin = JSON.parse(window.localStorage.getItem("userlogin"));
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
     let formData = new FormData();
 
     //วนลูบเก็บค่า key และ value
-    Object.keys(this.formLogin.value).forEach(key => {
+    Object.keys(this.formLogin.value).forEach((key) => {
       //console.log(this.formLogin.value[key]);
       formData.append(key, this.formLogin.value[key]);
     });
@@ -40,12 +41,13 @@ export class LoginComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.connect) {
       if (httpRespon.response.success) {
-        this.router.navigate(["/home"]);
+        //this.router.navigate(["/home"]);
+        this.http.navRouter(this.oldPath);
         window.localStorage.setItem(
-          "userlogin",
+          "userLogin",
           JSON.stringify(httpRespon.response.data)
         );
-        this.userLogin = JSON.parse(window.localStorage.getItem("userlogin"));
+        this.userLogin = JSON.parse(window.localStorage.getItem("userLogin"));
         alert(httpRespon.response.message);
       } else {
         alert(httpRespon.response.message);

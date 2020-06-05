@@ -27,7 +27,8 @@ export class HomeComponent implements OnInit {
     private breakpointObserver: BreakpointObserver
   ) {}
 
-  ngOnInit() {
-    this.userLogin = JSON.parse(window.localStorage.getItem("userlogin"));
+  async ngOnInit() {
+    this.userLogin = await JSON.parse(window.localStorage.getItem("userLogin"));
+    console.log(this.userLogin);
   }
 }
