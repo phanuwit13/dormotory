@@ -2,39 +2,84 @@
   <mat-drawer #drawer class="example-sidenav" mode="side">
     <div class="logo">
       <img src="assets/LOGO1.png" height="100px" />
+      <!-- <button
+        (click)="logOut()"
+        class="logout"
+        #tooltip="matTooltip"
+        matTooltip="ออกจากระบบ"
+        [matTooltipPosition]="'below'"
+        matTooltipHideDelay="0"
+        type="button"
+        mat-icon-button
+      >
+        <span class="material-icons">
+          login
+        </span>
+      </button> -->
     </div>
     <mat-nav-list>
-      <a mat-list-item [routerLink]="['card']"
+      <a
+        mat-list-item
+        [routerLink]="['card_data']"
+        (click)="attive(0)"
+        [ngClass]="{ selectItem: this.className[0] }"
         ><i class="material-icons">
           contact_mail
         </i>
         &nbsp; สร้างบัตรหอพักนักศึกษา
       </a>
-      <a mat-list-item [routerLink]="['room-history']"
+      <a
+        mat-list-item
+        [routerLink]="['room_history']"
+        (click)="attive(1)"
+        [ngClass]="{ selectItem: this.className[1] }"
         ><i class="material-icons">
           history_edu
         </i>
         &nbsp; ประวัติการย้ายห้องพัก
       </a>
-      <a mat-list-item [routerLink]="['manage-time']"
+      <a
+        mat-list-item
+        [routerLink]="['manage_time']"
+        (click)="attive(2)"
+        [ngClass]="{ selectItem: this.className[2] }"
         ><i class="material-icons"> alarm </i>&nbsp;
         จัดการระบบเช็คนักศึกษาเข้าหอพัก</a
       >
-      <a mat-list-item [routerLink]="['stat']"
+      <a
+        mat-list-item
+        [routerLink]="['stat_time']"
+        (click)="attive(3)"
+        [ngClass]="{ selectItem: this.className[3] }"
         ><i class="material-icons"> assignment </i>&nbsp;
         สรุปผลการเข้าหอพักของนักศึกษา</a
       >
-      <a mat-list-item [routerLink]="['rule']"
+      <a
+        mat-list-item
+        [routerLink]="['save_rule']"
+        (click)="attive(4)"
+        [ngClass]="{ selectItem: this.className[4] }"
         ><i class="material-icons"> block </i>&nbsp;
         บันทึกการกระทำผิดกฏระเบียบหอพัก</a
       >
-      <a mat-list-item [routerLink]="['stat-rule']"
+      <a
+        mat-list-item
+        [routerLink]="['stat_rule']"
+        (click)="attive(5)"
+        [ngClass]="{ selectItem: this.className[5] }"
         ><i class="material-icons"> assessment </i>&nbsp;
         สรุปผลการกระทำผิดกฏระเบียบหอพัก</a
       >
-      <a mat-list-item [routerLink]="['import']"
+      <a
+        mat-list-item
+        [routerLink]="['import_data']"
+        (click)="attive(6)"
+        [ngClass]="{ selectItem: this.className[6] }"
         ><i class="material-icons"> backup </i>&nbsp;
         นำเข้าไฟล์ข้อมูลนักศึกษา</a
+      >
+      <a mat-list-item (click)="logOut()"
+        ><span class="material-icons"> login </span>&nbsp; ออกจากระบบ</a
       >
     </mat-nav-list>
   </mat-drawer>
@@ -54,11 +99,6 @@
       <span class="titleText"
         >ระบบตรวจสอบนักศึกษาและคัดกรองบุคคลเข้าหอพักนักศึกษา</span
       >
-      <button (click)="logOut()" class="logout" type="button" mat-icon-button>
-        <span class="material-icons">
-          login
-        </span>
-      </button>
     </div>
     <div>
       <router-outlet></router-outlet>

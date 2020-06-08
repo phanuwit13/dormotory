@@ -1,14 +1,29 @@
 .contain {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
   margin: 1%;
+  content: "";
+  clear: both;
+  display: table;
 }
 .start {
-  grid-column: span 5;
+  width: 450px;
+  float: left; //ลอยไปอยู่ด้ายซ้าย
+  margin-right: 80px;
+  margin-top: 20px;
 }
 .end {
-  grid-column: span 5;
+  margin-top: 20px;
+  width: 450px;
+  float: left; //ลอยไปอยู่ด้ายซ้าย
 }
-.center {
-  grid-column: span 2;
+.iconAlarm {
+  float: left;
+  margin-right: 40%;
+}
+.alarm {
+  font-size: 110px;
+}
+.edit {
+  background-color: #fdc92d;
+  float: right;
+  color: #ffffff;
 }

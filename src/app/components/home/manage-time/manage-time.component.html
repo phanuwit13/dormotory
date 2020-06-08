@@ -6,13 +6,28 @@
     </mat-card-header>
 
     <mat-card-content>
+      <p class="iconAlarm">
+        <span class="material-icons alarm">
+          alarm
+        </span>
+      </p>
       <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz
-        breeds of dog from Japan.
+        <ngb-timepicker
+          [(ngModel)]="timeStart"
+          [disabled]="disableTimeStart"
+        ></ngb-timepicker>
       </p>
     </mat-card-content>
+    <mat-card-actions>
+      <button
+        type="button"
+        class="btn btn-warning edit"
+        (click)="editTimeStar()"
+      >
+        แก้ไข
+      </button>
+    </mat-card-actions>
   </mat-card>
-  <div class="center"></div>
   <mat-card class="example-card end">
     <mat-card-header>
       <mat-card-title>เวลาเข้าสาย</mat-card-title>
@@ -20,10 +35,26 @@
     </mat-card-header>
 
     <mat-card-content>
+      <p class="iconAlarm">
+        <span class="material-icons alarm">
+          alarm
+        </span>
+      </p>
       <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz
-        breeds of dog from Japan.
+        <ngb-timepicker
+          [(ngModel)]="timeEnd"
+          [disabled]="disableTimeEnd"
+        ></ngb-timepicker>
       </p>
     </mat-card-content>
+    <mat-card-actions>
+      <button
+        type="button"
+        class="btn btn-warning edit"
+        (click)="editTimeEnd()"
+      >
+        แก้ไข
+      </button>
+    </mat-card-actions>
   </mat-card>
 </div>

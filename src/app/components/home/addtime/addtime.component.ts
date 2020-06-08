@@ -22,7 +22,7 @@ export class AddtimeComponent implements OnInit {
   ngOnInit() {
     setInterval(() => {
       document.getElementById("inputStd").focus();
-    }, 500);
+    }, 1000);
     this.formLogin = this.formBuilder.group({
       std_code: ["", Validators.required],
       date_stamp: ["", Validators.required],

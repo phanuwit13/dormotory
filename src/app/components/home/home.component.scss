@@ -10,10 +10,11 @@ $gray: rgb(247, 247, 247);
 }
 .logout {
   border-radius: 8px;
-  background: #fdc92d;
+  background-color: #fe6254;
   color: #ffffff;
   float: right;
   margin-right: 10px;
+  margin-top: 29px;
 }
 .titleText {
   font-size: 18px;
@@ -27,6 +28,7 @@ $gray: rgb(247, 247, 247);
   padding-top: 29px;
   padding-left: 10px;
   overflow: hidden;
+  clear: both;
 }
 .logo {
   background-color: $gray;
@@ -39,7 +41,12 @@ $gray: rgb(247, 247, 247);
   background-color: #ff5722;
   color: white;
 }
-.mat-nav-list .mat-list-item:hover {
+// .mat-nav-list .mat-list-item:hover {
+//   background-color: #bdbdbd;
+//   opacity: 0.8;
+//   color: white;
+// }
+.selectItem {
   background-color: #ff5722;
   color: white;
 }
