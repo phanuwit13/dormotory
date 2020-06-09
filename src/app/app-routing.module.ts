@@ -22,6 +22,7 @@ const routes: Routes = [
     component: HomeComponent,
     canActivate: [CheckLoginGuard],
     children: [
+      { path: "", component: DataCardComponent },
       { path: "card_data", component: DataCardComponent },
       { path: "room_history", component: RoomHistoryComponent },
       { path: "manage_time", component: ManageTimeComponent },
@@ -43,7 +44,7 @@ const routes: Routes = [
   },
   {
     path: "**",
-    redirectTo: "/home",
+    redirectTo: "/home/card_data",
     pathMatch: "full",
   },
 ];

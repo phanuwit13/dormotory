@@ -14,17 +14,34 @@
       <p>
         <ngb-timepicker
           [(ngModel)]="timeStart"
-          [disabled]="disableTimeStart"
+          [disabled]="disableTime.start"
         ></ngb-timepicker>
       </p>
     </mat-card-content>
     <mat-card-actions>
       <button
+        *ngIf="!disableBtn.start"
         type="button"
         class="btn btn-warning edit"
-        (click)="editTimeStar()"
+        (click)="editTime('start')"
       >
         แก้ไข
+      </button>
+      <button
+        *ngIf="disableBtn.start"
+        type="button"
+        class="btn btn-warning save"
+        (click)="setTimeStart()"
+      >
+        บันทึก
+      </button>
+      <button
+        *ngIf="disableBtn.start"
+        type="button"
+        class="btn btn-warning cansel"
+        (click)="canseltimeSet('start')"
+      >
+        ยกเลิก
       </button>
     </mat-card-actions>
   </mat-card>
@@ -43,17 +60,34 @@
       <p>
         <ngb-timepicker
           [(ngModel)]="timeEnd"
-          [disabled]="disableTimeEnd"
+          [disabled]="disableTime.end"
         ></ngb-timepicker>
       </p>
     </mat-card-content>
     <mat-card-actions>
       <button
+        *ngIf="!disableBtn.end"
         type="button"
         class="btn btn-warning edit"
-        (click)="editTimeEnd()"
+        (click)="editTime('end')"
       >
         แก้ไข
+      </button>
+      <button
+        *ngIf="disableBtn.end"
+        type="button"
+        class="btn btn-warning save"
+        (click)="setTimeEnd()"
+      >
+        บันทึก
+      </button>
+      <button
+        *ngIf="disableBtn.end"
+        type="button"
+        class="btn btn-warning cansel"
+        (click)="canseltimeSet('end')"
+      >
+        ยกเลิก
       </button>
     </mat-card-actions>
   </mat-card>

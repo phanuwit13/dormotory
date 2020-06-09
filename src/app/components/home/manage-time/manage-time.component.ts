@@ -1,6 +1,11 @@
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { HttpService } from "src/app/services/http.service";
-import { isInteger } from "@ng-bootstrap/ng-bootstrap/util/util";
 
 @Component({
   selector: "app-manage-time",
@@ -8,23 +13,22 @@ import { isInteger } from "@ng-bootstrap/ng-bootstrap/util/util";
   styleUrls: ["./manage-time.component.scss"],
 })
 export class ManageTimeComponent implements OnInit {
+  public formTime: FormGroup;
   public timeEnd = { hour: 0, minute: 0, second: 0 };
   public timeStart = { hour: 0, minute: 0, second: 0 };
-  time: any;
-  disableTimeStart: boolean = true;
-  disableTimeEnd: boolean = true;
-  constructor(private http: HttpService) {}
+  public disableBtn = { start: false, end: false };
+  public time: any;
+  public disableTime = { start: true, end: true };
+  constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   async ngOnInit() {
     await this.getTime();
     this.setTimeShoew();
   }
 
-  editTimeStar = async () => {
-    this.disableTimeStart = !this.disableTimeStart;
-  };
-  editTimeEnd = async () => {
-    this.disableTimeEnd = !this.disableTimeEnd;
+  editTime = async (value) => {
+    this.disableTime[value] = !this.disableTime[value];
+    this.changeDisable(value);
   };
 
   getTime = async () => {
@@ -49,5 +53,35 @@ export class ManageTimeComponent implements OnInit {
       second: 0,
     };
     console.log(this.timeStart);
+  }
+
+  setTimeStart = async () => {
+    let formData = new FormData();
+    formData.append(
+      "timeStart",
+      this.timeStart.hour + ":" + this.timeStart.minute
+    );
+    let httpRespone = await this.http.post("/setTimeSet", formData);
+    console.log(httpRespone);
+    await this.getTime();
+    this.setTimeShoew();
+    this.canseltimeSet("start");
+  };
+
+  setTimeEnd = async () => {
+    let formData = new FormData();
+    formData.append("timeEnd", this.timeEnd.hour + ":" + this.timeEnd.minute);
+    let httpRespone = await this.http.post("/setTimeSet", formData);
+    console.log(httpRespone);
+    await this.getTime();
+    this.setTimeShoew();
+    this.canseltimeSet("end");
+  };
+  changeDisable(value) {
+    this.disableBtn[value] = !this.disableBtn[value];
+  }
+  canseltimeSet(value) {
+    this.disableTime[value] = !this.disableTime[value];
+    this.changeDisable(value);
   }
 }
