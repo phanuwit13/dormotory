@@ -6,9 +6,10 @@
 
 .mat-form-field {
   width: 100%;
-  min-width: 300px;
 }
-
+.formInput {
+  width: 60%;
+}
 mat-card-title,
 mat-card-content {
   display: flex;
@@ -48,4 +49,42 @@ mat-card-content {
 .mat-card-subtitle {
   display: flex;
   justify-content: center;
+}
+.icon {
+  width: 200px;
+}
+.subtitle {
+  text-align: center;
+  font-size: 18px;
+}
+
+.inputField {
+  display: flex;
+  justify-content: center;
+}
+@media only screen and (max-width: 480px) {
+  .mat-card {
+    width: 90%;
+  }
+  .icon {
+    width: 40%;
+  }
+  .formInput {
+    width: 80%;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 16px;
+  }
+  #footer {
+    font-size: 14px;
+  }
+  @media only screen and (max-width: 320px) {
+    .host {
+      padding-top: 50px;
+    }
+    #footer {
+      font-size: 11px;
+    }
+  }
 }
