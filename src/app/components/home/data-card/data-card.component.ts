@@ -6,6 +6,7 @@ import {
 } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { HttpService } from "src/app/services/http.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-data-card",
@@ -28,6 +29,7 @@ export class DataCardComponent implements OnInit {
   public branchAll = [];
   public room_number_old: any = "";
   checkConnect = false;
+
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   async ngOnInit() {
@@ -216,28 +218,42 @@ export class DataCardComponent implements OnInit {
     }
   }
   async editDataStd() {
-    let formData = new FormData();
-    let date = new Date();
-    //วนลูบเก็บค่า key และ value
-    Object.keys(this.formStd_code.value).forEach((key) => {
-      formData.append(key, this.formStd_code.value[key]);
+    await Swal.fire({
+      title: "คุณมั่นใจที่จะแก้ไขข้อมูล?",
+      text: "คุณจะไม่สามารถยกเลิกสิ่งนี้ได้!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, edit it!",
+    }).then(async (result) => {
+      if (result.value) {
+        let formData = new FormData();
+        let date = new Date();
+        //วนลูบเก็บค่า key และ value
+        Object.keys(this.formStd_code.value).forEach((key) => {
+          formData.append(key, this.formStd_code.value[key]);
+        });
+        formData.append("room_number_old", this.room_number_old);
+        formData.append(
+          "date_room",
+          date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()
+        );
+        let httpRespon: any = await this.http.post("editStd", formData);
+        console.log(httpRespon);
+        if (httpRespon.response.success) {
+          await Swal.fire(httpRespon.response.message, "", "success");
+          this.formStd_code.controls["outRoom"].setValue(false);
+          this.getStudentAll();
+          document.getElementById("closebutton").click();
+        } else {
+          Swal.fire(httpRespon.response.message, "", "error");
+          this.formStd_code.controls["outRoom"].setValue(false);
+          document.getElementById("closebutton").click();
+        }
+      } else {
+      }
     });
-    formData.append("room_number_old", this.room_number_old);
-    formData.append(
-      "date_room",
-      date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()
-    );
-
-    console.log(this.room_number_old);
-
-    let httpRespon: any = await this.http.post("editStd", formData);
-    console.log(httpRespon);
-    if (httpRespon.response.success) {
-      console.log(httpRespon.response.message);
-      this.getStudentAll();
-    } else {
-      console.log(httpRespon.response.message);
-    }
   }
   sortTable = (value: any) => {
     console.log(this.userData);

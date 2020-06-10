@@ -12,7 +12,6 @@ import { ManageTimeComponent } from "./components/home/manage-time/manage-time.c
 import { StatComponent } from "./components/home/stat/stat.component";
 import { SaveRuleComponent } from "./components/home/save-rule/save-rule.component";
 import { StatRuleComponent } from "./components/home/stat-rule/stat-rule.component";
-import { ImportdataComponent } from "./components/home/importdata/importdata.component";
 import { ManageDataComponent } from "./components/home/manage-data/manage-data.component";
 import { AddtimeComponent } from "./components/home/addtime/addtime.component";
 import { NgxPaginationModule } from "ngx-pagination";
@@ -29,7 +28,6 @@ import { RoomHistoryComponent } from "./components/home/room-history/room-histor
     StatComponent,
     SaveRuleComponent,
     StatRuleComponent,
-    ImportdataComponent,
     ManageDataComponent,
     AddtimeComponent,
     DataCardComponent,

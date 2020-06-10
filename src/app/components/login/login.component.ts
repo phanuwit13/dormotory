@@ -2,6 +2,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { HttpService } from "src/app/services/http.service";
 import { Router } from "@angular/router";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-login",
@@ -31,8 +32,8 @@ export class LoginComponent implements OnInit {
     window.localStorage.clear();
     this.userLogin = null;
     let formData = new FormData();
-
     //วนลูบเก็บค่า key และ value
+
     Object.keys(this.formLogin.value).forEach((key) => {
       //console.log(this.formLogin.value[key]);
       formData.append(key, this.formLogin.value[key]);
@@ -42,18 +43,19 @@ export class LoginComponent implements OnInit {
     if (httpRespon.connect) {
       if (httpRespon.response.success) {
         //this.router.navigate(["/home"]);
+        await Swal.fire(httpRespon.response.message, "", "success");
         this.http.navRouter(this.oldPath);
         window.localStorage.setItem(
           "userLogin",
           JSON.stringify(httpRespon.response.data)
         );
         this.userLogin = JSON.parse(window.localStorage.getItem("userLogin"));
-        alert(httpRespon.response.message);
+        //alert(httpRespon.response.message);
       } else {
-        alert(httpRespon.response.message);
+        Swal.fire(httpRespon.response.message, "", "error");
       }
     } else {
-      alert("เชื่อมต่อเซิร์ฟเวอร์ผิดพลาด");
+      Swal.fire("เชื่อมต่อเซิร์ฟเวอร์ผิดพลาด", "", "warning");
     }
   };
 

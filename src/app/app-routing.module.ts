@@ -1,8 +1,8 @@
+import { DataImportComponent } from "./components/home/data-import/data-import.component";
 import { CheckLoginGuard } from "./guard/check-login.guard";
 import { RoomHistoryComponent } from "./components/home/room-history/room-history.component";
 import { DataCardComponent } from "./components/home/data-card/data-card.component";
 import { AddtimeComponent } from "./components/home/addtime/addtime.component";
-import { ImportdataComponent } from "./components/home/importdata/importdata.component";
 import { StatRuleComponent } from "./components/home/stat-rule/stat-rule.component";
 import { SaveRuleComponent } from "./components/home/save-rule/save-rule.component";
 import { StatComponent } from "./components/home/stat/stat.component";
@@ -29,7 +29,7 @@ const routes: Routes = [
       { path: "stat_time", component: StatComponent },
       { path: "save_rule", component: SaveRuleComponent },
       { path: "stat_rule", component: StatRuleComponent },
-      { path: "import_data", component: ImportdataComponent },
+      { path: "import_data", component: DataImportComponent },
     ],
   },
   {

@@ -45,7 +45,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { NgxBarcodeModule } from "ngx-barcode";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-//import { NgbdTimepickerBasic } from "./timepicker-basic";
 import {
   NgbPaginationModule,
   NgbAlertModule,

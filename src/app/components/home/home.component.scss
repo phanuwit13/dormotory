@@ -50,3 +50,8 @@ $gray: rgb(247, 247, 247);
   background-color: #ff5722;
   color: white;
 }
+@media only screen and (max-width: 480px) {
+  .contentData {
+    overflow: auto;
+  }
+}
