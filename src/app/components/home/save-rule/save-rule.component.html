@@ -17,12 +17,7 @@
               <input
                 matInput
                 placeholder="ชื่อ-นามสกุล"
-                value="{{
-                  nameStudent[0].nameTitle +
-                    nameStudent[0].fname +
-                    ' ' +
-                    nameStudent[0].lname
-                }}
+                value="{{ nameStudent[0].nameStd }}
               "
                 disabled
               />
@@ -47,7 +42,16 @@
               <input
                 matInput
                 placeholder="คณะ"
-                value="{{ nameStudent[0].name }}
+                value="{{ nameStudent[0].faculty }}
+              "
+                disabled
+              />
+            </mat-form-field>
+            <mat-form-field *ngIf="nameStudent != null" class="stdName">
+              <input
+                matInput
+                placeholder="สาขา"
+                value="{{ nameStudent[0].branch }}
               "
                 disabled
               />
@@ -55,10 +59,8 @@
             <mat-form-field *ngIf="nameStudent != null" class="stdRoom">
               <input
                 matInput
-                placeholder="สาขา"
-                value="{{
-                  nameStudent[0].acronym + '.' + nameStudent[0].groupStd
-                }}
+                placeholder="กลุ่มเรียน"
+                value="{{ nameStudent[0].groubStudent }}
               "
                 disabled
               />

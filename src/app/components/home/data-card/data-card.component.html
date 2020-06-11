@@ -64,10 +64,7 @@
           "
         >
           <td>{{ x.room_number }}</td>
-          <td>
-            <input type="text" hidden #stdcode value="{{ x.std_code }}" />
-            {{ x.std_code }}
-          </td>
+          <td>{{ x.std_code }}</td>
           <td>{{ x.nameStd }}</td>
           <td>{{ x.faculty }}</td>
           <td>{{ x.branch }}</td>
@@ -92,7 +89,7 @@
                   class="dropdown-item create"
                   data-toggle="modal"
                   data-target="#exampleModal"
-                  (click)="getStdcode(stdcode.value)"
+                  (click)="getStdcode(x.std_code)"
                 >
                   สร้างบัตร
                 </button>
@@ -100,33 +97,13 @@
                   class="dropdown-item edit"
                   data-toggle="modal"
                   data-target="#ModalEdit"
-                  (click)="getStdcodeEdit(stdcode.value); editData()"
+                  (click)="getStdcodeEdit(x.std_code); editData()"
                 >
                   แก้ไข
                 </button>
                 <button class="dropdown-item del">ลบ</button>
               </div>
             </div>
-            <!-- <button
-              class="btn"
-              mat-flat-button
-              style="color: white; background-color: #007bff;"
-              data-toggle="modal"
-              data-target="#exampleModal"
-              (click)="getStdcode(stdcode.value)"
-            >
-              สร้างบัตร
-            </button> -->
-            <!-- <button
-              class="btn"
-              mat-flat-button
-              color="primary"
-              data-toggle="modal"
-              data-target="#ModalEdit"
-              (click)="getStdcodeEdit(stdcode.value); editData()"
-            >
-              แก้ไข
-            </button> -->
           </td>
         </tr>
       </tbody>
@@ -239,6 +216,7 @@
             <mat-form-field>
               <input
                 matInput
+                disabled
                 formControlName="std_code"
                 placeholder="รหัสนักศึกษา"
                 value="{{ item.std_code }}"
