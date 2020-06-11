@@ -21,8 +21,10 @@
       <a
         mat-list-item
         [routerLink]="['card_data']"
-        (click)="attive(0)"
-        [ngClass]="{ selectItem: this.className[0] }"
+        (click)="attive(0, 'card_data')"
+        [ngClass]="{
+          selectItem: this.className[0] || pathname == 'card_data'
+        }"
         ><i class="material-icons">
           contact_mail
         </i>
@@ -31,8 +33,10 @@
       <a
         mat-list-item
         [routerLink]="['room_history']"
-        (click)="attive(1)"
-        [ngClass]="{ selectItem: this.className[1] }"
+        (click)="attive(1, 'room_history')"
+        [ngClass]="{
+          selectItem: this.className[1] || pathname == 'room_history'
+        }"
         ><i class="material-icons">
           history_edu
         </i>
@@ -41,40 +45,44 @@
       <a
         mat-list-item
         [routerLink]="['manage_time']"
-        (click)="attive(2)"
-        [ngClass]="{ selectItem: this.className[2] }"
+        (click)="attive(2, 'manage_time')"
+        [ngClass]="{
+          selectItem: this.className[2] || pathname == 'manage_time'
+        }"
         ><i class="material-icons"> alarm </i>&nbsp;
         จัดการระบบเช็คนักศึกษาเข้าหอพัก</a
       >
       <a
         mat-list-item
         [routerLink]="['stat_time']"
-        (click)="attive(3)"
-        [ngClass]="{ selectItem: this.className[3] }"
+        (click)="attive(3, 'stat_time')"
+        [ngClass]="{ selectItem: this.className[3] || pathname == 'stat_time' }"
         ><i class="material-icons"> assignment </i>&nbsp;
         สรุปผลการเข้าหอพักของนักศึกษา</a
       >
       <a
         mat-list-item
         [routerLink]="['save_rule']"
-        (click)="attive(4)"
-        [ngClass]="{ selectItem: this.className[4] }"
+        (click)="attive(4, 'save_rule')"
+        [ngClass]="{ selectItem: this.className[4] || pathname == 'save_rule' }"
         ><i class="material-icons"> block </i>&nbsp;
         บันทึกการกระทำผิดกฏระเบียบหอพัก</a
       >
       <a
         mat-list-item
         [routerLink]="['stat_rule']"
-        (click)="attive(5)"
-        [ngClass]="{ selectItem: this.className[5] }"
+        (click)="attive(5, 'stat_rule')"
+        [ngClass]="{ selectItem: this.className[5] || pathname == 'stat_rule' }"
         ><i class="material-icons"> assessment </i>&nbsp;
         สรุปผลการกระทำผิดกฏระเบียบหอพัก</a
       >
       <a
         mat-list-item
         [routerLink]="['import_data']"
-        (click)="attive(6)"
-        [ngClass]="{ selectItem: this.className[6] }"
+        (click)="attive(6, 'import_data')"
+        [ngClass]="{
+          selectItem: this.className[6] || pathname == 'import_data'
+        }"
         ><i class="material-icons"> backup </i>&nbsp;
         นำเข้าไฟล์ข้อมูลนักศึกษา</a
       >

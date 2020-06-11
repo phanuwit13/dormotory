@@ -3,8 +3,7 @@
   <div class="top">
     <section class="example-section">
       <input
-        style="width: 18%;"
-        class="form-control form-control-sm ml-3"
+        class="form-control form-control-sm ml-3 w-25"
         type="text"
         [formControl]="keyStd"
         placeholder="Search"
@@ -21,6 +20,9 @@
         (click)="advancedSearch()"
       >
         ค้นหาแบบละเอียด
+      </button>
+      <button class="btn" mat-flat-button color="primary">
+        ส่งออกสรุปผลการย้ายห้องพัก
       </button>
     </section>
   </div>

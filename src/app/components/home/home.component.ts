@@ -32,13 +32,15 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() {
     this.userLogin = await JSON.parse(window.localStorage.getItem("userLogin"));
+    this.getPath();
   }
 
   logOut = async () => {
     await window.localStorage.clear();
     this.http.navRouter(this.oldPath);
   };
-  async attive(key: number) {
+  async attive(key: number, path: string) {
+    this.getPathName(path);
     console.log(key);
     // this.pathname = await window.location.pathname;
     this.className.forEach((item, index) => {
@@ -49,5 +51,11 @@ export class HomeComponent implements OnInit {
         this.className[index] = false;
       }
     });
+  }
+  async getPathName(value) {
+    this.pathname = value;
+  }
+  async getPath() {
+    this.pathname = window.location.pathname.split("/home/")[1];
   }
 }

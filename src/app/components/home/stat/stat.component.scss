@@ -19,6 +19,11 @@
 .example-margin {
   margin: 0 10px;
 }
+.table td,
+.table th {
+  padding: 0.6rem;
+  vertical-align: middle;
+}
 .table tr:nth-child(even) {
   background-color: #ffffff;
 }

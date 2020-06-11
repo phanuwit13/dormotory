@@ -8,6 +8,9 @@ $gray: rgb(247, 247, 247);
   background: #ff5722;
   color: #ffffff;
 }
+button:focus {
+  outline: none;
+}
 .logout {
   border-radius: 8px;
   background-color: #fe6254;
@@ -37,6 +40,7 @@ $gray: rgb(247, 247, 247);
 .mat-list-base {
   padding-top: 0px;
 }
+.mat-nav-list .mat-list-item:hover,
 .mat-nav-list .mat-list-item:focus {
   background-color: #ff5722;
   color: white;
