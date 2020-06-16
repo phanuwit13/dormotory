@@ -1,0 +1,47 @@
+<div class="contain">
+  <span class="card" *ngFor="let item of dataUser">
+    <span class="title">
+      <b>บัตรประจำตัวนักศึกษาหอพัก มทร.อีสาน นครราชสีมา</b>
+    </span>
+    <table>
+      <tr>
+        <td class="left">
+          <span
+            ><img
+              class="img"
+              src="https://www.seosogood.com/wp-content/uploads/avatar-2.png"
+              alt=""
+          /></span>
+        </td>
+        <td class="detail">
+          <p class="data">
+            <b>ชื่อ</b> <span>{{ item.nameStd }}</span>
+          </p>
+          <p class="data">
+            <b>รหัส</b> <span>{{ item.std_code }}</span>
+          </p>
+          <p class="data">
+            <b>สาขา</b> <span>{{ item.groubStudent }}</span>
+          </p>
+          <p class="data">
+            <b>ห้อง</b> <span>{{ item.room_number }}</span>
+          </p>
+          <p class="data">
+            <b>เบอร์</b> <span>{{ item.phone }}</span>
+          </p>
+        </td>
+      </tr>
+    </table>
+    <span class="barcode">
+      <ngx-barcode
+        [bc-width]="1.8"
+        [bc-height]="30"
+        [bc-value]="item.std_code"
+        [bc-display-value]="false"
+      ></ngx-barcode>
+    </span>
+    <p class="nameCen">............................</p>
+    <br />
+    <p class="nameCen"><b>ลายมือชื่อนักศึกษา</b></p>
+  </span>
+</div>

@@ -11,6 +11,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { LoginComponent } from "./components/login/login.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
+import { CardGenComponent } from "./components/home/card-gen/card-gen.component";
 
 const routes: Routes = [
   {
@@ -35,6 +36,11 @@ const routes: Routes = [
   {
     path: "addtime",
     component: AddtimeComponent,
+    canActivate: [CheckLoginGuard],
+  },
+  {
+    path: "gencard",
+    component: CardGenComponent,
     canActivate: [CheckLoginGuard],
   },
   {

@@ -18,6 +18,7 @@ import { NgxPaginationModule } from "ngx-pagination";
 import { DataCardComponent } from "./components/home/data-card/data-card.component";
 import { DataImportComponent } from "./components/home/data-import/data-import.component";
 import { RoomHistoryComponent } from "./components/home/room-history/room-history.component";
+import { CardGenComponent } from './components/home/card-gen/card-gen.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +33,7 @@ import { RoomHistoryComponent } from "./components/home/room-history/room-histor
     DataCardComponent,
     DataImportComponent,
     RoomHistoryComponent,
+    CardGenComponent,
   ],
   imports: [
     BrowserModule,

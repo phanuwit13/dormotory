@@ -22,7 +22,8 @@ export class DataCardComponent implements OnInit {
   p: number = 1;
 
   public Faculty = [];
-  public titleName = ["นาย", "นาง", "นางสาว"];
+  public titleName = ["นาย", "นาง", "นางสาว", "MR.", "MISS.", "MRS."];
+
   public branch = [];
   public room = [];
   public levels = [];
@@ -48,6 +49,10 @@ export class DataCardComponent implements OnInit {
       outRoom: false,
     });
     await this.getStudentAll();
+  }
+
+  showdata() {
+    console.log(this.titleName);
   }
 
   getStudentAll = async () => {
@@ -289,5 +294,20 @@ export class DataCardComponent implements OnInit {
     this.formStd_code.controls["groupStd"].setValue("");
     this.formStd_code.controls["floor"].setValue("");
     this.formStd_code.controls["noLevel"].setValue("");
+  };
+
+  gennarateCard = () => {
+    window.localStorage.setItem("userData", JSON.stringify(this.userData));
+    console.log(JSON.parse(window.localStorage.getItem("userData")));
+  };
+
+  gennarateCardSigle = (value: any) => {
+    window.localStorage.setItem("userData", JSON.stringify([value]));
+    console.log(JSON.parse(window.localStorage.getItem("userData")));
+  };
+  deleteStudent = async (value) => {
+    let formData = new FormData();
+    formData.append("std_code", value);
+    let httpRespone = this.http.post("/deleteStudent", formData);
   };
 }

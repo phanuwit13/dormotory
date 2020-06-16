@@ -21,7 +21,13 @@
       >
         ค้นหาแบบละเอียด
       </button>
-      <button class="btn" mat-flat-button color="primary">
+      <button
+        class="btn"
+        mat-flat-button
+        color="primary"
+        [routerLink]="['/gencard']"
+        (click)="gennarateCard()"
+      >
         สร้างบัตรนักศึกษาหอพัก
       </button>
     </section>
@@ -87,9 +93,8 @@
               <div class="dropdown-menu">
                 <button
                   class="dropdown-item create"
-                  data-toggle="modal"
-                  data-target="#exampleModal"
-                  (click)="getStdcode(x.std_code)"
+                  (click)="gennarateCardSigle(x)"
+                  [routerLink]="['/gencard']"
                 >
                   สร้างบัตร
                 </button>
@@ -115,10 +120,9 @@
     ></pagination-controls>
   </div>
 </div>
-<!-- ///// -->
 
 <!-- Modal บัตรนักศึกษา-->
-<div
+<!-- <div
   class="modal fade"
   id="exampleModal"
   tabindex="-1"
@@ -142,7 +146,7 @@
         </button>
       </div>
       <div class="modal-body" align="center">
-        <!-- content -->
+        
         <div class="frame">
           <span class="cardTitle"
             >บัตรประจำตัวนักศึกษาหอพัก มทร.อีสาน นครราชสีมา</span
@@ -182,7 +186,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- Modal แก้ไขข้แมูล-->
 <div
@@ -213,7 +217,38 @@
           <!-- content -->
 
           <div class="frame" *ngFor="let item of nameStudent">
-            <mat-form-field>
+            <span
+              ><img
+              *ngIf="
+                  item.nameTitle == 'นาย' ||
+                  item.nameTitle == 'MR.'
+                 
+                "
+                class="img"
+                src="https://www.seosogood.com/wp-content/uploads/avatar-2.png"
+                alt="" />
+              <img
+                *ngIf="
+                  item.nameTitle == 'นางสาว' ||
+                  item.nameTitle == 'นาง' ||
+                  item.nameTitle == 'MISS.' ||
+                  item.nameTitle == 'MRS.'
+                "
+                class="img"
+                src="https://www.seosogood.com/wp-content/uploads/avatar-6.png"
+                alt=""
+            /></span>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">รูปโปรไฟล์</label>
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                mat-flat-button
+              />
+            </div>
+
+            <mat-form-field class="lenght">
               <input
                 matInput
                 disabled
@@ -222,9 +257,8 @@
                 value="{{ item.std_code }}"
               />
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
 
-            <mat-form-field class="selectRule">
+            <mat-form-field class="lenght">
               <mat-select
                 formControlName="nameTitle"
                 placeholder="คำนำหน้า"
@@ -241,8 +275,8 @@
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
+
+            <mat-form-field class="lenght">
               <input
                 matInput
                 formControlName="fname"
@@ -250,8 +284,8 @@
                 placeholder="ชื่อจริง"
               />
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
+
+            <mat-form-field class="lenght">
               <input
                 matInput
                 formControlName="lname"
@@ -259,8 +293,8 @@
                 placeholder="นามสกุล"
               />
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+
+            <mat-form-field class="lenght">
               <mat-select
                 formControlName="noLevel"
                 placeholder="ระดับวุฒิการศึกษา"
@@ -270,8 +304,8 @@
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+
+            <mat-form-field class="lenght">
               <mat-select
                 formControlName="faculty_code"
                 placeholder="คณะ"
@@ -289,24 +323,24 @@
                 >
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+
+            <mat-form-field class="lenght">
               <mat-select formControlName="branch_code" placeholder="สาขา">
                 <mat-option *ngFor="let x of branch" [value]="x.branch_code">{{
                   x.name
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
+
+            <mat-form-field class="lenght">
               <input
                 matInput
                 formControlName="groupStd"
                 placeholder="กลุ่มเรียน"
               />
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+
+            <mat-form-field class="lenght-floor">
               <mat-select
                 formControlName="floor"
                 placeholder="ชั้น"
@@ -324,8 +358,8 @@
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+
+            <mat-form-field class="lenght-room">
               <mat-select
                 [disabled]="this.formStd_code.controls['outRoom'].value"
                 formControlName="room_number"
@@ -336,19 +370,16 @@
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <br />
-            <mat-checkbox class="selectRule" formControlName="outRoom"
-              >ย้ายออก</mat-checkbox
+            <mat-checkbox class="out" formControlName="outRoom"
+              >ย้ายออกจากหอพัก</mat-checkbox
             ><br />
-            <mat-form-field class="selectRule">
+            <mat-form-field class="phone">
               <input
                 matInput
                 formControlName="phone"
                 placeholder="เบอร์โทรศัพท์"
               />
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
           </div>
         </div>
         <div class="modal-footer">
