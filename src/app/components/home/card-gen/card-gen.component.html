@@ -1,4 +1,7 @@
-<div class="contain">
+<div class="contain" *ngIf="dataUser != null">
+  <span class="material-icons" id="print" (click)="printData()">
+    print
+  </span>
   <span class="card" *ngFor="let item of dataUser">
     <span class="title">
       <b>บัตรประจำตัวนักศึกษาหอพัก มทร.อีสาน นครราชสีมา</b>

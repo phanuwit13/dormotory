@@ -97,12 +97,7 @@
               <tr>
                 <td class="title1"><span>ชื่อ :</span></td>
                 <td class="title2">
-                  <span>{{
-                    this.dataStd[0].nameTitle +
-                      this.dataStd[0].fname +
-                      " " +
-                      this.dataStd[0].lname
-                  }}</span>
+                  <span>{{ this.dataStd[0].nameStd }}</span>
                 </td>
               </tr>
               <tr>
@@ -120,15 +115,13 @@
               <tr>
                 <td class="title1"><span>คณะ :</span></td>
                 <td class="title2">
-                  <span>{{ this.dataStd[0].name }}</span>
+                  <span>{{ this.dataStd[0].faculty }}</span>
                 </td>
               </tr>
               <tr>
                 <td class="title1"><span>สาขา :</span></td>
                 <td class="title2">
-                  <span>{{
-                    this.dataStd[0].acronym + "." + this.dataStd[0].groupStd
-                  }}</span>
+                  <span>{{ this.dataStd[0].groubStudent }}</span>
                 </td>
               </tr>
               <tr>

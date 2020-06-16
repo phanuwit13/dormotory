@@ -15,6 +15,8 @@ import Swal from "sweetalert2";
 })
 export class DataCardComponent implements OnInit {
   public formStd_code: FormGroup;
+
+  public formSearch: FormGroup;
   public nameStudent: Array<any> = null;
   public floor = [];
   public userData: Array<any> = null;
@@ -47,6 +49,14 @@ export class DataCardComponent implements OnInit {
       phone: ["", Validators.required],
       noLevel: ["", Validators.required],
       outRoom: false,
+    });
+    this.formSearch = this.formBuilder.group({
+      faculty_code: "",
+      branch_code: "",
+      groupStd: "",
+      floor: "",
+      room_number: "",
+      noLevel: "",
     });
     await this.getStudentAll();
   }
@@ -143,6 +153,7 @@ export class DataCardComponent implements OnInit {
   }
 
   async searchStd() {
+    this.p = 1;
     this.userData = null;
     console.log(this.keyStd.value);
     let formData = new FormData();
@@ -200,9 +211,9 @@ export class DataCardComponent implements OnInit {
     let httpRespon: any = await this.http.post("BranchAll");
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
-      this.branchAll = httpRespon.response.data;
+      this.branch = httpRespon.response.data;
     } else {
-      this.branchAll = null;
+      this.branch = null;
     }
   }
   async getRoom(title, flr, std_code) {
@@ -222,43 +233,66 @@ export class DataCardComponent implements OnInit {
       this.room = null;
     }
   }
-  async editDataStd() {
-    await Swal.fire({
-      title: "คุณมั่นใจที่จะแก้ไขข้อมูล?",
-      text: "คุณจะไม่สามารถยกเลิกสิ่งนี้ได้!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, edit it!",
-    }).then(async (result) => {
-      if (result.value) {
-        let formData = new FormData();
-        let date = new Date();
-        //วนลูบเก็บค่า key และ value
-        Object.keys(this.formStd_code.value).forEach((key) => {
-          formData.append(key, this.formStd_code.value[key]);
-        });
-        formData.append("room_number_old", this.room_number_old);
-        formData.append(
-          "date_room",
-          date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()
-        );
-        let httpRespon: any = await this.http.post("editStd", formData);
-        console.log(httpRespon);
-        if (httpRespon.response.success) {
-          await Swal.fire(httpRespon.response.message, "", "success");
-          this.formStd_code.controls["outRoom"].setValue(false);
-          this.getStudentAll();
-          document.getElementById("closebutton").click();
+
+  async checkDataNull() {
+    let i = 0;
+    Object.keys(this.formStd_code.value).forEach((key) => {
+      if (this.formStd_code.get(key).hasError("required")) {
+        if (key == "floor" || key == "room_number" || key == "phone") {
         } else {
-          Swal.fire(httpRespon.response.message, "", "error");
-          this.formStd_code.controls["outRoom"].setValue(false);
-          document.getElementById("closebutton").click();
+          i++;
         }
-      } else {
       }
     });
+    if (i > 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async editDataStd() {
+    if (await this.checkDataNull()) {
+      await Swal.fire({
+        title: "คุณมั่นใจที่จะแก้ไขข้อมูล?",
+        text: "คุณจะไม่สามารถยกเลิกสิ่งนี้ได้!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง !",
+        cancelButtonText: "ยกเลิก",
+      }).then(async (result) => {
+        if (result.value) {
+          let formData = new FormData();
+          let date = new Date();
+          //วนลูบเก็บค่า key และ value
+          Object.keys(this.formStd_code.value).forEach((key) => {
+            formData.append(key, this.formStd_code.value[key]);
+          });
+          formData.append("room_number_old", this.room_number_old);
+          formData.append(
+            "date_room",
+            date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()
+          );
+          let httpRespon: any = await this.http.post("editStd", formData);
+          console.log(httpRespon);
+          if (httpRespon.response.success) {
+            await Swal.fire(httpRespon.response.message, "", "success");
+            this.formStd_code.controls["outRoom"].setValue(false);
+            this.getStudentAll();
+            document.getElementById("closebutton").click();
+          } else {
+            Swal.fire(httpRespon.response.message, "", "error");
+            this.formStd_code.controls["outRoom"].setValue(false);
+            document.getElementById("closebutton").click();
+          }
+        } else {
+        }
+      });
+    } else {
+      Swal.fire("กรอกข้อมูลให้ครบ", "", "error");
+    }
   }
   sortTable = (value: any) => {
     console.log(this.userData);
@@ -273,27 +307,25 @@ export class DataCardComponent implements OnInit {
   };
   getAdvancedSearchData = async () => {
     let formData = new FormData();
-    let date = new Date();
+
     //วนลูบเก็บค่า key และ value
-    Object.keys(this.formStd_code.value).forEach((key) => {
-      formData.append(key, this.formStd_code.value[key]);
-      console.log(key + " : " + this.formStd_code.value[key]);
+    Object.keys(this.formSearch.value).forEach((key) => {
+      formData.append(key, this.formSearch.value[key]);
+      console.log(key + " : " + this.formSearch.value[key]);
     });
 
     let httpRespon: any = await this.http.post("advancedSearch", formData);
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
-      console.log(httpRespon.response.message);
+      console.log(httpRespon.response.success);
       this.userData = httpRespon.response.data;
     } else {
       console.log(httpRespon.response.message);
       this.userData = null;
     }
-    this.formStd_code.controls["faculty_code"].setValue("");
-    this.formStd_code.controls["branch_code"].setValue("");
-    this.formStd_code.controls["groupStd"].setValue("");
-    this.formStd_code.controls["floor"].setValue("");
-    this.formStd_code.controls["noLevel"].setValue("");
+    Object.keys(this.formSearch.value).forEach((key) => {
+      this.formStd_code.controls[key].setValue("");
+    });
   };
 
   gennarateCard = () => {
@@ -306,8 +338,29 @@ export class DataCardComponent implements OnInit {
     console.log(JSON.parse(window.localStorage.getItem("userData")));
   };
   deleteStudent = async (value) => {
-    let formData = new FormData();
-    formData.append("std_code", value);
-    let httpRespone = this.http.post("/deleteStudent", formData);
+    await Swal.fire({
+      title: "คุณมั่นใจที่จะลบข้อมูล?",
+      text: "คุณจะไม่สามารถยกเลิกสิ่งนี้ได้!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ตกลง !",
+      cancelButtonText: "ยกเลิก",
+    }).then(async (result) => {
+      if (result.value) {
+        let formData = new FormData();
+        formData.append("std_code", value);
+        let httpRespon: any = await this.http.post("deleteStudent", formData);
+        console.log(httpRespon);
+        if (httpRespon.response.success) {
+          await Swal.fire(httpRespon.response.message, "", "success");
+          this.getStudentAll();
+        } else {
+          Swal.fire(httpRespon.response.message, "", "error");
+        }
+      } else {
+      }
+    });
   };
 }

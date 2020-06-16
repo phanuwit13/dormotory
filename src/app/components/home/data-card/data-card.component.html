@@ -106,7 +106,12 @@
                 >
                   แก้ไข
                 </button>
-                <button class="dropdown-item del">ลบ</button>
+                <button
+                  class="dropdown-item del"
+                  (click)="deleteStudent(x.std_code)"
+                >
+                  ลบ
+                </button>
               </div>
             </div>
           </td>
@@ -120,73 +125,6 @@
     ></pagination-controls>
   </div>
 </div>
-
-<!-- Modal บัตรนักศึกษา-->
-<!-- <div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          บัตรนักศึกษาหอพัก
-        </h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" align="center">
-        
-        <div class="frame">
-          <span class="cardTitle"
-            >บัตรประจำตัวนักศึกษาหอพัก มทร.อีสาน นครราชสีมา</span
-          >
-          <table style="width: 100%;">
-            <tr>
-              <td>
-                <i class="material-icons" id="photo">
-                  photo
-                </i>
-              </td>
-              <td class="detailcard" *ngFor="let x of nameStudent">
-                <p>ชื่อ {{ x.nameStd }}</p>
-                <p>รหัส {{ x.std_code }}</p>
-                <p>สาขา {{ x.groubStudent }}</p>
-                <p>ห้อง {{ x.room_number }}</p>
-                <p>เบอร์โทร {{ x.phone }}</p>
-
-                <ngx-barcode
-                  [bc-width]="1.8"
-                  [bc-height]="40"
-                  [bc-value]="x.std_code"
-                  [bc-display-value]="false"
-                ></ngx-barcode>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          ยกเลิก
-        </button>
-        <button type="button" class="btn btn-primary">
-          พิมพ์บัตร
-        </button>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 <!-- Modal แก้ไขข้แมูล-->
 <div
@@ -219,11 +157,7 @@
           <div class="frame" *ngFor="let item of nameStudent">
             <span
               ><img
-              *ngIf="
-                  item.nameTitle == 'นาย' ||
-                  item.nameTitle == 'MR.'
-                 
-                "
+                *ngIf="item.nameTitle == 'นาย' || item.nameTitle == 'MR.'"
                 class="img"
                 src="https://www.seosogood.com/wp-content/uploads/avatar-2.png"
                 alt="" />
@@ -424,26 +358,16 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form [formGroup]="formStd_code">
+      <form [formGroup]="formSearch">
         <div class="modal-body" align="center">
           <!-- content -->
 
           <div>
             <mat-checkbox class="example-margin">หอพักชาย</mat-checkbox>
             <mat-checkbox class="example-margin">หอพักหญิง</mat-checkbox>
+            <br />
             <mat-form-field class="selectRule">
-              <mat-select
-                formControlName="floor"
-                placeholder="ชั้น"
-                #foor
-                (selectionChange)="
-                  getRoom(
-                    this.formStd_code.value.nameTitle,
-                    this.formStd_code.value.floor,
-                    this.formStd_code.value.std_code
-                  )
-                "
-              >
+              <mat-select formControlName="floor" placeholder="ชั้น" #foor>
                 <mat-option *ngFor="let x of floor" [value]="x.floor">{{
                   x.floor
                 }}</mat-option>
@@ -490,10 +414,11 @@
             </mat-form-field>
             <br />
             <mat-form-field>
+              <mat-label>กลุ่มเรียน</mat-label>
               <input
                 matInput
                 formControlName="groupStd"
-                placeholder="กลุ่มเรียน"
+                placeholder="เช่น AAA.62241"
               />
             </mat-form-field>
           </div>

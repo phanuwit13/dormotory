@@ -1,6 +1,5 @@
 .contain {
   width: 100%;
-  background-color: darkgrey;
   clear: both;
 }
 .card {
@@ -46,4 +45,19 @@
 .barcode {
   float: left;
   width: 50%;
+}
+#print {
+  font-size: 70px;
+  margin-left: 40px;
+  margin-top: 20px;
+  cursor: pointer;
+  display: block;
+  margin-bottom: -50px;
+  width: 70px;
+}
+
+@media print {
+  #print {
+    display: none;
+  }
 }

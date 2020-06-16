@@ -3,7 +3,6 @@ import { HttpService } from "src/app/services/http.service";
 import { Component, OnInit } from "@angular/core";
 import * as XLSX from "xlsx";
 import Swal from "sweetalert2";
-import { isInteger } from "@ng-bootstrap/ng-bootstrap/util/util";
 
 @Component({
   selector: "app-data-import",
@@ -20,6 +19,8 @@ export class DataImportComponent implements OnInit {
   public room = [];
   public levels = [];
   public branchAll = [];
+  public datafail = [];
+  p: number = 1;
 
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
@@ -182,17 +183,18 @@ export class DataImportComponent implements OnInit {
       /* save data */
       this.data = XLSX.utils.sheet_to_json(ws, { header: 1 });
       this.readDataStd();
+      this.data = [];
     };
 
     reader.readAsBinaryString(target.files[0]);
   }
 
-  readDataStd() {
-    this.data.forEach((x, index) => {
+  async readDataStd() {
+    this.data.forEach(async (x, index) => {
       if (index != 0) {
         if (x != "") {
           if (x.length == 9) {
-            console.log(x);
+            //console.log(x);
             this.importData(x[0], x[1], x[2], x[3], x[4], x[6], x[8]);
           } else if (x.length == 8) {
             this.importData(x[0], x[1], x[2], x[3], x[4], x[6], "");
@@ -230,7 +232,6 @@ export class DataImportComponent implements OnInit {
         break;
       }
     }
-    console.log(i);
 
     bc = await branch_code.split("", i - 2);
 
@@ -242,7 +243,6 @@ export class DataImportComponent implements OnInit {
       if (x.acronym == str) {
         formData.append("branch_code", x.branch_code);
         formData.append("faculty_code", x.faculty_code);
-        console.log(x.branch_code + "และ" + x.faculty_code);
       }
     });
     groupStd = await branch_code.split(str + ".");
@@ -251,13 +251,50 @@ export class DataImportComponent implements OnInit {
     formData.append("phone", phone);
 
     let httpRespon: any = await this.http.post("addStudent", formData);
-    console.log(httpRespon);
-    if (httpRespon.response.data.length > 0) {
-      this.room = httpRespon.response.data;
-      console.log("ผ่าน");
+    //console.log(httpRespon);
+    if (httpRespon.response.success) {
+      console.log(httpRespon.response.message);
     } else {
-      this.room = null;
-      console.log("ไม่ผ่าน");
+      this.datafail.push({
+        std_code: std_code,
+        room_number: room_number,
+        nameTitle: nameTitle,
+        fname: fname,
+        lname: lname,
+        branch_code: branch_code,
+        phone: phone,
+      });
+
+      console.log(httpRespon.response.message);
     }
   }
+  deleteDatabase() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.value) {
+        let httpRespone: any = await this.http.post("deleteData");
+        if (httpRespone.response.success) {
+          Swal.fire(
+            httpRespone.response.message,
+            "Your file has been deleted.",
+            "success"
+          );
+        } else {
+          Swal.fire(
+            httpRespone.response.message,
+            "Your file has been deleted.",
+            "error"
+          );
+        }
+      }
+    });
+  }
+  onloadSweet() {}
 }

@@ -17,6 +17,17 @@
   >
     เพิ่มข้อมูลนักศึกษา
   </button>
+  <button
+    mat-raised-button
+    class="bt"
+    color="primary"
+    (click)="deleteDatabase()"
+  >
+    ลบข้อมูล
+  </button>
+  <button mat-raised-button class="bt" color="primary" (click)="onloadSweet()">
+    โหลด
+  </button>
   <input
     hidden
     (change)="onFileChange($event)"
@@ -24,13 +35,48 @@
     type="file"
     id="file"
   />
-  <table id="customers">
+  <!-- <table id="customers">
     <tr *ngFor="let row of data">
       <td *ngFor="let val of row">
         {{ val }}
       </td>
     </tr>
-  </table>
+  </table> -->
+  <div *ngIf="datafail.length > 0">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">
+            <span>เลขห้อง</span>
+          </th>
+          <th scope="col">
+            <span>รหัสนักศึกษา</span>
+          </th>
+          <th scope="col">
+            <span>ชื่อ - สกุล</span>
+          </th>
+          <th scope="col"><span>สาขา</span></th>
+          <th scope="col">
+            <span>เบอร์</span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="
+            let x of datafail | paginate: { itemsPerPage: 12, currentPage: p }
+          "
+        >
+          <td>{{ x.room_number }}</td>
+          <td>{{ x.std_code }}</td>
+          <td>{{ x.nameTitle + x.fname + " " + x.lname }}</td>
+          <td>{{ x.branch_code }}</td>
+          <td>{{ x.phone }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- Modal นักศึกษานอก -->

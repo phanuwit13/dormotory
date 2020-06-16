@@ -15,4 +15,7 @@ export class CardGenComponent implements OnInit {
     window.localStorage.removeItem("userData");
     console.log(this.dataUser);
   }
+  printData = async () => {
+    window.print();
+  };
 }
