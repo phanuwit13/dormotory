@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 export class LoginComponent implements OnInit {
   public formLogin: FormGroup;
   public userLogin: any = null;
-  private oldPath: string = "/home";
+  private oldPath: string = "/nav";
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpService,

@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   public userLogin: any = null;
   private oldPath: string = "/login";
   public pathname = null;
+  public mode = "side";
   public className = [false, false, false, false, false, false, false];
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -33,6 +34,13 @@ export class HomeComponent implements OnInit {
   async ngOnInit() {
     this.userLogin = await JSON.parse(window.localStorage.getItem("userLogin"));
     this.getPath();
+    if (window.screen.width <= 480) {
+      this.mode = "over";
+      //console.log(window.screen.width);
+    } else {
+      this.mode = "side";
+      console.log(window.screen.width);
+    }
   }
 
   logOut = async () => {
@@ -43,9 +51,11 @@ export class HomeComponent implements OnInit {
     this.getPathName(path);
     console.log(key);
     // this.pathname = await window.location.pathname;
+    this.className = [false, false, false, false, false, false, false];
     this.className.forEach((item, index) => {
       if (index == key) {
         this.className[index] = true;
+        return;
         console.log(item);
       } else {
         this.className[index] = false;

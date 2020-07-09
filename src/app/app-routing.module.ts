@@ -12,6 +12,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { CardGenComponent } from "./components/home/card-gen/card-gen.component";
+import { NavComponent } from "./components/nav/nav.component";
 
 const routes: Routes = [
   {
@@ -19,24 +20,140 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: "home",
-    component: HomeComponent,
+    path: "nav",
+    component: NavComponent,
     canActivate: [CheckLoginGuard],
     children: [
-      { path: "", component: DataCardComponent },
-      { path: "card_data", component: DataCardComponent },
-      { path: "room_history", component: RoomHistoryComponent },
-      { path: "manage_time", component: ManageTimeComponent },
-      { path: "stat_time", component: StatComponent },
-      { path: "save_rule", component: SaveRuleComponent },
-      { path: "stat_rule", component: StatRuleComponent },
-      { path: "import_data", component: DataImportComponent },
+      {
+        path: "",
+        loadChildren: () =>
+          import("./pages/admin/data-card/data-card.module").then(
+            (m) => m.DataCardModule
+          ),
+      },
+      {
+        path: "card_data",
+        loadChildren: () =>
+          import("./pages/admin/data-card/data-card.module").then(
+            (m) => m.DataCardModule
+          ),
+      },
+      {
+        path: "room_history",
+        loadChildren: () =>
+          import("./pages/admin/room-history/room-history.module").then(
+            (m) => m.RoomHistoryModule
+          ),
+      },
+      {
+        path: "rule_save",
+        loadChildren: () =>
+          import("./pages/admin/rule-save/rule-save.module").then(
+            (m) => m.RuleSaveModule
+          ),
+      },
+      {
+        path: "rule_stat",
+        loadChildren: () =>
+          import("./pages/admin/rule-stat/rule-stat.module").then(
+            (m) => m.RuleStatModule
+          ),
+      },
+
+      {
+        path: "time_stat",
+        loadChildren: () =>
+          import("./pages/admin/time-stat/time-stat.module").then(
+            (m) => m.TimeStatModule
+          ),
+      },
+      {
+        path: "time_manage",
+        loadChildren: () =>
+          import("./pages/admin/time-manage/time-manage.module").then(
+            (m) => m.TimeManageModule
+          ),
+      },
+      {
+        path: "data_import",
+        loadChildren: () =>
+          import("./pages/admin/data-import/data-import.module").then(
+            (m) => m.DataImportModule
+          ),
+      },
     ],
   },
+  // {
+  //   path: "home",
+  //   component: HomeComponent,
+  //   canActivate: [CheckLoginGuard],
+  //   children: [
+  //     {
+  //       path: "",
+  //       loadChildren: () =>
+  //         import("./pages/admin/data-card/data-card.module").then(
+  //           (m) => m.DataCardModule
+  //         ),
+  //     },
+  //     {
+  //       path: "card_data",
+  //       loadChildren: () =>
+  //         import("./pages/admin/data-card/data-card.module").then(
+  //           (m) => m.DataCardModule
+  //         ),
+  //     },
+  //     {
+  //       path: "room_history",
+  //       loadChildren: () =>
+  //         import("./pages/admin/room-history/room-history.module").then(
+  //           (m) => m.RoomHistoryModule
+  //         ),
+  //     },
+  //     {
+  //       path: "rule_save",
+  //       loadChildren: () =>
+  //         import("./pages/admin/rule-save/rule-save.module").then(
+  //           (m) => m.RuleSaveModule
+  //         ),
+  //     },
+  //     {
+  //       path: "rule_stat",
+  //       loadChildren: () =>
+  //         import("./pages/admin/rule-stat/rule-stat.module").then(
+  //           (m) => m.RuleStatModule
+  //         ),
+  //     },
+
+  //     {
+  //       path: "time_stat",
+  //       loadChildren: () =>
+  //         import("./pages/admin/time-stat/time-stat.module").then(
+  //           (m) => m.TimeStatModule
+  //         ),
+  //     },
+  //     {
+  //       path: "time_manage",
+  //       loadChildren: () =>
+  //         import("./pages/admin/time-manage/time-manage.module").then(
+  //           (m) => m.TimeManageModule
+  //         ),
+  //     },
+  //     {
+  //       path: "data_import",
+  //       loadChildren: () =>
+  //         import("./pages/admin/data-import/data-import.module").then(
+  //           (m) => m.DataImportModule
+  //         ),
+  //     },
+  //   ],
+  // },
   {
-    path: "addtime",
-    component: AddtimeComponent,
+    path: "time_add",
     canActivate: [CheckLoginGuard],
+    loadChildren: () =>
+      import("./pages/admin/time-add/time-add.module").then(
+        (m) => m.TimeAddModule
+      ),
   },
   {
     path: "gencard",

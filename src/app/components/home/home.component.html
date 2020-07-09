@@ -1,5 +1,5 @@
 <mat-drawer-container class="sidenav-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side">
+  <mat-drawer #drawer class="example-sidenav" mode="{{ mode }}">
     <div class="logo">
       <img src="assets/LOGO1.png" height="100px" />
       <!-- <button
@@ -44,44 +44,44 @@
       </a>
       <a
         mat-list-item
-        [routerLink]="['manage_time']"
-        (click)="attive(2, 'manage_time')"
+        [routerLink]="['time_manage']"
+        (click)="attive(2, 'time_manage')"
         [ngClass]="{
-          selectItem: this.className[2] || pathname == 'manage_time'
+          selectItem: this.className[2] || pathname == 'time_manage'
         }"
         ><i class="material-icons"> alarm </i>&nbsp;
         จัดการระบบเช็คนักศึกษาเข้าหอพัก</a
       >
       <a
         mat-list-item
-        [routerLink]="['stat_time']"
-        (click)="attive(3, 'stat_time')"
-        [ngClass]="{ selectItem: this.className[3] || pathname == 'stat_time' }"
+        [routerLink]="['time_stat']"
+        (click)="attive(3, 'time_stat')"
+        [ngClass]="{ selectItem: this.className[3] || pathname == 'time_stat' }"
         ><i class="material-icons"> assignment </i>&nbsp;
         สรุปผลการเข้าหอพักของนักศึกษา</a
       >
       <a
         mat-list-item
-        [routerLink]="['save_rule']"
-        (click)="attive(4, 'save_rule')"
-        [ngClass]="{ selectItem: this.className[4] || pathname == 'save_rule' }"
+        [routerLink]="['rule_save']"
+        (click)="attive(4, 'rule_save')"
+        [ngClass]="{ selectItem: this.className[4] || pathname == 'rule_save' }"
         ><i class="material-icons"> block </i>&nbsp;
         บันทึกการกระทำผิดกฏระเบียบหอพัก</a
       >
       <a
         mat-list-item
-        [routerLink]="['stat_rule']"
-        (click)="attive(5, 'stat_rule')"
-        [ngClass]="{ selectItem: this.className[5] || pathname == 'stat_rule' }"
+        [routerLink]="['rule_stat']"
+        (click)="attive(5, 'rule_stat')"
+        [ngClass]="{ selectItem: this.className[5] || pathname == 'rule_stat' }"
         ><i class="material-icons"> assessment </i>&nbsp;
         สรุปผลการกระทำผิดกฏระเบียบหอพัก</a
       >
       <a
         mat-list-item
-        [routerLink]="['import_data']"
-        (click)="attive(6, 'import_data')"
+        [routerLink]="['data_import']"
+        (click)="attive(6, 'data_import')"
         [ngClass]="{
-          selectItem: this.className[6] || pathname == 'import_data'
+          selectItem: this.className[6] || pathname == 'data_import'
         }"
         ><i class="material-icons"> backup </i>&nbsp;
         นำเข้าไฟล์ข้อมูลนักศึกษา</a

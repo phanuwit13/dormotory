@@ -7,6 +7,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./components/login/login.component";
 import { HomeComponent } from "./components/home/home.component";
+import { NavComponent } from "./components/nav/nav.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ManageTimeComponent } from "./components/home/manage-time/manage-time.component";
 import { StatComponent } from "./components/home/stat/stat.component";
@@ -14,11 +15,10 @@ import { SaveRuleComponent } from "./components/home/save-rule/save-rule.compone
 import { StatRuleComponent } from "./components/home/stat-rule/stat-rule.component";
 import { ManageDataComponent } from "./components/home/manage-data/manage-data.component";
 import { AddtimeComponent } from "./components/home/addtime/addtime.component";
-import { NgxPaginationModule } from "ngx-pagination";
 import { DataCardComponent } from "./components/home/data-card/data-card.component";
 import { DataImportComponent } from "./components/home/data-import/data-import.component";
 import { RoomHistoryComponent } from "./components/home/room-history/room-history.component";
-import { CardGenComponent } from './components/home/card-gen/card-gen.component';
+import { CardGenComponent } from "./components/home/card-gen/card-gen.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,13 +34,13 @@ import { CardGenComponent } from './components/home/card-gen/card-gen.component'
     DataImportComponent,
     RoomHistoryComponent,
     CardGenComponent,
+    NavComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SharedModules,
     BrowserAnimationsModule,
-    NgxPaginationModule,
   ],
   providers: [HttpService],
   bootstrap: [AppComponent],

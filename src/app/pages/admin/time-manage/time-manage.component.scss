@@ -1,0 +1,60 @@
+.contain {
+  margin: 1%;
+  content: "";
+  clear: both;
+  display: table;
+}
+.start,
+.end {
+  width: 450px;
+  float: left; //ลอยไปอยู่ด้ายซ้าย
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.iconAlarm {
+  float: left;
+  //margin-right: 40%;
+}
+.alarm {
+  font-size: 110px;
+}
+.edit {
+  background-color: #fdc92d;
+  float: right;
+  color: #ffffff;
+  margin-left: 10px;
+  clear: both;
+}
+.cansel {
+  background-color: #fe6254;
+  float: right;
+  color: #ffffff;
+  margin-left: 10px;
+}
+.save {
+  background-color: #007bff;
+  float: right;
+  color: #ffffff;
+  margin-left: 10px;
+  clear: both;
+}
+.timeset {
+  display: flex;
+  justify-content: flex-end;
+}
+@media only screen and (max-device-width: 480px) {
+  .start,
+  .end {
+    width: 95%;
+  }
+  .contain {
+    margin: 1%;
+    content: "";
+    clear: both;
+  }
+  .timeset {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
