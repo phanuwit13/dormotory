@@ -1,0 +1,77 @@
+.top {
+}
+.main {
+  margin: 1%;
+  padding-right: 10px;
+}
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+.table td,
+.table th {
+  padding: 0.6rem;
+  vertical-align: middle;
+  height: 57px;
+}
+.table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+.table tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+.table tr:hover {
+  background-color: #dfdfdf;
+}
+
+.btn {
+  margin-left: 10px;
+}
+.btn:hover {
+  opacity: 0.8;
+}
+.page {
+  text-align: center;
+}
+.dateInput {
+  width: 100px;
+  margin-bottom: 9px;
+}
+.selectLabel-mount {
+  width: 135px;
+}
+.selectLabel-term {
+  width: 76px;
+}
+.term {
+  margin-top: 8px;
+}
+.selectType {
+  margin-top: 10px;
+}
+.selectRule {
+  margin-top: -10px;
+  width: 300px;
+}
+.box1 {
+  float: left;
+  margin-bottom: 10px;
+}
+.search {
+  width: 30%;
+  margin-right: 15px;
+  padding-top: 2px;
+}
+
+@media only screen and (max-width: 480px) {
+  .search {
+    width: 92%;
+  }
+}

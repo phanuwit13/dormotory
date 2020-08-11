@@ -16,6 +16,7 @@
         <a
           mat-list-item
           [routerLink]="['card_data']"
+          (click)="rout('card_data/dormitoryStudent')"
           routerLinkActive="router-link-active"
           ><i class="material-icons">
             contact_mail
@@ -35,8 +36,16 @@
           mat-list-item
           [routerLink]="['time_manage']"
           routerLinkActive="router-link-active"
-          ><i class="material-icons"> alarm </i>&nbsp;
+          ><i class="material-icons"> alarm_add </i>&nbsp;
           จัดการระบบเช็คนักศึกษาเข้าหอพัก</a
+        >
+        <a
+          target="_blank"
+          mat-list-item
+          [routerLink]="['/time_add']"
+          routerLinkActive="router-link-active"
+          ><i class="material-icons"> alarm_on </i>&nbsp;
+          บันทึกเวลาเข้าหอพักของนักศึกษา</a
         >
         <a
           mat-list-item
@@ -48,6 +57,7 @@
         <a
           mat-list-item
           [routerLink]="['rule_save']"
+          (click)="rout('rule_save/dormitoryStudent')"
           routerLinkActive="router-link-active"
           ><i class="material-icons"> block </i>&nbsp;
           บันทึกการกระทำผิดกฏระเบียบหอพัก</a
@@ -55,6 +65,7 @@
         <a
           mat-list-item
           [routerLink]="['rule_stat']"
+          (click)="rout('rule_stat/dormitoryStudent')"
           routerLinkActive="router-link-active"
           ><i class="material-icons"> assessment </i>&nbsp;
           สรุปผลการกระทำผิดกฏระเบียบหอพัก</a

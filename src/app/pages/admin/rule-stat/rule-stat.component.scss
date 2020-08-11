@@ -1,52 +1,12 @@
-.contain {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  margin: 1%;
+.containerContent {
+  padding-bottom: 50px;
+  width: 100%;
 }
-.top {
-  grid-column: span 12;
-}
-.main {
-  grid-column: span 12;
-}
-.example-section {
-  display: flex;
-  align-content: center;
-  align-items: center;
-  height: 60px;
-}
-
-.example-margin {
-  margin: 0 10px;
-}
-.table td,
-.table th {
-  padding: 0.6rem;
-  vertical-align: middle;
-}
-.table tr:nth-child(even) {
-  background-color: #ffffff;
-}
-.table tr:nth-child(odd) {
-  background-color: #f0f0f0;
-}
-
-.table tr:hover {
-  background-color: #dfdfdf;
-}
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 418px;
-  }
-}
-
-.btn {
-  margin-left: 10px;
-}
-.btn:hover {
-  opacity: 0.8;
-}
-.page {
-  text-align: center;
+.router-active,
+.router-active:hover,
+.router-active:focus {
+  // color: white;
+  //background: #ff5722;
+  opacity: 10;
+  border-bottom: 2px solid #ff5722;
 }

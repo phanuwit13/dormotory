@@ -1,13 +1,10 @@
 .contain {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  margin: 1%;
 }
 .top {
-  grid-column: span 12;
 }
 .main {
-  grid-column: span 12;
+  margin: 1%;
+  padding-right: 10px;
 }
 .example-section {
   display: flex;
@@ -23,6 +20,7 @@
 .table th {
   padding: 0.6rem;
   vertical-align: middle;
+  height: 57px;
 }
 .table tr:nth-child(even) {
   background-color: #ffffff;
@@ -49,4 +47,19 @@
 }
 .page {
   text-align: center;
+}
+.box1 {
+  float: left;
+  margin-bottom: 10px;
+}
+.search {
+  width: 30%;
+  margin-right: 15px;
+  padding-top: 2px;
+}
+
+@media only screen and (max-width: 480px) {
+  .search {
+    width: 92%;
+  }
 }

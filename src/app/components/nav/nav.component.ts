@@ -28,4 +28,7 @@ export class NavComponent implements OnInit {
     await window.localStorage.clear();
     this.http.navRouter(this.oldPath);
   };
+  rout(path) {
+    this.http.navRouter("/nav/" + path);
+  }
 }

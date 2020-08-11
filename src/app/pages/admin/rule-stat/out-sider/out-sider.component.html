@@ -1,0 +1,205 @@
+<div class="top">
+  <div class="box1 search">
+    <input
+      class="form-control form-control-sm ml-3 w-100"
+      type="text"
+      [formControl]="keyStd"
+      placeholder="Search"
+      aria-label="Search"
+      mdbInput
+    />
+  </div>
+  <div class="box1">
+    <button
+      class="btn"
+      data-toggle="modal"
+      data-target="#ModalSearch"
+      mat-flat-button
+      color="primary"
+      (click)="advancedSearch()"
+    >
+      ค้นหาแบบละเอียด
+    </button>
+  </div>
+  <div class="box1">
+    <button
+      class="btn"
+      (click)="exportAsXLSX()"
+      mat-flat-button
+      color="primary"
+    >
+      ส่งออกสรุปผลการกระทำผิดกฎระเบียบ
+    </button>
+  </div>
+</div>
+<div class="main">
+  <div class="spinner" *ngIf="checkConnect == false">
+    <mat-spinner [strokeWidth]="5" [diameter]="50"></mat-spinner>
+  </div>
+  <table class="table" *ngIf="checkConnect == true">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">วันที่</th>
+        <th scope="col">เวลา</th>
+        <th scope="col">บัตรประชาชน</th>
+        <th scope="col">ชื่อ - สกุล</th>
+        <th scope="col">ที่อยู่</th>
+        <th scope="col">ข้อมูลบิดา</th>
+        <th scope="col">ข้อมูลมารดา</th>
+        <th scope="col">นักศึกษาที่เกี่ยวข้อง</th>
+        <th scope="col">เกี่ยวข้องเป็น</th>
+        <th scope="col">กระทำผิดกฏ</th>
+        <th scope="col">รายละเอียด</th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf="userData != null">
+      <tr
+        *ngFor="
+          let x of userData | paginate: { itemsPerPage: 12, currentPage: p }
+        "
+      >
+        <td>{{ x.date_rule }}</td>
+        <td>{{ x.time_rule }}</td>
+        <td>{{ x.id_card_code }}</td>
+        <td>{{ x.nameOutsider }}</td>
+        <td>
+          <span *ngIf="x.house_no != ''">{{ x.house_no }}</span>
+          <span *ngIf="x.moo != ''"> หมู่ {{ x.moo }}</span>
+          <span *ngIf="x.sub_district != ''"> ตำบล{{ x.sub_district }}</span>
+          <span *ngIf="x.district != ''"> อำเภอ{{ x.district }}</span>
+          <span *ngIf="x.province != ''"> จังหวัด{{ x.province }}</span>
+        </td>
+        <td>
+          <span *ngIf="x.father != ''">{{ x.father }}</span>
+        </td>
+        <td>
+          <span *ngIf="x.mother != ''">{{ x.mother }}</span>
+        </td>
+        <td>{{ x.nameStd }}</td>
+        <td>{{ x.student_relation }}</td>
+        <td *ngIf="x.other == ''">{{ x.rules_name }}</td>
+        <td *ngIf="x.other != ''">{{ x.other }}</td>
+        <td>{{ x.details }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls
+    *ngIf="userData != null"
+    class="page"
+    (pageChange)="p = $event"
+  ></pagination-controls>
+</div>
+<!-- model -->
+<div
+  class="modal fade"
+  id="ModalSearch"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          ค้นหาแบบละเอียด
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="formSearch">
+        <div class="modal-body" align="center">
+          <!-- content -->
+
+          <div>
+            <mat-radio-group
+              formControlName="typeSelect"
+              aria-label="Select an option"
+            >
+              <div>
+                <mat-radio-button value="1"
+                  >วันที่
+                  <input
+                    matInput
+                    formControlName="date"
+                    [matDatepicker]="picker"
+                    class="dateInput"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #picker></mat-datepicker>
+                </mat-radio-button>
+              </div>
+              <br />
+              <div>
+                <mat-radio-button value="2"
+                  >เดือน
+                  <mat-select
+                    formControlName="months"
+                    multiple
+                    class="selectLabel-mount"
+                  >
+                    <mat-option
+                      *ngFor="let months of monthsList; let i = index"
+                      [value]="i + 1"
+                      >{{ months }}</mat-option
+                    >
+                  </mat-select></mat-radio-button
+                >
+              </div>
+              <br />
+              <div>
+                <mat-radio-button value="3" class="term">
+                  ภาคการศึกษาที่<mat-select
+                    formControlName="term"
+                    class="selectLabel-term"
+                  >
+                    <mat-option
+                      *ngFor="let item of term; let i = index"
+                      [value]="item"
+                    >
+                      {{ item }}
+                    </mat-option>
+                  </mat-select></mat-radio-button
+                >
+              </div>
+              <br />
+            </mat-radio-group>
+            <br />
+            <mat-form-field class="selectRule">
+              <mat-select formControlName="rules_number" placeholder="กฎ" #foor>
+                <mat-option
+                  *ngFor="let x of ruleChoice"
+                  [value]="x.rules_number"
+                  >{{ x.rules_name }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <br />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            ยกเลิก
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="getAdvancedSearchData()"
+          >
+            ค้นหา
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

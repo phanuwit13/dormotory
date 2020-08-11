@@ -1,7 +1,12 @@
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+} from "@angular/forms";
 import { HttpService } from "src/app/services/http.service";
 import { Component, OnInit } from "@angular/core";
-
+import Swal from "sweetalert2";
 @Component({
   selector: "app-time-add",
   templateUrl: "./time-add.component.html",
@@ -10,29 +15,35 @@ import { Component, OnInit } from "@angular/core";
 export class TimeAddComponent implements OnInit {
   public date = new Date();
   public formLogin: FormGroup;
-  public userLogin: any = null;
+  public userStd: any = null;
   public statusTime: any;
   public timeStart: any;
   public timeEnd: any;
-  public dataStd: any;
+  public dataStd: any = null;
   public hours: any;
   public minutes: any;
+  p: number = 1;
+  public focus = "inputStd";
+  public confirm = new FormControl();
+
   constructor(private formBuilder: FormBuilder, private http: HttpService) {}
 
   ngOnInit() {
+    this.confirm.setValue(false);
     setInterval(() => {
-      document.getElementById("inputStd").focus();
+      document.getElementById(this.focus).focus();
     }, 1000);
     this.formLogin = this.formBuilder.group({
       std_code: ["", Validators.required],
       date_stamp: ["", Validators.required],
       time_stamp: ["", Validators.required],
       time_status: ["", Validators.required],
+      keyStd: "",
     });
     console.log(
       this.date.getFullYear() +
         "-" +
-        this.date.getMonth() +
+        (this.date.getMonth() + 1) +
         "-" +
         this.date.getDate()
     );
@@ -43,12 +54,12 @@ export class TimeAddComponent implements OnInit {
     let dateZone = new Date();
     let formData = new FormData();
     this.setTime();
-    formData.append("std_code", this.formLogin.value["std_code"]);
+    formData.append("std_code", this.formLogin.controls["std_code"].value);
     formData.append(
       "date_stamp",
       dateZone.getFullYear() +
         "-" +
-        dateZone.getMonth() +
+        (dateZone.getMonth() + 1) +
         "-" +
         dateZone.getDate()
     );
@@ -88,31 +99,48 @@ export class TimeAddComponent implements OnInit {
     }
     formData.append("time_status", this.statusTime);
     console.log("-------------------------------");
-    formData.forEach((x) => {
-      console.log(x);
+    formData.forEach((x, key) => {
+      console.log(key + ":" + x);
     });
-
     let httpResponData: any = await this.http.post("settime", formData);
-    if (httpResponData.response.data.length > 0) {
+    console.log(httpResponData.response.success);
+    if (httpResponData.response.success) {
       console.log(httpResponData.response.data);
+      this.setCursor();
+      Swal.fire({
+        showConfirmButton: false,
+        icon: "success",
+        title: "สำเร็จ",
+        text: "บันทึกเวลาสำเร็จ !",
+        timer: 1000,
+      });
     } else {
-      console.log("ไม่เจอ");
+      Swal.fire({
+        showConfirmButton: false,
+        icon: "error",
+        title: "ไม่สำเร็จ",
+        text: "บันทึกเวลาไม่สำเร็จ !",
+        timer: 1000,
+      });
     }
   };
 
-  async getStdcode(std) {
+  async getStdcode() {
     let formData = new FormData();
-    formData.append("std_code", std);
+    formData.append("std_code", this.formLogin.controls["std_code"].value);
+    formData.append("status", "1");
     let httpRespon: any = await this.http.post("getStudent", formData);
     console.log(httpRespon);
-    if (httpRespon.response.data.length > 0) {
+    if (httpRespon.response.success) {
       this.dataStd = httpRespon.response.data;
       console.log(httpRespon.response);
-      document.getElementById("suscess").click();
+      //this.setCursor();
+      //document.getElementById("success").click();
+      return true;
     } else {
-      console.log("ไม่เจอ");
-      document.getElementById("none").click();
       this.dataStd = null;
+      //this.setCursor();
+      return false;
     }
   }
   setTime = () => {
@@ -131,5 +159,76 @@ export class TimeAddComponent implements OnInit {
 
   setCursor = () => {
     this.formLogin.controls["std_code"].setValue("");
+    this.formLogin.controls["keyStd"].setValue("");
   };
+  setFocus(str) {
+    this.focus = str;
+    console.log(this.focus);
+    this.userStd = null;
+  }
+  async getStudent() {
+    if (this.formLogin.controls["keyStd"].value != "") {
+      console.log(this.formLogin.controls["keyStd"].value);
+      let formData = new FormData();
+      formData.append("keyStd", this.formLogin.controls["keyStd"].value);
+      formData.append("status", "1");
+      let httpRespon: any = await this.http.post("searchNameStd", formData);
+      console.log(httpRespon);
+      if (httpRespon.response.success) {
+        this.userStd = httpRespon.response.data;
+        console.log(httpRespon.response);
+      } else {
+        this.userStd = null;
+      }
+    } else {
+      this.userStd = null;
+    }
+  }
+  async checkConfirm() {
+    if ((await this.getStdcode()) == true) {
+      if (this.confirm.value == true) {
+        document.getElementById("success").click();
+        // Swal.fire({
+        //   icon: "success",
+        //   title: "สำเร็จ",
+        //   text: "บันทึกเวลาสำเร็จ !",
+        //   timer: 1000,
+        // });
+      } else {
+        this.addTime();
+        Swal.fire({
+          showConfirmButton: false,
+          icon: "success",
+          title: "สำเร็จ",
+          text: "บันทึกเวลาสำเร็จ !",
+          timer: 1000,
+        });
+      }
+    } else {
+      this.setCursor();
+      Swal.fire({
+        showConfirmButton: false,
+        icon: "error",
+        title: "ไม่สำเร็จ",
+        text: "บันทึกเวลาไม่สำเร็จ !",
+        timer: 1000,
+      });
+    }
+  }
+  async setNameAddTime(stdCode) {
+    document.getElementById("close").click();
+    this.formLogin.controls["std_code"].setValue(stdCode);
+    if ((await this.getStdcode()) == true) {
+      document.getElementById("success").click();
+    } else {
+      this.setCursor();
+      Swal.fire({
+        showConfirmButton: false,
+        icon: "error",
+        title: "ไม่สำเร็จ",
+        text: "บันทึกเวลาไม่สำเร็จ !",
+        timer: 1000,
+      });
+    }
+  }
 }

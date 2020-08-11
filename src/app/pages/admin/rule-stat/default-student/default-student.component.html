@@ -1,0 +1,257 @@
+<div class="top">
+  <div class="box1 search">
+    <input
+      class="form-control form-control-sm ml-3 w-100"
+      type="text"
+      [formControl]="keyStd"
+      placeholder="Search"
+      aria-label="Search"
+      (keyup)="searchStd()"
+      mdbInput
+    />
+  </div>
+  <div class="box1">
+    <button
+      class="btn"
+      data-toggle="modal"
+      data-target="#ModalSearch"
+      mat-flat-button
+      color="primary"
+      (click)="advancedSearch()"
+    >
+      ค้นหาแบบละเอียด
+    </button>
+  </div>
+  <div class="box1">
+    <button
+      class="btn"
+      (click)="exportAsXLSX()"
+      mat-flat-button
+      color="primary"
+    >
+      ส่งออกสรุปผลการกระทำผิดกฎระเบียบ
+    </button>
+  </div>
+</div>
+<div class="main">
+  <div class="spinner" *ngIf="checkConnect == false">
+    <mat-spinner [strokeWidth]="5" [diameter]="50"></mat-spinner>
+  </div>
+  <table class="table" *ngIf="checkConnect == true">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">วันที่</th>
+        <th scope="col">เวลา</th>
+        <th scope="col">รหัสนักศึกษา</th>
+        <th scope="col">ชื่อ - สกุล</th>
+        <th scope="col">คณะ</th>
+        <th scope="col">สาขา</th>
+        <th scope="col">กลุ่มเรียน</th>
+        <th scope="col">ระดับวุฒิการศึกษา</th>
+        <th scope="col">กระทำผิดกฏ</th>
+        <th scope="col">รายละเอียด</th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf="userData != null">
+      <tr
+        *ngFor="
+          let x of userData | paginate: { itemsPerPage: 12, currentPage: p }
+        "
+      >
+        <td>{{ x.date_rule }}</td>
+        <td>{{ x.time_rule }}</td>
+        <td>{{ x.std_code }}</td>
+        <td>{{ x.nameStd }}</td>
+        <td>{{ x.faculty }}</td>
+        <td>{{ x.branch }}</td>
+        <td>{{ x.groubStudent }}</td>
+        <td>{{ x.level }}</td>
+        <td *ngIf="x.other == ''">{{ x.rules_name }}</td>
+        <td *ngIf="x.other != ''">{{ x.other }}</td>
+        <td>{{ x.details }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls
+    *ngIf="userData != null"
+    class="page"
+    (pageChange)="p = $event"
+  ></pagination-controls>
+</div>
+<!-- model -->
+<div
+  class="modal fade"
+  id="ModalSearch"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          ค้นหาแบบละเอียด
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="formSearch">
+        <div class="modal-body" align="center">
+          <!-- content -->
+
+          <div>
+            <mat-radio-group
+              formControlName="typeSelect"
+              aria-label="Select an option"
+            >
+              <div>
+                <mat-radio-button value="1"
+                  >วันที่
+                  <input
+                    matInput
+                    formControlName="date"
+                    [matDatepicker]="picker"
+                    class="dateInput"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #picker></mat-datepicker>
+                </mat-radio-button>
+              </div>
+              <br />
+              <div>
+                <mat-radio-button value="2"
+                  >เดือน
+                  <mat-select
+                    formControlName="months"
+                    multiple
+                    class="selectLabel-mount"
+                  >
+                    <mat-option
+                      *ngFor="let months of monthsList; let i = index"
+                      [value]="i + 1"
+                      >{{ months }}</mat-option
+                    >
+                  </mat-select></mat-radio-button
+                >
+              </div>
+              <br />
+              <div>
+                <mat-radio-button value="3" class="term">
+                  ภาคการศึกษาที่<mat-select
+                    formControlName="term"
+                    class="selectLabel-term"
+                  >
+                    <mat-option
+                      *ngFor="let item of term; let i = index"
+                      [value]="item"
+                    >
+                      {{ item }}
+                    </mat-option>
+                  </mat-select></mat-radio-button
+                >
+              </div>
+
+              <br />
+            </mat-radio-group>
+            <!-- <div class="selectType">
+              <mat-checkbox formControlName="male" class="example-margin"
+                >หอพักชาย</mat-checkbox
+              >
+              <mat-checkbox formControlName="female" class="example-margin"
+                >หอพักหญิง</mat-checkbox
+              >
+            </div> -->
+            <br />
+            <mat-form-field class="selectRule">
+              <mat-select formControlName="rules_number" placeholder="กฎ" #foor>
+                <mat-option
+                  *ngFor="let x of ruleChoice"
+                  [value]="x.rules_number"
+                  >{{ x.rules_name }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <br />
+            <!-- <mat-form-field class="selectRule">
+              <mat-select formControlName="floor" placeholder="ชั้น" #foor>
+                <mat-option *ngFor="let x of floor" [value]="x.floor">{{
+                  x.floor
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br /> -->
+            <mat-form-field class="selectRule">
+              <mat-select
+                formControlName="noLevel"
+                placeholder="ระดับวุฒิการศึกษา"
+                (selectionChange)="getFaculty()"
+              >
+                <mat-option *ngFor="let x of levels" [value]="x.noLevel">{{
+                  x.name
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br />
+            <mat-form-field class="selectRule">
+              <mat-select
+                formControlName="faculty_code"
+                placeholder="คณะ"
+                (selectionChange)="
+                  getBranch(
+                    formSearch.value.faculty_code,
+                    formSearch.value.noLevel
+                  )
+                "
+              >
+                <mat-option
+                  *ngFor="let x of Faculty"
+                  [value]="x.faculty_code"
+                  >{{ x.name }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <br />
+            <mat-form-field class="selectRule">
+              <mat-select formControlName="branch_code" placeholder="สาขา">
+                <mat-option *ngFor="let x of branch" [value]="x.branch_code">{{
+                  x.name
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br />
+            <mat-form-field class="selectRule">
+              <input
+                matInput
+                formControlName="groupStd"
+                placeholder="กลุ่มเรียน"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            ยกเลิก
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="getAdvancedSearchData()"
+          >
+            ค้นหา
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

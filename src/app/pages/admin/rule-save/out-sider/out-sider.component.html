@@ -1,0 +1,193 @@
+<div class="formInput">
+  <form class="frame" [formGroup]="formStd_code">
+    <mat-form-field class="stdCode">
+      <mat-label><span style="color: red;">*</span> บัตรประชาชน</mat-label>
+      <input matInput formControlName="id_card_code" />
+    </mat-form-field>
+
+    <mat-form-field class="titleName">
+      <mat-label><span style="color: red;">*</span> คำนำหน้า</mat-label>
+      <mat-select formControlName="nameTitle">
+        <mat-option *ngFor="let x of titleName" [value]="x">{{ x }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="stdCode">
+      <mat-label><span style="color: red;">*</span> ชื่อจริง</mat-label>
+      <input matInput formControlName="fname" />
+    </mat-form-field>
+
+    <mat-form-field class="stdCode">
+      <mat-label><span style="color: red;">*</span> นามสกุล</mat-label>
+      <input matInput formControlName="lname" />
+    </mat-form-field>
+    <mat-form-field class="phone">
+      <mat-label><span style="color: red;">*</span> เบอร์โทรศัพท์</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
+    <br />
+    <mat-form-field class="stdCode">
+      <mat-label
+        ><span style="color: red;">*</span> นักศึกษาที่เกี่ยวข้อง</mat-label
+      >
+      <input
+        matInput
+        (keyup)="getStdcode()"
+        formControlName="std_code"
+        placeholder="รหัสนักศึกษา"
+      />
+    </mat-form-field>
+    <mat-form-field *ngIf="this.nameStudent != null" class="stdName">
+      <input
+        matInput
+        placeholder="ชื่อนักศึกษาที่เกี่ยวข้อง"
+        value="{{ nameStudent[0].nameStd }}"
+        disabled
+      />
+    </mat-form-field>
+    <mat-form-field *ngIf="this.nameStudent == null" class="stdName">
+      <input
+        matInput
+        placeholder="ชื่อนักศึกษาที่เกี่ยวข้อง"
+        value="ไม่พบนักศึกษาที่เกี่ยวข้อง"
+        disabled
+      />
+    </mat-form-field>
+    <mat-form-field class="stdCode">
+      <mat-label
+        ><span style="color: red;">*</span> เกี่ยวข้องกับนักศึกษาเป็น</mat-label
+      >
+      <input matInput formControlName="student_relation" />
+    </mat-form-field>
+    <br />
+    <mat-form-field class="titleName">
+      <input matInput formControlName="house_no" placeholder="บ้านเลขที่" />
+    </mat-form-field>
+    <mat-form-field class="titleName">
+      <input matInput formControlName="moo" placeholder="หมู่" />
+    </mat-form-field>
+
+    <mat-form-field class="stdCode">
+      <mat-select
+        formControlName="province"
+        placeholder="จังหวัด"
+        (selectionChange)="getDistrict(this.formStd_code.value.province[0])"
+      >
+        <mat-option
+          *ngFor="let x of provinces"
+          [value]="[x.PROVINCE_ID, x.PROVINCE_NAME]"
+          >{{ x.PROVINCE_NAME }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="stdCode">
+      <mat-select
+        formControlName="district"
+        placeholder="อำเภอ"
+        (selectionChange)="getSubDistrict(this.formStd_code.value.district[0])"
+      >
+        <mat-option
+          *ngFor="let x of district"
+          [value]="[x.DISTRICT_ID, x.DISTRICT_NAME]"
+          >{{ x.DISTRICT_NAME }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="stdCode">
+      <mat-select formControlName="sub_district" placeholder="ตำบล">
+        <mat-option
+          *ngFor="let x of sub_district"
+          [value]="x.SUB_DISTRICT_NAME"
+          >{{ x.SUB_DISTRICT_NAME }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <br />
+    <mat-form-field class="stdName">
+      <input matInput formControlName="father" placeholder="ชื่อบิดา" />
+    </mat-form-field>
+
+    <mat-form-field class="phone">
+      <input matInput formControlName="f_phone" placeholder="เบอร์โทร-บิดา" />
+    </mat-form-field>
+    <mat-form-field class="stdName">
+      <input matInput formControlName="mother" placeholder="ชื่อมารดา" />
+    </mat-form-field>
+
+    <mat-form-field class="phone">
+      <input matInput formControlName="m_phone" placeholder="เบอร์โทร-มารดา" />
+    </mat-form-field>
+    <br />
+    <mat-form-field class="selectRule">
+      <mat-label><span style="color: red;">*</span> กระทำผิดกฏข้อที่</mat-label>
+      <mat-select formControlName="rulesBreak">
+        <mat-option
+          *ngFor="let x of ruleChoice; let i = index"
+          [value]="i + 1"
+          >{{ i + 1 + ". " + x.rules_name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+      class="selectRule"
+      *ngIf="this.formStd_code.value.rulesBreak == 16"
+    >
+      <input matInput placeholder="กระทำผิดกฏ" formControlName="other" />
+    </mat-form-field>
+    <br />
+    <table class="dateTime">
+      <tr>
+        <td>
+          <div class="dateInput">
+            <mat-form-field>
+              <mat-label
+                ><span style="color: red;">*</span> วันที่กระทำผิด</mat-label
+              >
+              <input
+                matInput
+                [matDatepicker]="picker1"
+                formControlName="date_rule"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker1"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker1> </mat-datepicker>
+            </mat-form-field>
+          </div>
+        </td>
+        <td>
+          <div class="timeInput">
+            <ngx-timepicker-field
+              class="ngx-timepicker"
+              formControlName="time_rule"
+              [format]="24"
+              [defaultTime]="'23:11'"
+            ></ngx-timepicker-field>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <br />
+    <mat-form-field style="width: 80%;">
+      <textarea
+        matInput
+        placeholder="รายละเอียด"
+        rows="4"
+        formControlName="details"
+      ></textarea>
+    </mat-form-field>
+    <br />
+    <button
+      (click)="setOutsiderRule()"
+      [disabled]="formStd_code.invalid"
+      mat-raised-button
+      color="primary"
+    >
+      บันทึก
+    </button>
+  </form>
+</div>

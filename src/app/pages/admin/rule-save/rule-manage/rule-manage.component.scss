@@ -1,0 +1,25 @@
+.containerCT {
+  width: 98%;
+  padding-left: 1%;
+  padding-right: 2%;
+}
+.example-chip-list {
+  width: 50%;
+}
+mat-chip {
+  width: 50%;
+  max-width: max-content;
+}
+// .rule {
+//   width: 80%;
+//   display: flex;
+//   justify-content: center;
+// }
+
+@media only screen and (max-device-width: 1280px) {
+  .example-chip-list {
+    width: 99%;
+    padding-left: 1%;
+    padding-left: 1%;
+  }
+}

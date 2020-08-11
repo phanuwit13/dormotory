@@ -1,0 +1,157 @@
+.top {
+}
+.main {
+  margin: 1%;
+  padding-right: 10px;
+}
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+.table td,
+.table th {
+  padding: 0.6rem;
+  vertical-align: middle;
+  height: 57px;
+}
+.table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+.table tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+.table tr:hover {
+  background-color: #dfdfdf;
+}
+
+.img {
+  width: 160px;
+}
+// .gencard {
+//   margin-left: 20px;
+// }
+.frame {
+}
+// .detailcard p {
+//   margin-bottom: 0px;
+//   padding-left: 20px;
+//   font-weight: 500;
+//   padding-top: 6.5px;
+// }
+#bd {
+  font-size: 40px;
+}
+// .modal-content {
+//   //width: 400px;
+// }
+// @media (min-width: 576px) {
+//   .modal-dialog {
+//     max-width: 418px;
+//   }
+// }
+// .cardTitle {
+//   font-size: 16px;
+//   font-weight: bold;
+// }
+.btn {
+  margin-left: 10px;
+}
+.btn:hover {
+  opacity: 0.8;
+}
+.page {
+  text-align: center;
+}
+.dropdown-item:hover {
+  color: #ffffff;
+
+  cursor: pointer;
+}
+.create:hover {
+  background-color: #007bff;
+}
+.edit:hover {
+  background-color: #fdc92d;
+}
+.del:hover {
+  background-color: #fe6254;
+}
+th span {
+  cursor: pointer;
+}
+button {
+  outline: none;
+}
+.form-control-file {
+  width: 60%;
+  margin-top: 10px;
+}
+.lenght {
+  width: 185px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+.lenght-floor {
+  width: 85px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+.lenght-room {
+  width: 125px;
+  margin-right: 5px;
+  margin-top: 10px;
+}
+.out {
+  margin-left: 10px;
+  margin-right: 15px;
+  margin-top: 10px;
+}
+.phone {
+  margin-left: -210px;
+  margin-top: 10px;
+}
+.form-group {
+  margin-top: 1rem;
+}
+.dateInput {
+  width: 100px;
+  margin-bottom: 9px;
+}
+.selectLabel-mount {
+  width: 135px;
+}
+.selectLabel-term {
+  width: 76px;
+}
+.term {
+  margin-top: 8px;
+}
+.selectType {
+  margin-top: 10px;
+}
+.selectRule {
+  margin-top: -10px;
+  width: 300px;
+}
+.box1 {
+  float: left;
+  margin-bottom: 10px;
+}
+.search {
+  width: 30%;
+  margin-right: 15px;
+  padding-top: 2px;
+}
+
+@media only screen and (max-width: 480px) {
+  .search {
+    width: 92%;
+  }
+}

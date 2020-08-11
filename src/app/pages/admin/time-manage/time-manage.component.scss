@@ -1,15 +1,18 @@
 .contain {
-  margin: 1%;
+  width: 100%;
   content: "";
   clear: both;
   display: table;
 }
 .start,
 .end {
-  width: 450px;
+  width: 495px;
   float: left; //ลอยไปอยู่ด้ายซ้าย
-  margin-left: 20px;
-  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #f7f7f7;
 }
 
 .iconAlarm {
@@ -43,13 +46,17 @@
   display: flex;
   justify-content: flex-end;
 }
-@media only screen and (max-device-width: 480px) {
+@media only screen and (max-device-width: 1280px) {
   .start,
   .end {
     width: 95%;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   .contain {
-    margin: 1%;
+    width: 100%;
     content: "";
     clear: both;
   }

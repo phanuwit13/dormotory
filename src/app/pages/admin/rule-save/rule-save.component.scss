@@ -1,6 +1,4 @@
 .containerContent {
-  padding-left: 30px;
-  padding-right: 10px;
   padding-bottom: 50px;
   width: 100%;
 }
@@ -67,4 +65,16 @@ mat-form-field {
 .stdfullname {
   width: 143px;
   margin-right: 15px;
+}
+// .router-active {
+//   background-color: #ff5722;
+//   color: #ffffff;
+// }
+.router-active,
+.router-active:hover,
+.router-active:focus {
+  // color: white;
+  //background: #ff5722;
+  opacity: 10;
+  border-bottom: 2px solid #ff5722;
 }

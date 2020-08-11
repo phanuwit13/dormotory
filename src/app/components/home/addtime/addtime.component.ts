@@ -93,7 +93,8 @@ export class AddtimeComponent implements OnInit {
     });
 
     let httpResponData: any = await this.http.post("settime", formData);
-    if (httpResponData.response.data.length > 0) {
+    console.log(httpResponData);
+    if (httpResponData.response.success) {
       console.log(httpResponData.response.data);
     } else {
       console.log("ไม่เจอ");

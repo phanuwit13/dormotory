@@ -1,0 +1,197 @@
+<div class="bg">
+  <div class="containers">
+    <div class="head">
+      เว็บแอปพลิเคชันตรวจสอบและคัดกรองบุคคลเข้าหอพักนักศึกษา
+    </div>
+    <div class="main">
+      <form [formGroup]="formLogin">
+        <h5 class="title">ตรวจสอบการเข้าหอพักเกินเวลา</h5>
+        <input
+          id="inputStd"
+          class="form-control form-control-sm"
+          type="text"
+          formControlName="std_code"
+          placeholder="รหัสนักศึกษา"
+          aria-label="Search"
+          mdbInput
+        />
+        <div class="bt">
+          <button
+            class="btn"
+            mat-flat-button
+            color="primary"
+            (click)="getNameStdLate()"
+          >
+            ค้นหา
+          </button>
+        </div>
+        <div
+          id="success"
+          data-toggle="modal"
+          data-target="#exampleModalsuccess"
+        ></div>
+        <div
+          id="none"
+          data-toggle="modal"
+          data-target="#exampleModalnoneData"
+        ></div>
+        <!-- <mat-form-field class="example-full-width">
+              <mat-label>รหัสนักศึกษา</mat-label>
+    
+              <input formControlName="std_code" matInput placeholder="" value="" />
+            </mat-form-field> -->
+      </form>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <p class="ft">
+    <a href="https://www.facebook.com/RMUTI.Dormitory/"
+      >สำนักงานหอพักนักศึกษา</a
+    >
+  </p>
+  <span>
+    มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน ถนนสุรนารายณ์ ต.ในเมือง อ.เมือง
+    จ.นครราชสีมา 30000
+  </span>
+</div>
+<!-- Modal success -->
+<div
+  class="modal fade bd-example-modal-lg"
+  id="exampleModalsuccess"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ข้อมูลนักศึกษาหอพัก</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="setCursor()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mainData" *ngIf="this.dataStd != null">
+          <div class="photo">
+            <div class="pt">
+              <span>
+                <img
+                  *ngIf="
+                    (this.dataStd[0].nameTitle == 'นาย' ||
+                      this.dataStd[0].nameTitle == 'MR.') &&
+                    this.dataStd[0].img == ''
+                  "
+                  height="200"
+                  width="160"
+                  class="img"
+                  src="https://www.seosogood.com/wp-content/uploads/avatar-2.png"
+                  alt=""
+                />
+                <img
+                  *ngIf="
+                    (this.dataStd[0].nameTitle == 'นางสาว' ||
+                      this.dataStd[0].nameTitle == 'นาง' ||
+                      this.dataStd[0].nameTitle == 'MISS.' ||
+                      this.dataStd[0].nameTitle == 'MRS.') &&
+                    this.dataStd[0].img == ''
+                  "
+                  height="200"
+                  width="160"
+                  class="img"
+                  src="https://www.seosogood.com/wp-content/uploads/avatar-6.png"
+                  alt=""
+                />
+                <img
+                  *ngIf="this.dataStd[0].img != ''"
+                  height="200"
+                  width="160"
+                  class="img"
+                  src="http://cpe.rmuti.ac.th/project/dormitory/webtest/uploadImage/{{
+                    this.dataStd[0].img
+                  }}"
+                  alt=""
+                />
+              </span>
+            </div>
+          </div>
+          <div class="data">
+            <table style="width: 100%;">
+              <tr>
+                <td class="title1"><span>รหัสนักศึกษา :</span></td>
+                <td class="title2">
+                  <span>{{ this.dataStd[0].std_code }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="title1"><span>ชื่อ :</span></td>
+                <td class="title2">
+                  <span>{{ this.dataStd[0].nameStd }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="title1"><span>ห้องพัก :</span></td>
+                <td class="title2">
+                  <span>{{ this.dataStd[0].room_number }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="title1"><span>ระดับวุฒิการศึกษา :</span></td>
+                <td class="title2">
+                  <span>{{ this.dataStd[0].level }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="title1"><span>คณะ :</span></td>
+                <td class="title2">
+                  <span>{{ this.dataStd[0].faculty }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="title1"><span>สาขา :</span></td>
+                <td class="title2">
+                  <span>{{ this.dataStd[0].groubStudent }}</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="late">
+            <h5>ประวัติการเข้าเกินเวลา</h5>
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th style="width: 50%;" scope="col"><span>วันที่</span></th>
+                  <th scope="col"><span>เวลาเข้าหอ</span></th>
+                </tr>
+              </thead>
+
+              <tbody *ngIf="timeStat != null">
+                <tr
+                  *ngFor="
+                    let x of timeStat
+                      | paginate: { itemsPerPage: 6, currentPage: p }
+                  "
+                >
+                  <td>{{ x.date_stamp }}</td>
+                  <td>{{ x.time_stamp }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination-controls
+              *ngIf="timeStat != null"
+              class="page"
+              (pageChange)="p = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

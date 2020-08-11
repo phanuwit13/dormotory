@@ -1,144 +1,14 @@
 <div class="containerContent">
-  <mat-tab-group mat-align-tabs="start">
-    <mat-tab label="นักศึกษาหอพัก">
-      <div class="formInput">
-        <form [formGroup]="formStd_code">
-          <form [formGroup]="formStd_code" (keydown.enter)="getStdcode()">
-            <mat-form-field class="stdCode">
-              <input
-                matInput
-                formControlName="std_code"
-                placeholder="รหัสนักศึกษา"
-                (keyup)="getStdcode()"
-              />
-            </mat-form-field>
-
-            <mat-form-field *ngIf="nameStudent != null" class="stdName">
-              <input
-                matInput
-                placeholder="ชื่อ-นามสกุล"
-                value="{{ nameStudent[0].nameStd }}
-                "
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field *ngIf="nameStudent != null" class="stdRoom">
-              <input
-                matInput
-                placeholder="เลขห้อง"
-                value="{{ nameStudent[0].room_number }}"
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field *ngIf="nameStudent != null" class="stdCode">
-              <input
-                matInput
-                placeholder="ระดับการศึกษา"
-                value="{{ nameStudent[0].level }}"
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field *ngIf="nameStudent != null" class="stdFaculty">
-              <input
-                matInput
-                placeholder="คณะ"
-                value="{{ nameStudent[0].faculty }}
-                "
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field *ngIf="nameStudent != null" class="stdName">
-              <input
-                matInput
-                placeholder="สาขา"
-                value="{{ nameStudent[0].branch }}
-                "
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field *ngIf="nameStudent != null" class="stdRoom">
-              <input
-                matInput
-                placeholder="กลุ่มเรียน"
-                value="{{ nameStudent[0].groubStudent }}
-                "
-                disabled
-              />
-            </mat-form-field>
-          </form>
-          <mat-form-field class="selectRule">
-            <mat-select
-              formControlName="rulesBreak"
-              placeholder="กระทำผิดกฏข้อที่"
-            >
-              <mat-option
-                *ngFor="let x of ruleChoice; let i = index"
-                [value]="i + 1"
-                >{{ i + 1 + ". " + x.rules_name }}</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field
-            class="selectRule"
-            *ngIf="this.formStd_code.value.rulesBreak == 16"
-          >
-            <input matInput placeholder="กระทำผิดกฏ" formControlName="other" />
-          </mat-form-field>
-          <br />
-          <table class="dateTime">
-            <tr>
-              <td>
-                <div class="dateInput">
-                  <mat-form-field>
-                    <input
-                      matInput
-                      [matDatepicker]="picker"
-                      placeholder="วันที่กระทำผิด"
-                      formControlName="date_rule"
-                    />
-                    <mat-datepicker-toggle
-                      matSuffix
-                      [for]="picker"
-                    ></mat-datepicker-toggle>
-                    <mat-datepicker #picker> </mat-datepicker>
-                  </mat-form-field>
-                </div>
-              </td>
-              <td>
-                <div class="timeInput">
-                  <ngx-timepicker-field
-                    formControlName="time_rule"
-                    [format]="24"
-                    [defaultTime]="'23:11'"
-                  ></ngx-timepicker-field>
-                </div>
-              </td>
-            </tr>
-          </table>
-
-          <br />
-          <mat-form-field style="width: 50%;">
-            <textarea
-              matInput
-              placeholder="รายละเอียด"
-              rows="4"
-              formControlName="details"
-            ></textarea>
-          </mat-form-field>
-          <br />
-          <button
-            data-toggle="modal"
-            data-target="#exampleModal"
-            mat-raised-button
-            color="primary"
-          >
-            บันทึก
-          </button>
-        </form>
-      </div>
+  <!-- <mat-tab-group mat-align-tabs="start">
+    <mat-tab
+      [routerLink]="['defaultStudent']"
+      (click)="rout()"
+      label="นักศึกษาหอพัก"
+    >
+     
+      <router-outlet></router-outlet>
     </mat-tab>
-    <!-- /////////////////////////////////// -->
+ 
     <mat-tab label="นักศึกษาปกติ">
       <div class="formInput">
         <form class="frame" [formGroup]="formStd_code">
@@ -290,7 +160,39 @@
       </div>
     </mat-tab>
     <mat-tab label="บุคคลภายนอก">Content 3</mat-tab>
-  </mat-tab-group>
+  </mat-tab-group> -->
+
+  <nav mat-tab-nav-bar>
+    <span
+      mat-tab-link
+      routerLinkActive="router-active"
+      [routerLink]="['dormitoryStudent']"
+    >
+      นักศึกษาหอพัก
+    </span>
+    <span
+      mat-tab-link
+      routerLinkActive="router-active"
+      [routerLink]="['defaultStudent']"
+    >
+      นักศึกษาปกติ
+    </span>
+    <span
+      mat-tab-link
+      routerLinkActive="router-active"
+      [routerLink]="['outSider']"
+    >
+      บุคคลภายนอก
+    </span>
+    <span
+      mat-tab-link
+      routerLinkActive="router-active"
+      [routerLink]="['ruleManage']"
+    >
+      จัดการกฎระเบียบ
+    </span>
+  </nav>
+  <router-outlet></router-outlet>
   <!-- <button
       mat-raised-button
       class="bt"
@@ -322,44 +224,4 @@
     </button> -->
 
   <!-- Modal -->
-  <div
-    class="modal fade"
-    id="exampleModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-dismiss="modal"
-            (click)="setStd_rule(); clearData()"
-          >
-            Save changes
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

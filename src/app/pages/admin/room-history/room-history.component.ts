@@ -13,6 +13,8 @@ import { HttpService } from "src/app/services/http.service";
 })
 export class RoomHistoryComponent implements OnInit {
   public formStd_code: FormGroup;
+  public formSearch: FormGroup;
+
   public userData: Array<any> = null;
   public floor = [];
   public keyStd = new FormControl();
@@ -24,6 +26,8 @@ export class RoomHistoryComponent implements OnInit {
   public room = [];
   public levels = [];
   public checkConnect: any = false;
+  data: any = [];
+
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   async ngOnInit() {
@@ -40,6 +44,16 @@ export class RoomHistoryComponent implements OnInit {
       phone: ["", Validators.required],
       noLevel: ["", Validators.required],
     });
+    this.formSearch = this.formBuilder.group({
+      faculty_code: "",
+      branch_code: "",
+      groupStd: "",
+      floor: "",
+      room_number: "",
+      noLevel: "",
+      male: false,
+      female: false,
+    });
     await this.getRoomHistory();
   }
   getRoomHistory = async () => {
@@ -55,73 +69,60 @@ export class RoomHistoryComponent implements OnInit {
       this.userData = null;
     }
   };
-  async getFloor() {
-    let httpRespon: any = await this.http.post("floor");
-    console.log(httpRespon);
-    if (httpRespon.response.data.length > 0) {
-      this.floor = httpRespon.response.data;
-    } else {
-      this.floor = null;
-    }
-  }
-  advancedSearch = () => {
-    this.getFloor();
-    this.getLevels();
-  };
-  async getLevels() {
-    let httpRespon: any = await this.http.post("level");
-    console.log(httpRespon);
-    if (httpRespon.response.data.length > 0) {
-      this.levels = httpRespon.response.data;
-    } else {
-      this.levels = null;
-    }
-  }
-  async getRoom(title, flr, std_code) {
+
+  async searchStd() {
+    this.p = 1;
+    this.userData = null;
+    console.log(this.keyStd.value);
     let formData = new FormData();
-    formData.append("nameTitle", title);
-    formData.append("std_code", std_code);
-    if (flr != "") {
-      formData.append("floor", flr);
-    } else {
-      formData.append("floor", "2");
-    }
-    let httpRespon: any = await this.http.post("room", formData);
+    formData.append("keyStd", this.keyStd.value);
+    let httpRespon: any = await this.http.post("SearchRoomHistory", formData);
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
-      this.room = httpRespon.response.data;
+      this.userData = httpRespon.response.data;
+      this.userData.forEach((x) => {
+        x.room_number_old == "null" ? (x.room_number_old = "") : 1;
+      });
+      console.log("พบ");
     } else {
-      this.room = null;
+      this.userData = null;
+      console.log("ไม่พบ");
     }
   }
-  async getFaculty() {
-    let httpRespon: any = await this.http.post("Faculty");
-    console.log(httpRespon);
-    if (httpRespon.response.data.length > 0) {
-      this.Faculty = httpRespon.response.data;
-    } else {
-      this.Faculty = null;
-    }
-  }
-  async getBranch(fcl, lev) {
-    let formData = new FormData();
-    formData.append("faculty_code", fcl);
-    formData.append("noLevel", lev);
-    let httpRespon: any = await this.http.post("Branch", formData);
-    console.log(httpRespon);
-    if (httpRespon.response.data.length > 0) {
-      this.branch = httpRespon.response.data;
-    } else {
-      this.branch = null;
-    }
-  }
-  getAdvancedSearchData = async () => {
-    let formData = new FormData();
-    let date = new Date();
-    //วนลูบเก็บค่า key และ value
-    Object.keys(this.formStd_code.value).forEach((key) => {
-      formData.append(key, this.formStd_code.value[key]);
-      console.log(key + " : " + this.formStd_code.value[key]);
+  exportAsXLSX(): void {
+    this.userData.forEach((item) => {
+      this.data.push({
+        วันที่: item.date_room,
+        รหัสนักศึกษา: item.std_code,
+        "ชื่อ - สกุล": item.nameStd,
+        คณะ: item.faculty,
+        สาขา: item.branch,
+        กลุ่มเรียน: item.groubStudent,
+        ระดับวุฒิการศึกษา: item.level,
+        ห้องเก่า: item.room_number_old,
+        ห้องใหม่: item.room_number_new,
+        สถานะ: item.status_name,
+      });
     });
-  };
+
+    this.http.exportAsExcelFile(
+      this.data,
+      "ผลการย้ายห้องพักของนักศึกษา_" + this.getDate()
+    );
+    this.data = [];
+  }
+  getDate() {
+    let year: any = new Date().getFullYear();
+    let month: any = new Date().getMonth();
+    let day: any = new Date().getDate();
+    if (month < 10) {
+      month = "0" + (month + 1);
+    } else {
+      month = month + 1;
+    }
+    if (day < 10) {
+      day = "0" + day;
+    }
+    return year + "-" + month + "-" + day;
+  }
 }

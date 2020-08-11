@@ -1,9 +1,9 @@
 <!-- //// -->
 <div class="contain">
   <div class="top">
-    <section class="example-section">
+    <div class="box1 search">
       <input
-        class="form-control form-control-sm ml-3 w-25"
+        class="form-control form-control-sm ml-3 w-100"
         type="text"
         [formControl]="keyStd"
         placeholder="Search"
@@ -11,6 +11,8 @@
         (keyup)="searchStd()"
         mdbInput
       />
+    </div>
+    <div class="box1">
       <button
         class="btn"
         data-toggle="modal"
@@ -21,10 +23,25 @@
       >
         ค้นหาแบบละเอียด
       </button>
-      <button class="btn" mat-flat-button color="primary">
-        ส่งออกสรุปผลการย้ายห้องพัก
+    </div>
+    <div class="box1">
+      <button
+        class="btn"
+        (click)="exportAsXLSX()"
+        mat-flat-button
+        color="primary"
+      >
+        ส่งออกสรุปผลการเข้าหอพัก
       </button>
-    </section>
+    </div>
+    <div class="box1">
+      <mat-slide-toggle
+        (change)="getTimeStat()"
+        [formControl]="all"
+        class="toggle"
+        >แสดงการเข้าหอพักทั้งหมด</mat-slide-toggle
+      >
+    </div>
   </div>
   <div class="main">
     <div class="spinner" *ngIf="checkConnect == false">
@@ -39,7 +56,8 @@
           <th scope="col">ชื่อ - สกุล</th>
           <th scope="col">คณะ</th>
           <th scope="col">สาขา</th>
-          <th scope="col">ระดับ</th>
+          <th scope="col">กลุ่มเรียน</th>
+          <th scope="col">ระดับวุฒิการศึกษา</th>
           <th scope="col">เบอร์โทร</th>
           <th scope="col">เวลาเข้าหอ</th>
         </tr>
@@ -53,9 +71,10 @@
           <td>{{ x.date_stamp }}</td>
           <td>{{ x.room_number }}</td>
           <td>{{ x.std_code }}</td>
-          <td>{{ x.nameTitle + x.fname + " " + x.lname }}</td>
+          <td>{{ x.nameStd }}</td>
           <td>{{ x.name }}</td>
-          <td>{{ x.acronym + "." + x.groupStd }}</td>
+          <td>{{ x.branch }}</td>
+          <td>{{ x.groubStudent }}</td>
           <td>{{ x.level }}</td>
           <td>{{ x.phone }}</td>
           <td>{{ x.time_stamp }}</td>
@@ -63,7 +82,7 @@
       </tbody>
     </table>
     <pagination-controls
-      *ngIf="userData != null"
+      *ngIf="userData.length != 0"
       class="page"
       (pageChange)="p = $event"
     ></pagination-controls>
@@ -94,65 +113,79 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form [formGroup]="formStd_code">
+      <form [formGroup]="formSearch">
         <div class="modal-body" align="center">
           <!-- content -->
 
           <div>
-            <mat-radio-group aria-label="Select an option">
-              <mat-radio-button value="1"
-                >วันที่
-                <input matInput [matDatepicker]="picker" class="dateInput" />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker touchUi #picker></mat-datepicker>
-              </mat-radio-button>
+            <mat-radio-group
+              formControlName="typeSelect"
+              aria-label="Select an option"
+            >
+              <div>
+                <mat-radio-button value="1"
+                  >วันที่
+                  <input
+                    matInput
+                    formControlName="date"
+                    [matDatepicker]="picker"
+                    class="dateInput"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #picker></mat-datepicker>
+                </mat-radio-button>
+              </div>
               <br />
-              <mat-radio-button value="2"
-                >เดือน
-                <mat-select
-                  [formControl]="months"
-                  multiple
-                  class="selectLabel-mount"
-                >
-                  <mat-option
-                    *ngFor="let months of monthsList"
-                    [value]="months"
-                    >{{ months }}</mat-option
+              <div>
+                <mat-radio-button value="2"
+                  >เดือน
+                  <mat-select
+                    formControlName="months"
+                    multiple
+                    class="selectLabel-mount"
                   >
-                </mat-select></mat-radio-button
-              >
+                    <mat-option
+                      *ngFor="let months of monthsList; let i = index"
+                      [value]="i + 1"
+                      >{{ months }}</mat-option
+                    >
+                  </mat-select></mat-radio-button
+                >
+              </div>
               <br />
-              <mat-radio-button value="3" class="term">
-                ภาคการศึกษา<mat-select class="selectLabel-term">
-                  <mat-option [value]="getTerm().yearThai">
-                    {{ getTerm().yearThai }}/{{ getTerm().term }}
-                  </mat-option>
-                </mat-select></mat-radio-button
-              >
+              <div>
+                <mat-radio-button value="3" class="term">
+                  ภาคการศึกษาที่<mat-select
+                    formControlName="term"
+                    class="selectLabel-term"
+                  >
+                    <mat-option
+                      *ngFor="let item of term; let i = index"
+                      [value]="item"
+                    >
+                      {{ item }}
+                    </mat-option>
+                  </mat-select></mat-radio-button
+                >
+              </div>
+
+              <br />
             </mat-radio-group>
-            <br />
             <div class="selectType">
-              <mat-checkbox class="example-margin">หอพักชาย</mat-checkbox>
-              <mat-checkbox class="example-margin">หอพักหญิง</mat-checkbox>
+              <mat-checkbox formControlName="male" class="example-margin"
+                >หอพักชาย</mat-checkbox
+              >
+              <mat-checkbox formControlName="female" class="example-margin"
+                >หอพักหญิง</mat-checkbox
+              >
             </div>
 
             <br />
             <mat-form-field class="selectRule">
-              <mat-select
-                formControlName="floor"
-                placeholder="ชั้น"
-                #foor
-                (selectionChange)="
-                  getRoom(
-                    this.formStd_code.value.nameTitle,
-                    this.formStd_code.value.floor,
-                    this.formStd_code.value.std_code
-                  )
-                "
-              >
+              <mat-select formControlName="floor" placeholder="ชั้น" #foor>
                 <mat-option *ngFor="let x of floor" [value]="x.floor">{{
                   x.floor
                 }}</mat-option>
@@ -177,8 +210,8 @@
                 placeholder="คณะ"
                 (selectionChange)="
                   getBranch(
-                    this.formStd_code.value.faculty_code,
-                    this.formStd_code.value.noLevel
+                    formSearch.value.faculty_code,
+                    formSearch.value.noLevel
                   )
                 "
               >
@@ -213,6 +246,7 @@
           </button>
           <button
             type="button"
+            data-dismiss="modal"
             class="btn btn-primary"
             (click)="getAdvancedSearchData()"
           >

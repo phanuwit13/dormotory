@@ -3,6 +3,7 @@ import { HttpService } from "src/app/services/http.service";
 import { Component, OnInit } from "@angular/core";
 import * as XLSX from "xlsx";
 import Swal from "sweetalert2";
+import { isEmpty } from "rxjs/operators";
 
 @Component({
   selector: "app-data-import",
@@ -11,7 +12,7 @@ import Swal from "sweetalert2";
 })
 export class DataImportComponent implements OnInit {
   public formStd_code: FormGroup;
-  public data = [];
+  public data: Array<String> = [];
   public Faculty = [];
   public titleName = ["นาย", "นาง", "นางสาว", "MR.", "MISS.", "MRS."];
   public branch = [];
@@ -21,7 +22,7 @@ export class DataImportComponent implements OnInit {
   public branchAll = [];
   public datafail = [];
   p: number = 1;
-
+  public selectedFile: File = null;
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
@@ -167,6 +168,21 @@ export class DataImportComponent implements OnInit {
   /* <input type="file" (change)="onFileChange($event)" multiple="false" /> */
   /* ... (within the component class definition) ... */
   onFileChange(evt: any) {
+    this.selectedFile = <File>evt.target.files[0];
+    console.log(this.selectedFile);
+    if (evt.target.files.length === 0) {
+      Swal.fire("กรุณาเลือกไฟล์", "", "error");
+      return;
+    }
+    var mimeType = evt.target.files[0].type;
+    if (
+      mimeType.match(
+        /application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/
+      ) == null
+    ) {
+      Swal.fire("กรุณาเลือกไฟล์ Excel", "", "error");
+      return;
+    }
     /* wire up file reader */
     const target: DataTransfer = <DataTransfer>evt.target;
     if (target.files.length !== 1) throw new Error("Cannot use multiple files");
@@ -194,10 +210,27 @@ export class DataImportComponent implements OnInit {
       if (index != 0) {
         if (x != "") {
           if (x.length == 9) {
-            //console.log(x);
-            this.importData(x[0], x[1], x[2], x[3], x[4], x[6], x[8]);
+            console.log(x);
+            this.importData(
+              x[0] + "",
+              x[1] + "",
+              x[2] + "",
+              x[3] + "",
+              x[4] + "",
+              x[6] + "",
+              x[8] + ""
+            );
           } else if (x.length == 8) {
-            this.importData(x[0], x[1], x[2], x[3], x[4], x[6], "");
+            console.log(x);
+            this.importData(
+              x[0] + "",
+              x[1] + "",
+              x[2] + "",
+              x[3] + "",
+              x[4] + "",
+              x[6] + "",
+              ""
+            );
           }
         }
       }
@@ -205,14 +238,15 @@ export class DataImportComponent implements OnInit {
   }
 
   async importData(
-    room_number,
-    std_code,
-    nameTitle,
-    fname,
-    lname,
-    branch_code,
-    phone
+    room_number: string,
+    std_code: string,
+    nameTitle: string,
+    fname: string,
+    lname: string,
+    branch_code: string,
+    phone: string
   ) {
+    console.log(room_number);
     let str = "";
     let bc = [];
     let i: number = 0;
@@ -220,6 +254,7 @@ export class DataImportComponent implements OnInit {
     let formData = new FormData();
     let groupStd = [];
     //วนลูบเก็บค่า key และ value
+    branch_code = await branch_code.trim();
     formData.append("room_number", room_number);
     formData.append("std_code", std_code);
     formData.append("nameTitle", nameTitle);
@@ -249,7 +284,9 @@ export class DataImportComponent implements OnInit {
 
     formData.append("groupStd", groupStd[1]);
     formData.append("phone", phone);
-
+    formData.forEach((x) => {
+      console.log(x);
+    });
     let httpRespon: any = await this.http.post("addStudent", formData);
     //console.log(httpRespon);
     if (httpRespon.response.success) {

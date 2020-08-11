@@ -1,13 +1,10 @@
 .contain {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  margin: 1%;
 }
 .top {
-  grid-column: span 12;
 }
 .main {
-  grid-column: span 12;
+  margin: 1%;
+  padding-right: 10px;
 }
 .example-section {
   display: flex;
@@ -23,6 +20,7 @@
 .table th {
   padding: 0.6rem;
   vertical-align: middle;
+  height: 57px;
 }
 .table tr:nth-child(even) {
   background-color: #ffffff;
@@ -55,12 +53,13 @@
 
 .dateInput {
   width: 100px;
+  margin-bottom: 9px;
 }
 .selectLabel-mount {
-  width: 134px;
+  width: 135px;
 }
 .selectLabel-term {
-  width: 85px;
+  width: 76px;
 }
 .term {
   margin-top: 8px;
@@ -70,4 +69,23 @@
 }
 .selectRule {
   margin-top: -10px;
+  width: 300px;
+}
+.box1 {
+  float: left;
+  margin-bottom: 10px;
+}
+.search {
+  width: 30%;
+  margin-right: 15px;
+  padding-top: 2px;
+}
+.toggle {
+  margin-top: 5px;
+  margin-left: 10px;
+}
+@media only screen and (max-width: 480px) {
+  .search {
+    width: 92%;
+  }
 }

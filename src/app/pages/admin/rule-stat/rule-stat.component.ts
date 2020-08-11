@@ -44,7 +44,6 @@ export class RuleStatComponent implements OnInit {
     "พฤษจิกายน",
     "ธันวาคม",
   ];
-  floorList: string[] = ["2", "3", "4", "5", "6", "7", "8"];
 
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 

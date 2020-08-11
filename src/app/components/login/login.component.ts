@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 export class LoginComponent implements OnInit {
   public formLogin: FormGroup;
   public userLogin: any = null;
-  private oldPath: string = "/nav";
+  private oldPath: string = "/nav/card_data/dormitoryStudent";
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpService,
@@ -42,13 +42,17 @@ export class LoginComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.connect) {
       if (httpRespon.response.success) {
-        //this.router.navigate(["/home"]);
-        await Swal.fire(httpRespon.response.message, "", "success");
-        this.http.navRouter(this.oldPath);
-        window.localStorage.setItem(
-          "userLogin",
-          JSON.stringify(httpRespon.response.data)
-        );
+        if (httpRespon.response.data.role == "admin") {
+          await Swal.fire(httpRespon.response.message, "", "success");
+          this.http.navRouter(this.oldPath);
+          window.localStorage.setItem(
+            "userLogin",
+            JSON.stringify(httpRespon.response.data)
+          );
+        } else {
+          await Swal.fire("ไม่ใช่ Admin", "", "error");
+        }
+
         this.userLogin = JSON.parse(window.localStorage.getItem("userLogin"));
         //alert(httpRespon.response.message);
       } else {
@@ -58,18 +62,4 @@ export class LoginComponent implements OnInit {
       Swal.fire("เชื่อมต่อเซิร์ฟเวอร์ผิดพลาด", "", "warning");
     }
   };
-
-  //ยาว
-  /*public onSubmitLogin = () => {
-    let formData = new FormData();
-
-    //วนลูบเก็บค่า key และ value
-    Object.keys(this.formLogin.value).forEach(key => {
-      //console.log(this.formLogin.value[key]);
-      formData.append(key, this.formLogin.value[key]);
-    });
-    this.http.post("login", formData).then(value => {
-      console.log(value);
-    });
-  };*/
 }

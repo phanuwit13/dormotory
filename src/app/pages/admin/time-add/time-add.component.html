@@ -3,6 +3,29 @@
     <div class="head">
       เว็บแอปพลิเคชันตรวจสอบและคัดกรองบุคคลเข้าหอพักนักศึกษา
     </div>
+    <ul class="nav justify-content-end">
+      <li class="nav-item">
+        <a
+          href=""
+          class="nav-link"
+          data-toggle="modal"
+          data-target="#exampleModaladdStd"
+          (click)="setFocus('inputKey')"
+          >กรณีไม่มีบัตรนักศึกษาหอพัก</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+          ><mat-slide-toggle [formControl]="confirm" color="primary"
+            >ยืนยันตัวตน
+          </mat-slide-toggle></a
+        >
+        <!-- <div class="slide">
+          <mat-slide-toggle>ยืนยันตัวตน </mat-slide-toggle>
+          <span></span>
+        </div> -->
+      </li>
+    </ul>
     <div class="main">
       <form [formGroup]="formLogin">
         <input
@@ -13,24 +36,21 @@
           placeholder="Search"
           aria-label="Search"
           mdbInput
-          #stdcode
         />
         <div class="bt">
           <button
             class="btn"
             mat-flat-button
             color="primary"
-            data-toggle="modal"
-            data-target="#exampleModal"
-            (click)="addTime(); getStdcode(stdcode.value)"
+            (click)="checkConfirm()"
           >
             ค้นหา
           </button>
         </div>
         <div
-          id="suscess"
+          id="success"
           data-toggle="modal"
-          data-target="#exampleModalsuscess"
+          data-target="#exampleModalsuccess"
         ></div>
         <div
           id="none"
@@ -44,24 +64,23 @@
           </mat-form-field> -->
       </form>
     </div>
-    <div class="footer">
-      <p class="ft">
-        <a href="https://www.facebook.com/RMUTI.Dormitory/"
-          >สำนักงานหอพักนักศึกษา</a
-        >
-      </p>
-      <span>
-        มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน ถนนสุรนารายณ์ ต.ในเมือง อ.เมือง
-        จ.นครราชสีมา 30000
-      </span>
-    </div>
   </div>
 </div>
-
-<!-- Modal suscess -->
+<div class="footer">
+  <p class="ft">
+    <a href="https://www.facebook.com/RMUTI.Dormitory/"
+      >สำนักงานหอพักนักศึกษา</a
+    >
+  </p>
+  <span>
+    มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน ถนนสุรนารายณ์ ต.ในเมือง อ.เมือง
+    จ.นครราชสีมา 30000
+  </span>
+</div>
+<!-- Modal success -->
 <div
   class="modal fade bd-example-modal-lg"
-  id="exampleModalsuscess"
+  id="exampleModalsuccess"
   tabindex="-1"
   role="dialog"
   aria-labelledby="exampleModalLabel"
@@ -82,11 +101,50 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="mainData">
+        <div class="mainData" *ngIf="this.dataStd != null">
           <div class="photo">
-            <div class="pt"></div>
+            <div class="pt">
+              <span>
+                <img
+                  *ngIf="
+                    (this.dataStd[0].nameTitle == 'นาย' ||
+                      this.dataStd[0].nameTitle == 'MR.') &&
+                    this.dataStd[0].img == ''
+                  "
+                  height="200"
+                  width="160"
+                  class="img"
+                  src="https://www.seosogood.com/wp-content/uploads/avatar-2.png"
+                  alt=""
+                />
+                <img
+                  *ngIf="
+                    (this.dataStd[0].nameTitle == 'นางสาว' ||
+                      this.dataStd[0].nameTitle == 'นาง' ||
+                      this.dataStd[0].nameTitle == 'MISS.' ||
+                      this.dataStd[0].nameTitle == 'MRS.') &&
+                    this.dataStd[0].img == ''
+                  "
+                  height="200"
+                  width="160"
+                  class="img"
+                  src="https://www.seosogood.com/wp-content/uploads/avatar-6.png"
+                  alt=""
+                />
+                <img
+                  *ngIf="this.dataStd[0].img != ''"
+                  height="200"
+                  width="160"
+                  class="img"
+                  src="http://cpe.rmuti.ac.th/project/dormitory/webtest/uploadImage/{{
+                    this.dataStd[0].img
+                  }}"
+                  alt=""
+                />
+              </span>
+            </div>
           </div>
-          <div class="data" *ngIf="this.dataStd != null">
+          <div class="data">
             <table style="width: 100%;">
               <tr>
                 <td class="title1"><span>รหัสนักศึกษา :</span></td>
@@ -142,51 +200,98 @@
           data-dismiss="modal"
           (click)="setCursor()"
         >
-          Close
+          ยกเลิก
         </button>
         <button
           type="button"
           class="btn btn-primary"
           data-dismiss="modal"
-          (click)="setCursor()"
+          (click)="addTime()"
         >
-          Save changes
+          บันทึกข้อมูล
         </button>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Modal noneData-->
+<!-- Modal addStd -->
 <div
-  class="modal fade"
-  id="exampleModalnoneData"
+  class="modal fade bd-example-modal-lg"
+  id="exampleModaladdStd"
   tabindex="-1"
   role="dialog"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
+  data-backdrop="static"
+  data-keyboard="false"
 >
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">ข้อมูลนักศึกษาหอพัก</h5>
         <button
+          id="close"
           type="button"
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="setCursor(); setFocus('inputStd')"
         >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ไม่เจอ
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <form class="box" [formGroup]="formLogin">
+          <input
+            id="inputKey"
+            class="form-control form-control-sm"
+            type="text"
+            formControlName="keyStd"
+            placeholder="Search"
+            aria-label="Search"
+            (keyup)="getStudent()"
+            mdbInput
+            #stdcode
+          />
+          <table class="table" *ngIf="userStd != null">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col"><span>รหัสนักศึกษา</span></th>
+                <th scope="col"><span>ชื่อ-สกุล</span></th>
+                <th scope="col"><span>ห้อง</span></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+
+            <tbody *ngIf="userStd != null">
+              <tr
+                *ngFor="
+                  let x of userStd
+                    | paginate: { itemsPerPage: 6, currentPage: p }
+                "
+              >
+                <td>{{ x.std_code }}</td>
+                <td>{{ x.nameStd }}</td>
+                <td>{{ x.room_number }}</td>
+                <td>
+                  <button
+                    class="btn"
+                    (click)="setNameAddTime(x.std_code)"
+                    mat-flat-button
+                    color="primary"
+                  >
+                    เข้าสาย
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls
+            *ngIf="userStd != null"
+            class="page"
+            (pageChange)="p = $event"
+          ></pagination-controls>
+        </form>
       </div>
     </div>
   </div>

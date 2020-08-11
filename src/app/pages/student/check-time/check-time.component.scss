@@ -1,0 +1,138 @@
+.containers {
+}
+.bg {
+  width: 100%;
+  height: 100%;
+}
+
+.head {
+  display: flex;
+  background-color: #222222;
+  color: white;
+  text-align: center;
+  height: 7rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+.img {
+  width: 160px;
+}
+.button {
+  width: 100%;
+  height: 100%;
+  background-color: darkgray;
+}
+.main {
+  // background-color: rgb(255, 170, 170);
+  justify-content: center;
+  display: flex;
+  padding-top: 130px;
+}
+.footer {
+  background-color: #222222;
+  grid-column: span 12;
+  height: 10%;
+  text-align: center;
+  position: fixed;
+  bottom: 0px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  color: white;
+  overflow: hidden;
+}
+.ft {
+  padding-top: 1%;
+  margin-bottom: 0;
+}
+.bt {
+  text-align: center;
+  padding-top: 10%;
+}
+.mainData {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+.photo {
+  display: flex;
+  justify-content: center;
+  grid-column: span 12;
+  height: 230px;
+}
+.data {
+  padding-top: 15px;
+  display: flex;
+  justify-content: center;
+  grid-column: span 12;
+  height: 220px;
+}
+.late {
+  grid-column: span 12;
+  height: 500px;
+}
+.pt {
+  display: flex;
+  width: 164px;
+  height: 204px;
+  border: solid 2px #000000;
+}
+.title1 {
+  width: 40%;
+  text-align: right;
+  font-size: 18px;
+  padding-top: 5px;
+  padding-right: 10px;
+}
+.title2 {
+  font-size: 18px;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+.box {
+  height: 500px;
+}
+.table td,
+.table th {
+  padding: 0.6rem;
+  vertical-align: middle;
+  height: 57px;
+}
+
+.table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+.table tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+.table tr:hover {
+  background-color: #dfdfdf;
+}
+.table {
+  text-align: center;
+}
+.title {
+  margin-bottom: 20px;
+}
+.page {
+  text-align: center;
+}
+.data table tr {
+  margin-top: 20px;
+}
+@media only screen and (max-device-width: 1280px) {
+  .data {
+    font-size: 4vw;
+    height: 260px;
+  }
+  .title1 {
+    width: 45%;
+    text-align: right;
+    font-size: 4vw;
+    padding-right: 10px;
+  }
+  .title2 {
+    font-size: 4vw;
+    padding-left: 10px;
+  }
+}
