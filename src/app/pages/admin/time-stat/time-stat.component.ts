@@ -1,3 +1,4 @@
+import { NgxSpinnerService } from "ngx-spinner";
 import { HttpService } from "src/app/services/http.service";
 import { Component, OnInit } from "@angular/core";
 import {
@@ -42,7 +43,11 @@ export class TimeStatComponent implements OnInit {
     "ธันวาคม",
   ];
 
-  constructor(private http: HttpService, private formBuilder: FormBuilder) {}
+  constructor(
+    private http: HttpService,
+    private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService
+  ) {}
 
   async ngOnInit() {
     this.formStd_code = this.formBuilder.group({
@@ -70,20 +75,23 @@ export class TimeStatComponent implements OnInit {
       months: null,
       term: null,
     });
-    this.all.setValue(false);
-    await this.getTimeStat();
+
+    this.getTimeStat();
   }
 
   getTimeStat = async () => {
     let formData = new FormData();
     formData.append("all", this.all.value);
+    await this.spinner.show();
     let httpRespon: any = await this.http.post("getTimeStat", formData);
     this.checkConnect = true;
     console.log(httpRespon);
     if (httpRespon.response.success) {
       this.userData = httpRespon.response.data;
+      this.spinner.hide();
     } else {
       this.userData = [];
+      this.spinner.hide();
     }
   };
 

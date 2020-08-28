@@ -1,3 +1,4 @@
+import  Swal  from 'sweetalert2';
 import { HttpService } from "src/app/services/http.service";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
@@ -44,8 +45,22 @@ export class HomeComponent implements OnInit {
   }
 
   logOut = async () => {
-    await window.localStorage.clear();
-    this.http.navRouter(this.oldPath);
+    Swal.fire({
+      title: "ยืนยันการออกจากระบบ?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ตกลง !",
+      cancelButtonText: "ยกเลิก",
+    }).then(async (result) => {
+      if (result.value) {
+        await window.localStorage.clear();
+        this.http.navRouter(this.oldPath);
+      } else {
+      }
+    });
   };
   async attive(key: number, path: string) {
     this.getPathName(path);

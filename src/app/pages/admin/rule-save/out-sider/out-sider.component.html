@@ -1,32 +1,32 @@
 <div class="formInput">
   <form class="frame" [formGroup]="formStd_code">
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per30">
       <mat-label><span style="color: red;">*</span> บัตรประชาชน</mat-label>
       <input matInput formControlName="id_card_code" />
     </mat-form-field>
 
-    <mat-form-field class="titleName">
+    <mat-form-field class="per15">
       <mat-label><span style="color: red;">*</span> คำนำหน้า</mat-label>
       <mat-select formControlName="nameTitle">
         <mat-option *ngFor="let x of titleName" [value]="x">{{ x }}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per20">
       <mat-label><span style="color: red;">*</span> ชื่อจริง</mat-label>
       <input matInput formControlName="fname" />
     </mat-form-field>
 
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per20">
       <mat-label><span style="color: red;">*</span> นามสกุล</mat-label>
       <input matInput formControlName="lname" />
     </mat-form-field>
-    <mat-form-field class="phone">
+    <mat-form-field class="per15">
       <mat-label><span style="color: red;">*</span> เบอร์โทรศัพท์</mat-label>
       <input matInput formControlName="phone" />
     </mat-form-field>
     <br />
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per30">
       <mat-label
         ><span style="color: red;">*</span> นักศึกษาที่เกี่ยวข้อง</mat-label
       >
@@ -37,7 +37,7 @@
         placeholder="รหัสนักศึกษา"
       />
     </mat-form-field>
-    <mat-form-field *ngIf="this.nameStudent != null" class="stdName">
+    <mat-form-field *ngIf="this.nameStudent != null" class="per40">
       <input
         matInput
         placeholder="ชื่อนักศึกษาที่เกี่ยวข้อง"
@@ -45,7 +45,7 @@
         disabled
       />
     </mat-form-field>
-    <mat-form-field *ngIf="this.nameStudent == null" class="stdName">
+    <mat-form-field *ngIf="this.nameStudent == null" class="per40">
       <input
         matInput
         placeholder="ชื่อนักศึกษาที่เกี่ยวข้อง"
@@ -53,21 +53,21 @@
         disabled
       />
     </mat-form-field>
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per30">
       <mat-label
         ><span style="color: red;">*</span> เกี่ยวข้องกับนักศึกษาเป็น</mat-label
       >
       <input matInput formControlName="student_relation" />
     </mat-form-field>
     <br />
-    <mat-form-field class="titleName">
+    <mat-form-field class="per10">
       <input matInput formControlName="house_no" placeholder="บ้านเลขที่" />
     </mat-form-field>
-    <mat-form-field class="titleName">
+    <mat-form-field class="per10">
       <input matInput formControlName="moo" placeholder="หมู่" />
     </mat-form-field>
 
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per30">
       <mat-select
         formControlName="province"
         placeholder="จังหวัด"
@@ -81,7 +81,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per25">
       <mat-select
         formControlName="district"
         placeholder="อำเภอ"
@@ -94,7 +94,7 @@
         >
       </mat-select>
     </mat-form-field>
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per25">
       <mat-select formControlName="sub_district" placeholder="ตำบล">
         <mat-option
           *ngFor="let x of sub_district"
@@ -104,22 +104,22 @@
       </mat-select>
     </mat-form-field>
     <br />
-    <mat-form-field class="stdName">
+    <mat-form-field class="per30">
       <input matInput formControlName="father" placeholder="ชื่อบิดา" />
     </mat-form-field>
 
-    <mat-form-field class="phone">
+    <mat-form-field class="per20">
       <input matInput formControlName="f_phone" placeholder="เบอร์โทร-บิดา" />
     </mat-form-field>
-    <mat-form-field class="stdName">
+    <mat-form-field class="per30">
       <input matInput formControlName="mother" placeholder="ชื่อมารดา" />
     </mat-form-field>
 
-    <mat-form-field class="phone">
+    <mat-form-field class="per20">
       <input matInput formControlName="m_phone" placeholder="เบอร์โทร-มารดา" />
     </mat-form-field>
     <br />
-    <mat-form-field class="selectRule">
+    <mat-form-field class="per50">
       <mat-label><span style="color: red;">*</span> กระทำผิดกฏข้อที่</mat-label>
       <mat-select formControlName="rulesBreak">
         <mat-option
@@ -140,7 +140,7 @@
     <table class="dateTime">
       <tr>
         <td>
-          <div class="dateInput">
+          <div style="width: 98%;">
             <mat-form-field>
               <mat-label
                 ><span style="color: red;">*</span> วันที่กระทำผิด</mat-label
@@ -172,7 +172,7 @@
     </table>
 
     <br />
-    <mat-form-field style="width: 80%;">
+    <mat-form-field class="per50">
       <textarea
         matInput
         placeholder="รายละเอียด"

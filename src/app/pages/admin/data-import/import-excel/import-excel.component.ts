@@ -6,11 +6,11 @@ import Swal from "sweetalert2";
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
-  selector: "app-data-import",
-  templateUrl: "./data-import.component.html",
-  styleUrls: ["./data-import.component.scss"],
+  selector: "app-import-excel",
+  templateUrl: "./import-excel.component.html",
+  styleUrls: ["./import-excel.component.scss"],
 })
-export class DataImportComponent implements OnInit {
+export class ImportExcelComponent implements OnInit {
   public formInsert: FormGroup;
   public data: Array<any> = [];
   public Faculty = [];
@@ -27,9 +27,7 @@ export class DataImportComponent implements OnInit {
     "คำนำหน้า",
     "ชื่อ",
     "นามสกุล",
-    "คณะ",
     "สาขา",
-    "ระดับ",
     "เบอร์โทรศัพท์",
   ];
   public header: Array<String> = [];
@@ -132,22 +130,7 @@ export class DataImportComponent implements OnInit {
   }
 
   async setDataStd() {
-    // let checkData: boolean;
-    // Object.keys(this.formStd_code.value).forEach((key) => {
-    //   if (this.formStd_code.value[key] == "") {
-    //     if (key == "room_number" || key == "floor" || key == "phone") {
-    //       checkData = true;
-    //     } else {
-    //       checkData = false;
-    //     }
-    //   } else {
-    //     checkData = true;
-    //   }
-    // });
-
     let formData = new FormData();
-    // วนลูบเก็บค่า key และ value
-
     Swal.fire({
       title: "",
       text: "ยืนยันการเพิ่มข้อมูลนักศึกษา ?",
@@ -159,8 +142,8 @@ export class DataImportComponent implements OnInit {
       cancelButtonText: "ยกเลิก",
     }).then(async (result) => {
       if (result.value) {
-        Object.keys(this.formInsert.value).forEach((key) => {
-          formData.append(key, this.formInsert.value[key]);
+        Object.keys(this.formInsert.value).forEach(async (key) => {
+          formData.append(key, await this.formInsert.value[key].trim());
         });
         let httpRespon: any = await this.http.post("addStudent", formData);
         console.log(httpRespon);
@@ -171,7 +154,6 @@ export class DataImportComponent implements OnInit {
             text: httpRespon.response.message,
           });
           this.formInsert.reset();
-          document.getElementById("closebutton").click();
         } else {
           Swal.fire({
             icon: "error",
@@ -182,7 +164,6 @@ export class DataImportComponent implements OnInit {
       }
     });
   }
-
   /* <input type="file" (change)="onFileChange($event)" multiple="false" /> */
   /* ... (within the component class definition) ... */
   onFileChange(evt: any) {
@@ -225,6 +206,7 @@ export class DataImportComponent implements OnInit {
           await this.spinner.show();
           await this.readDataStd();
           this.spinner.hide();
+          Swal.fire("", "เสร็จสิ้น", "success");
           this.data = [];
         } else {
           Swal.fire("", "คอลัมน์ไม่ถูกต้อง", "error");
@@ -243,59 +225,111 @@ export class DataImportComponent implements OnInit {
         return false;
       }
     }
-
     return true;
   }
+
+  // async readDataStd() {
+  //   this.data.forEach(async (x, index) => {
+  //     if (index != 0) {
+  //       if (x != "") {
+  //         if (x.length == 9) {
+  //           this.importData(
+  //             x[0] + "",
+  //             x[1] + "",
+  //             x[2] + "",
+  //             x[3] + "",
+  //             x[4] + "",
+  //             x[6] + "",
+  //             x[8] + ""
+  //           );
+  //         } else if (x.length == 8) {
+  //           this.importData(
+  //             x[0] + "",
+  //             x[1] + "",
+  //             x[2] + "",
+  //             x[3] + "",
+  //             x[4] + "",
+  //             x[6] + "",
+  //             ""
+  //           );
+  //         } else {
+  //           for (let i = 0; i < 9; i++) {
+  //             if (!x[i]) {
+  //               x[i] = "";
+  //             }
+  //             console.log(x[i]);
+  //           }
+  //           this.datafail.push({
+  //             std_code: x[1] + "",
+  //             room_number: x[0] + "",
+  //             nameTitle: x[2] + "",
+  //             fname: x[3] + "",
+  //             lname: x[4] + "",
+  //             branch_code: x[6] + "",
+  //             phone: x[8] + "",
+  //             error: "กรุณาตรวจสอบข้อมูล",
+  //           });
+  //         }
+  //       }
+  //     }
+  //   });
+  //   console.log(this.datafail);
+  //   return true;
+  // }
 
   async readDataStd() {
     this.data.forEach(async (x, index) => {
       if (index != 0) {
         if (x != "") {
-          if (x.length == 9) {
-            this.importData(
-              x[0] + "",
-              x[1] + "",
-              x[2] + "",
-              x[3] + "",
-              x[4] + "",
-              x[6] + "",
-              x[8] + ""
-            );
-          } else if (x.length == 8) {
-            this.importData(
-              x[0] + "",
-              x[1] + "",
-              x[2] + "",
-              x[3] + "",
-              x[4] + "",
-              x[6] + "",
-              ""
-            );
-          } else {
-            for(let i = 0 ; i< 9 ; i++)
-            {
-              if(!x[i])
-              {
-                x[i] = "";
-              }
-              console.log(x[i]);
+          console.log(x);
+          if ((await this.chekNullCullumn(x)) == true) {
+            if (!x[6]) {
+              x[6] = "";
             }
-            this.datafail.push({
-              std_code: x[1] + "",
-              room_number: x[0] + "",
-              nameTitle: x[2] + "",
-              fname: x[3] + "",
-              lname: x[4] + "",
-              branch_code: x[6] + "",
-              phone: x[8] + "",
-              error: "กรุณาตรวจสอบข้อมูล",
-            });
+            this.importData(
+              x[0] + "",
+              x[1] + "",
+              x[2] + "",
+              x[3] + "",
+              x[4] + "",
+              x[5] + "",
+              x[6] + ""
+            );
           }
         }
       }
     });
     console.log(this.datafail);
     return true;
+  }
+
+  async chekNullCullumn(x: any) {
+    let n = 0;
+    for (let i = 0; i < 6; i++) {
+      if (!x[i]) {
+        console.log(x);
+        x[i] = "";
+        n = n + 1;
+      }
+    }
+    if (n > 0) {
+      if (!x[6]) {
+        x[6] = "";
+      }
+      this.datafail.push({
+        std_code: x[1] + "",
+        room_number: x[0] + "",
+        nameTitle: x[2] + "",
+        fname: x[3] + "",
+        lname: x[4] + "",
+        branch_code: x[5] + "",
+        phone: x[6] + "",
+        error: "กรุณาตรวจสอบข้อมูล",
+      });
+      return false;
+    } else {
+      return true;
+    }
   }
 
   async importData(
@@ -315,6 +349,13 @@ export class DataImportComponent implements OnInit {
     let groupStd = [];
     //วนลูบเก็บค่า key และ value
     branch_code = await branch_code.trim();
+    std_code = await std_code.trim();
+    room_number = await room_number.trim();
+    nameTitle = await nameTitle.trim();
+    fname = await fname.trim();
+    lname = await lname.trim();
+    phone = await phone.trim();
+
     formData.append("room_number", room_number);
     formData.append("std_code", std_code);
     formData.append("nameTitle", nameTitle);
@@ -345,9 +386,11 @@ export class DataImportComponent implements OnInit {
     formData.append("groupStd", groupStd[1]);
     formData.append("phone", phone);
     let httpRespon: any = await this.http.post("addStudent", formData);
-    //console.log(httpRespon);
+    formData.forEach((value, key) => {
+      console.log(key + " : " + value);
+    });
     if (httpRespon.response.success) {
-      console.log(httpRespon.response.message);
+      console.log(httpRespon.response);
     } else {
       this.datafail.push({
         std_code: std_code,
@@ -359,7 +402,7 @@ export class DataImportComponent implements OnInit {
         phone: phone,
         error: httpRespon.response.message,
       });
-      console.log(httpRespon.response.message);
+      console.log(httpRespon.response);
     }
   }
   deleteDatabase() {

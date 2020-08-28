@@ -6,6 +6,8 @@ import {
   Validators,
 } from "@angular/forms";
 import { HttpService } from "src/app/services/http.service";
+import { NgxSpinnerService } from "ngx-spinner";
+
 @Component({
   selector: "app-room-history",
   templateUrl: "./room-history.component.html",
@@ -28,7 +30,11 @@ export class RoomHistoryComponent implements OnInit {
   public checkConnect: any = false;
   data: any = [];
 
-  constructor(private http: HttpService, private formBuilder: FormBuilder) {}
+  constructor(
+    private http: HttpService,
+    private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService
+  ) {}
 
   async ngOnInit() {
     this.formStd_code = this.formBuilder.group({
@@ -54,7 +60,12 @@ export class RoomHistoryComponent implements OnInit {
       male: false,
       female: false,
     });
-    await this.getRoomHistory();
+    await this.spinner.show();
+    this.getRoomHistory().then(async (value) => {
+      if (value == true) {
+        this.spinner.hide();
+      }
+    });
   }
   getRoomHistory = async () => {
     let httpRespon: any = await this.http.post("getRoomHistory");
@@ -65,8 +76,10 @@ export class RoomHistoryComponent implements OnInit {
       this.userData.forEach((x) => {
         x.room_number_old == "null" ? (x.room_number_old = "") : 1;
       });
+      return true;
     } else {
       this.userData = null;
+      return true;
     }
   };
 

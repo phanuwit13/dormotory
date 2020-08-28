@@ -9,9 +9,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { HomeComponent } from "./components/home/home.component";
 import { NavComponent } from "./components/nav/nav.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-
 import { AddtimeComponent } from "./components/home/addtime/addtime.component";
-
 import { CardGenComponent } from "./components/home/card-gen/card-gen.component";
 @NgModule({
   declarations: [

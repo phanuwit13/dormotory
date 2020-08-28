@@ -43,7 +43,14 @@ export class LoginComponent implements OnInit {
     if (httpRespon.connect) {
       if (httpRespon.response.success) {
         if (httpRespon.response.data.role == "admin") {
-          await Swal.fire(httpRespon.response.message, "", "success");
+          //await Swal.fire(httpRespon.response.message, "", "success");
+          await Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: httpRespon.response.message,
+            showConfirmButton: false,
+            timer: 1000
+          })
           this.http.navRouter(this.oldPath);
           window.localStorage.setItem(
             "userLogin",

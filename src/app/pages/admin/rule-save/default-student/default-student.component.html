@@ -1,28 +1,28 @@
 <div class="formInput">
   <form class="frame" [formGroup]="formStd_code">
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per28">
       <mat-label><span style="color: red;">*</span> รหัสนักศึกษา</mat-label>
       <input matInput formControlName="std_code" />
     </mat-form-field>
 
-    <mat-form-field class="titleName">
+    <mat-form-field class="per15">
       <mat-label><span style="color: red;">*</span> คำนำหน้า</mat-label>
       <mat-select formControlName="nameTitle">
         <mat-option *ngFor="let x of titleName" [value]="x">{{ x }}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per28">
       <mat-label><span style="color: red;">*</span> ชื่อจริง</mat-label>
       <input matInput formControlName="fname" />
     </mat-form-field>
 
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per28">
       <mat-label><span style="color: red;">*</span> นามสกุล</mat-label>
       <input matInput formControlName="lname" />
     </mat-form-field>
     <br />
-    <mat-form-field class="stdCode">
+    <mat-form-field class="per20">
       <mat-label
         ><span style="color: red;">*</span> ระดับวุฒิการศึกษา</mat-label
       >
@@ -33,7 +33,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="stdFaculty">
+    <mat-form-field class="per30">
       <mat-label><span style="color: red;">*</span> คณะ</mat-label>
       <mat-select
         formControlName="faculty_code"
@@ -50,7 +50,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="stdBranch">
+    <mat-form-field class="per30">
       <mat-label><span style="color: red;">*</span> สาขา</mat-label>
       <mat-select formControlName="branch_code">
         <mat-option *ngFor="let x of branch" [value]="x.branch_code">{{
@@ -58,17 +58,18 @@
         }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <br />
-    <mat-form-field class="stdRoom">
+
+    <mat-form-field class="per20">
       <mat-label><span style="color: red;">*</span> กลุ่มเรียน</mat-label>
       <input matInput formControlName="groupStd" />
     </mat-form-field>
+    <br />
 
-    <mat-form-field class="phone">
+    <mat-form-field class="per20">
       <input matInput formControlName="phone" placeholder="เบอร์โทรศัพท์" />
     </mat-form-field>
     <br />
-    <mat-form-field class="selectRule">
+    <mat-form-field class="per50">
       <mat-label><span style="color: red;">*</span> กระทำผิดกฏข้อที่</mat-label>
       <mat-select formControlName="rulesBreak">
         <mat-option
@@ -80,7 +81,7 @@
     </mat-form-field>
 
     <mat-form-field
-      class="selectRule"
+      class="per50"
       *ngIf="this.formStd_code.value.rulesBreak == 16"
     >
       <input matInput placeholder="กระทำผิดกฏ" formControlName="other" />
@@ -89,7 +90,7 @@
     <table class="dateTime">
       <tr>
         <td>
-          <div class="dateInput">
+          <div style="width: 98%;">
             <mat-form-field>
               <mat-label
                 ><span style="color: red;">*</span> วันที่กระทำผิด</mat-label
@@ -121,7 +122,7 @@
     </table>
 
     <br />
-    <mat-form-field style="width: 80%;">
+    <mat-form-field class="per50">
       <textarea
         matInput
         placeholder="รายละเอียด"

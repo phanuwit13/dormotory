@@ -7,6 +7,7 @@ import {
 import { Component, OnInit } from "@angular/core";
 import { HttpService } from "src/app/services/http.service";
 import Swal from "sweetalert2";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: "app-dormitory-student",
@@ -15,17 +16,14 @@ import Swal from "sweetalert2";
 })
 export class DormitoryStudentComponent implements OnInit {
   public formStd_code: FormGroup;
-
   public formSearch: FormGroup;
   public nameStudent: Array<any> = null;
   public floor = [];
   public userData: Array<any> = null;
   public keyStd = new FormControl();
   p: number = 1;
-
   public Faculty = [];
   public titleName = ["นาย", "นาง", "นางสาว", "MR.", "MISS.", "MRS."];
-
   public branch = [];
   public room = [];
   public levels = [];
@@ -38,7 +36,11 @@ export class DormitoryStudentComponent implements OnInit {
   imagePath: any;
   imgURL: any;
 
-  constructor(private http: HttpService, private formBuilder: FormBuilder) {}
+  constructor(
+    private http: HttpService,
+    private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService
+  ) {}
 
   async ngOnInit() {
     this.formStd_code = this.formBuilder.group({
@@ -66,7 +68,12 @@ export class DormitoryStudentComponent implements OnInit {
       male: false,
       female: false,
     });
-    await this.getStudentAll();
+    await this.spinner.show();
+    this.getStudentAll().then(async (value) => {
+      if (value == true) {
+        this.spinner.hide();
+      }
+    });
   }
 
   showdata() {
@@ -81,8 +88,10 @@ export class DormitoryStudentComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = await httpRespon.response.data;
+      return true;
     } else {
       this.userData = null;
+      return true;
     }
   };
   async getStdcodeEdit(std) {
@@ -267,8 +276,8 @@ export class DormitoryStudentComponent implements OnInit {
   async editDataStd() {
     if (await this.checkDataNull()) {
       await Swal.fire({
-        title: "คุณมั่นใจที่จะแก้ไขข้อมูล?",
-        text: "คุณจะไม่สามารถยกเลิกสิ่งนี้ได้!",
+        title: "",
+        text: "ยืนยันการแก้ไขข้อมูล!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -378,8 +387,8 @@ export class DormitoryStudentComponent implements OnInit {
   };
   deleteStudent = async (value) => {
     await Swal.fire({
-      title: "คุณมั่นใจที่จะลบข้อมูล?",
-      text: "คุณจะไม่สามารถยกเลิกสิ่งนี้ได้!",
+      title: "",
+      text: "ยืนยันการลบข้อมูล!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -408,12 +417,12 @@ export class DormitoryStudentComponent implements OnInit {
     //console.log(event.target.files);
     //console.log(this.selectedFile);
     if (event.target.files.length === 0) {
-      Swal.fire("กรุณาเลือกไฟล์รูปภาพ", "", "error");
+      Swal.fire("", "กรุณาเลือกไฟล์รูปภาพ", "error");
       return;
     }
     var mimeType = event.target.files[0].type;
     if (mimeType.match(/image\/*/) == null) {
-      Swal.fire("กรุณาเลือกไฟล์รูปภาพ", "", "error");
+      Swal.fire("", "กรุณาเลือกไฟล์รูปภาพ", "error");
       return;
     }
     this.lastNameFile = this.selectedFile.name.split(".");

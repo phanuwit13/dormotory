@@ -26,10 +26,7 @@ export class OutSiderComponent implements OnInit {
       std_code: ["", Validators.required],
       rulesBreak: ["", Validators.required],
       date_rule: [new Date(), Validators.required],
-      time_rule: [
-        new Date().getHours() + ":" + new Date().getMinutes(),
-        Validators.required,
-      ],
+      time_rule: [this.setTime(), Validators.required],
       other: "",
       details: "",
       id_card_code: ["", Validators.required],
@@ -95,8 +92,8 @@ export class OutSiderComponent implements OnInit {
 
   public setOutsiderRule = async () => {
     Swal.fire({
-      title: "คุณมั่นใจที่จะบันทึกข้อมูล??",
-      text: "คุณจะไม่สามารถยกเลิกสิ่งนี้ได้!",
+      title: "",
+      text: "ยืนยันการบันทึกการกระทำผิดกฎ!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -165,4 +162,20 @@ export class OutSiderComponent implements OnInit {
     }
     return year + "-" + month + "-" + day;
   }
+  setTime = () => {
+    let dateZone = new Date();
+    let hours = "";
+    let minutes = "";
+    if (dateZone.getHours() < 10) {
+      hours = "0" + dateZone.getHours();
+    } else {
+      hours = dateZone.getHours() + "";
+    }
+    if (dateZone.getMinutes() < 10) {
+      minutes = "0" + dateZone.getMinutes();
+    } else {
+      minutes = dateZone.getMinutes() + "";
+    }
+    return hours + ":" + minutes;
+  };
 }

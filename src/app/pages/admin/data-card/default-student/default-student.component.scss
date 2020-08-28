@@ -30,7 +30,9 @@
 .table tr:hover {
   background-color: #dfdfdf;
 }
-
+.mat-input-element:disabled {
+  color: #000000;
+}
 .img {
   width: 160px;
 }

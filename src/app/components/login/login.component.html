@@ -16,25 +16,33 @@
             (ngSubmit)="onSubmitLogin()"
           >
             <p class="inputField">
-              <mat-form-field class="inputUser">
+              <mat-form-field appearance="outline" color="accent" >
+                <mat-label>ชื่อผู้ใช้งาน</mat-label>
+                <input  type="text" formControlName="username" matInput placeholder="ชื่อผู้ใช้งาน">
+              </mat-form-field>
+              <!-- <mat-form-field class="inputUser">
                 <input
                   type="text"
                   matInput
                   placeholder="ชื่อผู้ใช้"
-                  formControlName="username"
+                  
                 />
-              </mat-form-field>
+              </mat-form-field> -->
             </p>
 
             <p class="inputField">
-              <mat-form-field class="inputUser">
+              <mat-form-field appearance="outline" color="accent">
+                <mat-label>รหัสผ่าน</mat-label>
+                <input  type="password" formControlName="password" matInput placeholder="รหัสผ่าน">
+              </mat-form-field>
+              <!-- <mat-form-field class="inputUser">
                 <input
                   type="password"
                   matInput
                   placeholder="รหัสผ่าน"
                   formControlName="password"
                 />
-              </mat-form-field>
+              </mat-form-field> -->
             </p>
 
             <div class="button">

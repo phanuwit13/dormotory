@@ -35,9 +35,9 @@
   </div>
 </div>
 <div class="main">
-  <div class="spinner" *ngIf="checkConnect == false">
-    <mat-spinner [strokeWidth]="5" [diameter]="50"></mat-spinner>
-  </div>
+  <ngx-spinner size="medium" color="#ff5722" type="ball-spin-clockwise"
+    ><p style="color: white;">Loading...</p></ngx-spinner
+  >
   <table class="table" *ngIf="checkConnect == true">
     <thead class="thead-dark">
       <tr>
@@ -208,10 +208,9 @@
             <mat-form-field class="lenght">
               <input
                 matInput
-                disabled
-                formControlName="std_code"
                 placeholder="รหัสนักศึกษา"
                 value="{{ item.std_code }}"
+                disabled
               />
             </mat-form-field>
 

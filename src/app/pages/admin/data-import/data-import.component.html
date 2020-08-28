@@ -1,243 +1,26 @@
 <div class="containerContent">
-  <button
-    type="button"
-    mat-raised-button
-    color="primary"
-    class="uload"
-    (click)="fileInput.click()"
-  >
-    อัพโหลดไฟล์
-  </button>
-  <button
-    mat-raised-button
-    class="bt"
-    color="primary"
-    data-toggle="modal"
-    data-target="#exampleModal"
-  >
-    เพิ่มข้อมูลนักศึกษา
-  </button>
-  <!-- <button
-    mat-raised-button
-    class="bt"
-    color="primary"
-    (click)="deleteDatabase()"
-  >
-    ลบข้อมูล
-  </button>
-  <button mat-raised-button class="bt" color="primary" (click)="onloadSweet()">
-    โหลด
-  </button> -->
-  <input
-    hidden
-    (change)="onFileChange($event)"
-    #fileInput
-    type="file"
-    id="file"
-  />
-  <!-- <table id="customers">
-      <tr *ngFor="let row of data">
-        <td *ngFor="let val of row">
-          {{ val }}
-        </td>
-      </tr>
-    </table> -->
-  <div *ngIf="datafail.length > 0">
-    <table class="table">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">
-            <span>เลขห้อง</span>
-          </th>
-          <th scope="col">
-            <span>รหัสนักศึกษา</span>
-          </th>
-          <th scope="col">
-            <span>ชื่อ - สกุล</span>
-          </th>
-          <th scope="col"><span>สาขา</span></th>
-          <th scope="col">
-            <span>เบอร์</span>
-          </th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr
-          *ngFor="
-            let x of datafail | paginate: { itemsPerPage: 12, currentPage: p }
-          "
-        >
-          <td>{{ x.room_number }}</td>
-          <td>{{ x.std_code }}</td>
-          <td>{{ x.nameTitle + x.fname + " " + x.lname }}</td>
-          <td>{{ x.branch_code }}</td>
-          <td>{{ x.phone }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- Modal นักศึกษานอก -->
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          บัตรนักศึกษาหอพัก
-        </h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form [formGroup]="formStd_code">
-        <div class="modal-body" align="center">
-          <!-- content -->
-
-          <div class="frame">
-            <mat-form-field>
-              <input
-                matInput
-                formControlName="std_code"
-                placeholder="รหัสนักศึกษา"
-              />
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-
-            <mat-form-field class="selectRule">
-              <mat-select
-                formControlName="nameTitle"
-                placeholder="คำนำหน้า"
-                (selectionChange)="
-                  getRoom(
-                    this.formStd_code.value.nameTitle,
-                    this.formStd_code.value.floor,
-                    ''
-                  )
-                "
-              >
-                <mat-option *ngFor="let x of titleName" [value]="x">{{
-                  x
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
-              <input matInput formControlName="fname" placeholder="ชื่อจริง" />
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
-              <input matInput formControlName="lname" placeholder="นามสกุล" />
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
-              <mat-select
-                formControlName="noLevel"
-                placeholder="ระดับวุฒิการศึกษา"
-              >
-                <mat-option *ngFor="let x of levels" [value]="x.noLevel">{{
-                  x.name
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
-              <mat-select
-                formControlName="faculty_code"
-                placeholder="คณะ"
-                (selectionChange)="
-                  getBranch(
-                    this.formStd_code.value.faculty_code,
-                    this.formStd_code.value.noLevel
-                  )
-                "
-              >
-                <mat-option
-                  *ngFor="let x of Faculty"
-                  [value]="x.faculty_code"
-                  >{{ x.name }}</mat-option
-                >
-              </mat-select>
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
-              <mat-select formControlName="branch_code" placeholder="สาขา">
-                <mat-option *ngFor="let x of branch" [value]="x.branch_code">{{
-                  x.name
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
-              <input
-                matInput
-                formControlName="groupStd"
-                placeholder="กลุ่มเรียน"
-              />
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
-              <mat-select
-                formControlName="floor"
-                placeholder="ชั้น"
-                (selectionChange)="
-                  getRoom(
-                    this.formStd_code.value.nameTitle,
-                    this.formStd_code.value.floor,
-                    ''
-                  )
-                "
-              >
-                <mat-option *ngFor="let x of floor" [value]="x.floor">{{
-                  x.floor
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
-              <mat-select formControlName="room_number" placeholder="ห้องพัก">
-                <mat-option *ngFor="let x of room" [value]="x.room_number">{{
-                  x.room_number
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
-              <input
-                matInput
-                formControlName="phone"
-                placeholder="เบอร์โทรศัพท์"
-              />
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            id="closebutton"
-            data-dismiss="modal"
-          >
-            ยกเลิก
-          </button>
-          <button type="button" class="btn btn-primary" (click)="setDataStd()">
-            เพิ่มข้อมูล
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+  <nav mat-tab-nav-bar>
+    <span
+      mat-tab-link
+      routerLinkActive="router-active"
+      [routerLink]="['importExcel']"
+    >
+      อัพโหลดไฟล์
+    </span>
+    <span
+      mat-tab-link
+      routerLinkActive="router-active"
+      [routerLink]="['importStudent']"
+    >
+      เพิ่มข้อมูลนักศึกษา
+    </span>
+    <span
+      mat-tab-link
+      routerLinkActive="router-active"
+      [routerLink]="['importBranch']"
+    >
+      เพิ่มข้อมูลสาขา
+    </span>
+  </nav>
+  <router-outlet></router-outlet>
 </div>

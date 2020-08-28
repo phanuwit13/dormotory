@@ -1,0 +1,70 @@
+// .containerContent {
+//   padding-left: 30px;
+//   padding-right: 10px;
+//   padding-bottom: 50px;
+//   width: 100%;
+// }
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+.main {
+  margin: 1%;
+  padding-right: 10px;
+}
+#customers td,
+#customers th {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  color: #000000;
+}
+
+#customers tr:nth-child(even) {
+  background-color: #ffffff;
+}
+#customers tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+#customers tr:hover {
+  background-color: #dfdfdf;
+}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #f0f0f0;
+}
+.uload {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+.page {
+  text-align: center;
+}
+.per30 {
+  width: 29%;
+  margin-right: 1%;
+}
+.per28 {
+  width: 27%;
+  margin-right: 1%;
+}
+.per10 {
+  width: 9%;
+  margin-right: 1%;
+}
+.per20 {
+  width: 19%;
+  margin-right: 1%;
+}
+.per15 {
+  width: 15%;
+  margin-right: 1%;
+}
+.per40 {
+  width: 39%;
+  margin-right: 1%;
+}

@@ -7,6 +7,7 @@ import {
 import { Component, OnInit } from "@angular/core";
 import { HttpService } from "src/app/services/http.service";
 import Swal from "sweetalert2";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: "app-default-student",
@@ -37,7 +38,11 @@ export class DefaultStudentComponent implements OnInit {
   public lastNameFile: Array<any> = [];
   imagePath: any;
   imgURL: any;
-  constructor(private http: HttpService, private formBuilder: FormBuilder) {}
+  constructor(
+    private http: HttpService,
+    private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService
+  ) {}
 
   async ngOnInit() {
     this.formStd_code = this.formBuilder.group({
@@ -65,7 +70,13 @@ export class DefaultStudentComponent implements OnInit {
       male: false,
       female: false,
     });
-    await this.getStudentAll();
+
+    await this.spinner.show();
+    this.getStudentAll().then(async (value) => {
+      if (value == true) {
+        this.spinner.hide();
+      }
+    });
   }
 
   showdata() {
@@ -80,8 +91,10 @@ export class DefaultStudentComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = await httpRespon.response.data;
+      return true;
     } else {
       this.userData = null;
+      return true;
     }
   };
   async getStdcodeEdit(std) {

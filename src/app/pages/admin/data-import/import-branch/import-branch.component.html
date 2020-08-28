@@ -1,0 +1,158 @@
+<div class="contain">
+  <mat-card class="example-card start">
+    <mat-card-header>
+      <mat-card-title>เพิ่มข้อมูลระดับวุฒิการศึกษา</mat-card-title>
+      <!-- <mat-card-subtitle>เวลาเข้าสาย</mat-card-subtitle> -->
+    </mat-card-header>
+
+    <mat-card-content
+      [formGroup]="formLevel"
+      style="text-align: center; font-size: 17px;"
+    >
+      <mat-form-field class="per80">
+        <mat-label
+          ><span style="color: red;">*</span> ชื่อระดับวุฒิการศึกษา</mat-label
+        >
+        <input
+          formControlName="levelName"
+          matInput
+          placeholder="Ex. ปริญญาตรี"
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field class="per80">
+        <mat-label
+          ><span style="color: red;">*</span> ชื่อย่อวุฒิการศึกษา</mat-label
+        >
+        <input
+          formControlName="levelAcronym"
+          matInput
+          placeholder="Ex. ป.ตรี"
+        />
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        class="save"
+        [disabled]="formLevel.invalid"
+        (click)="setLevel()"
+      >
+        เพิ่มข้อมูล
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card class="example-card start">
+    <mat-card-header>
+      <mat-card-title>เพิ่มข้อมูลคณะ</mat-card-title>
+      <!-- <mat-card-subtitle>เวลาเข้าสาย</mat-card-subtitle> -->
+    </mat-card-header>
+
+    <mat-card-content
+      [formGroup]="formFaculty"
+      style="text-align: center; font-size: 17px;"
+    >
+      <mat-form-field class="per80">
+        <mat-label><span style="color: red;">*</span> ชื่อคณะภาษาไทย</mat-label>
+        <input
+          formControlName="facultyName"
+          matInput
+          placeholder="Ex. คณะบริหารธุรกิจ"
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field class="per80">
+        <mat-label
+          ><span style="color: red;">*</span> ชื่อคณะภาษาอังกฤษ</mat-label
+        >
+        <input
+          matInput
+          formControlName="facultyName_en"
+          placeholder="Ex. Faculty of Business Administration"
+        />
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        class="save"
+        [disabled]="formFaculty.invalid"
+        (click)="setFaculty()"
+      >
+        เพิ่มข้อมูล
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card class="example-card start">
+    <mat-card-header>
+      <mat-card-title>เพิ่มข้อมูลสาขา</mat-card-title>
+      <!-- <mat-card-subtitle>เวลาเข้าสาย</mat-card-subtitle> -->
+    </mat-card-header>
+
+    <mat-card-content
+      [formGroup]="formBranch"
+      style="text-align: center; font-size: 17px;"
+    >
+      <mat-form-field class="per80">
+        <mat-label
+          ><span style="color: red;">*</span> ระดับวุฒิการศึกษา</mat-label
+        >
+        <mat-select formControlName="levels" (selectionChange)="getFaculty()">
+          <mat-option *ngFor="let x of levels" [value]="x.noLevel">{{
+            x.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="per80">
+        <mat-label><span style="color: red;">*</span> คณะ</mat-label>
+        <mat-select formControlName="faculty_code">
+          <mat-option *ngFor="let x of Faculty" [value]="x.faculty_code">{{
+            x.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="per80">
+        <mat-label
+          ><span style="color: red;">*</span> ชื่อสาขาภาษาไทย</mat-label
+        >
+        <input
+          formControlName="branchName"
+          matInput
+          placeholder="Ex. สาขาวิชาการบัญชี"
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field class="per80">
+        <mat-label
+          ><span style="color: red;">*</span> ชื่อสาขาภาษาอังกฤษ</mat-label
+        >
+        <input
+          formControlName="branchName_en"
+          matInput
+          placeholder="Ex. Accounting"
+        />
+      </mat-form-field>
+      <mat-form-field class="per80">
+        <mat-label><span style="color: red;">*</span> ชื่อย่อสาขา</mat-label>
+        <input formControlName="acronym" matInput placeholder="Ex. AC" />
+      </mat-form-field>
+      <br />
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        class="save"
+        [disabled]="formBranch.invalid"
+        (click)="setBranch()"
+      >
+        เพิ่มข้อมูล
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

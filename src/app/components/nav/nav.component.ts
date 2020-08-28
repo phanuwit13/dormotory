@@ -1,3 +1,4 @@
+import  Swal from 'sweetalert2';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from "@angular/core";
 import { MediaMatcher } from "@angular/cdk/layout";
 import { HttpService } from "src/app/services/http.service";
@@ -25,8 +26,22 @@ export class NavComponent implements OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
   logOut = async () => {
-    await window.localStorage.clear();
-    this.http.navRouter(this.oldPath);
+    Swal.fire({
+      title: "",
+      text: "ยืนยันการออกจากระบบ ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ตกลง !",
+      cancelButtonText: "ยกเลิก",
+    }).then(async (result) => {
+      if (result.value) {
+        await window.localStorage.clear();
+        this.http.navRouter(this.oldPath);
+      } else {
+      }
+    });
   };
   rout(path) {
     this.http.navRouter("/nav/" + path);

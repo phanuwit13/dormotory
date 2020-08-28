@@ -1,0 +1,120 @@
+<div class="formInput">
+  <form class="frame" [formGroup]="formInsert">
+    <mat-form-field class="per28">
+      <mat-label><span style="color: red;">*</span> รหัสนักศึกษา</mat-label>
+      <input matInput formControlName="std_code" />
+    </mat-form-field>
+
+    <mat-form-field class="per15">
+      <mat-label><span style="color: red;">*</span> คำนำหน้า</mat-label>
+      <mat-select
+        formControlName="nameTitle"
+        (selectionChange)="
+          getRoom(
+            this.formInsert.value.nameTitle,
+            this.formInsert.value.floor,
+            ''
+          )
+        "
+      >
+        <mat-option *ngFor="let x of titleName" [value]="x">{{ x }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="per28">
+      <mat-label><span style="color: red;">*</span> ชื่อจริง</mat-label>
+      <input matInput formControlName="fname" />
+    </mat-form-field>
+
+    <mat-form-field class="per28">
+      <mat-label><span style="color: red;">*</span> นามสกุล</mat-label>
+      <input matInput formControlName="lname" />
+    </mat-form-field>
+    <br />
+    <mat-form-field class="per30">
+      <mat-label
+        ><span style="color: red;">*</span> ระดับวุฒิการศึกษา</mat-label
+      >
+      <mat-select
+        formControlName="noLevel"
+        (selectionChange)="
+          getBranch(
+            this.formInsert.value.faculty_code,
+            this.formInsert.value.noLevel
+          )
+        "
+      >
+        <mat-option *ngFor="let x of levels" [value]="x.noLevel">{{
+          x.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="per30">
+      <mat-label><span style="color: red;">*</span> คณะ</mat-label>
+      <mat-select
+        formControlName="faculty_code"
+        (selectionChange)="
+          getBranch(
+            this.formInsert.value.faculty_code,
+            this.formInsert.value.noLevel
+          )
+        "
+      >
+        <mat-option *ngFor="let x of Faculty" [value]="x.faculty_code">{{
+          x.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="per40">
+      <mat-label><span style="color: red;">*</span> สาขา</mat-label>
+      <mat-select formControlName="branch_code">
+        <mat-option *ngFor="let x of branch" [value]="x.branch_code">{{
+          x.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="per20">
+      <mat-label><span style="color: red;">*</span> กลุ่มเรียน</mat-label>
+      <input matInput formControlName="groupStd" />
+    </mat-form-field>
+    <mat-form-field class="per15">
+      <mat-label><span style="color: red;">*</span> ชั้น</mat-label>
+      <mat-select
+        formControlName="floor"
+        (selectionChange)="
+          getRoom(
+            this.formInsert.value.nameTitle,
+            this.formInsert.value.floor,
+            ''
+          )
+        "
+      >
+        <mat-option *ngFor="let x of floor" [value]="x.floor">{{
+          x.floor
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="per20">
+      <mat-label><span style="color: red;">*</span> ห้องพัก</mat-label>
+      <mat-select formControlName="room_number">
+        <mat-option *ngFor="let x of room" [value]="x.room_number">{{
+          x.room_number
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="per20">
+      <input matInput formControlName="phone" placeholder="เบอร์โทรศัพท์" />
+    </mat-form-field>
+    <br />
+    <button
+      (click)="setDataStd()"
+      [disabled]="formInsert.invalid"
+      mat-raised-button
+      color="primary"
+    >
+      เพิ่มข้อมูล
+    </button>
+  </form>
+</div>

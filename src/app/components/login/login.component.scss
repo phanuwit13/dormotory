@@ -22,7 +22,7 @@ mat-card-content {
 #page-container {
   position: relative;
   min-height: 100vh;
-  background-color: darkgray;
+  background-color: whitesmoke;
 }
 
 #content-wrap {
@@ -66,7 +66,7 @@ mat-card-content {
   width: 100%;
   padding: 15px;
   text-align: center;
-  color: #ffffff;
+  color: rgba(0, 0, 0, 0.54);
   font-size: 1vw;
 }
 @media only screen and (max-width: 480px) {

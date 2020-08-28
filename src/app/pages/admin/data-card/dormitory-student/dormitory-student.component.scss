@@ -149,7 +149,9 @@ button {
   margin-right: 15px;
   padding-top: 2px;
 }
-
+.mat-input-element:disabled {
+  color: #000000;
+}
 @media only screen and (max-width: 480px) {
   .search {
     width: 92%;

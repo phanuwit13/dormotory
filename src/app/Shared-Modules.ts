@@ -46,10 +46,12 @@ import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { NgxBarcodeModule } from "ngx-barcode";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgxPaginationModule } from "ngx-pagination";
+import { NgxSpinnerModule } from "ngx-spinner";
 import {
   NgbPaginationModule,
   NgbAlertModule,
 } from "@ng-bootstrap/ng-bootstrap";
+
 @NgModule({
   exports: [
     A11yModule,
@@ -103,6 +105,7 @@ import {
     NgbAlertModule,
     NgbModule,
     NgxPaginationModule,
+    NgxSpinnerModule,
   ],
 })
 export class SharedModules {}

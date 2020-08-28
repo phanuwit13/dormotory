@@ -50,53 +50,33 @@ export class TimeAddComponent implements OnInit {
     console.log(this.date.getHours() + ":" + this.date.getMinutes());
     console.log(this.date.getTime());
   }
+
   addTime = async () => {
     let dateZone = new Date();
     let formData = new FormData();
-    this.setTime();
     formData.append("std_code", this.formLogin.controls["std_code"].value);
-    formData.append(
-      "date_stamp",
-      dateZone.getFullYear() +
-        "-" +
-        (dateZone.getMonth() + 1) +
-        "-" +
-        dateZone.getDate()
-    );
-    formData.append("time_stamp", this.hours + ":" + this.minutes);
-    let httpResponTime: any = await this.http.post("getTimeSet");
-    this.timeStart = httpResponTime.response.data;
-    console.log(this.timeStart[0]);
-    console.log("Start: " + this.timeStart[0].timeStart);
-    console.log("End: " + this.timeStart[0].timeEnd);
-    console.log("Time: " + dateZone.getHours() + ":" + dateZone.getMinutes());
-    let h = this.timeStart[0].timeStart.split(":");
-    let h2 = this.timeStart[0].timeEnd.split(":");
+    formData.append("date_stamp", this.setDate());
+    formData.append("time_stamp", this.setTime());
+    this.timeStart = await this.getTimeSet();
+    // console.log(this.timeStart[0]);
+    // console.log("Start: " + this.timeStart[0].timeStart);
+    // console.log("End: " + this.timeStart[0].timeEnd);
+    // console.log("Time: " + dateZone.getHours() + ":" + dateZone.getMinutes());
+    let timeStart = this.timeStart[0].timeStart.split(":");
+    let timeEnd = this.timeStart[0].timeEnd.split(":");
     //console.log(parseInt(h[0].toInteger)+"");
     //||this.date.getHours() < 5
-    if (dateZone.getHours() < h[0] && dateZone.getHours() > h2[0]) {
-      this.statusTime = 0;
-      console.log("ไม่สาย1");
-    } else if (dateZone.getHours() == h[0]) {
-      if (dateZone.getMinutes() > h[1]) {
-        this.statusTime = 1;
-        console.log("สาย2");
-      } else {
-        this.statusTime = 0;
-        console.log("ไม่สาย2");
-      }
-    } else if (dateZone.getHours() == h2[0]) {
-      if (dateZone.getMinutes() < h2[1]) {
-        this.statusTime = 1;
-        console.log("สาย3");
-      } else {
-        this.statusTime = 0;
-        console.log("ไม่สาย3");
-      }
+    if (timeStart[0] > timeEnd[0]) {
+      this.statusTime = await this.startOverEnd(timeStart, timeEnd);
+      console.log("เวลาเริ่มต้นมากกว่าสิ้นสุด");
+    } else if (timeStart[0] < timeEnd[0]) {
+      this.statusTime = await this.endOverStart(timeStart, timeEnd);
+      console.log("เวลาสิ้นสุดมากกว่าเริ่มต้น");
     } else {
-      this.statusTime = 1;
-      console.log("สาย5");
+      this.statusTime = await this.timeEqual(timeStart, timeEnd);
+      console.log("เวลาเท่ากัน"); 
     }
+
     formData.append("time_status", this.statusTime);
     console.log("-------------------------------");
     formData.forEach((x, key) => {
@@ -125,6 +105,69 @@ export class TimeAddComponent implements OnInit {
     }
   };
 
+  async startOverEnd(timeStart, timeEnd) {
+    let dateZone = new Date();
+    if (
+      dateZone.getHours() <= timeStart[0] &&
+      dateZone.getHours() >= timeEnd[0]
+    ) {
+      //this.statusTime = 0;
+      if (dateZone.getHours() == timeStart[0]) {
+        if (dateZone.getMinutes() > timeStart[1]) {
+          return 1;
+        } else {
+          return 0;
+        }
+      } else if (dateZone.getHours() == timeEnd[0]) {
+        if (dateZone.getMinutes() < timeEnd[1]) {
+          return 1;
+        } else {
+          return 0;
+        }
+      } else {
+        return 0;
+      }
+    } else {
+      return 1;
+    }
+  }
+
+  async endOverStart(timeStart, timeEnd) {
+    let dateZone = new Date();
+    if (
+      dateZone.getHours() >= timeStart[0] &&
+      dateZone.getHours() <= timeEnd[0]
+    ) {
+      //this.statusTime = 0;
+      if (dateZone.getHours() == timeStart[0]) {
+        if (dateZone.getMinutes() > timeStart[1]) {
+          return 1;
+        } else {
+          return 0;
+        }
+      } else if (dateZone.getHours() == timeEnd[0]) {
+        if (dateZone.getMinutes() < timeEnd[1]) {
+          return 1;
+        } else {
+          return 0;
+        }
+      } else {
+        return 1;
+      }
+    } else {
+      return 0;
+    }
+  }
+
+  async timeEqual(timeStart, timeEnd) {
+    let dateZone = new Date();
+      if (dateZone.getMinutes() > timeStart[1] && dateZone.getMinutes() < timeEnd[1] ) {
+        return 1;
+      } else {
+        return 0;
+      }
+  }
+
   async getStdcode() {
     let formData = new FormData();
     formData.append("std_code", this.formLogin.controls["std_code"].value);
@@ -134,12 +177,9 @@ export class TimeAddComponent implements OnInit {
     if (httpRespon.response.success) {
       this.dataStd = httpRespon.response.data;
       console.log(httpRespon.response);
-      //this.setCursor();
-      //document.getElementById("success").click();
       return true;
     } else {
       this.dataStd = null;
-      //this.setCursor();
       return false;
     }
   }
@@ -155,6 +195,27 @@ export class TimeAddComponent implements OnInit {
     } else {
       this.minutes = dateZone.getMinutes();
     }
+
+    return this.hours + ":" + this.minutes;
+  };
+
+  setDate = () => {
+    let dateZone = new Date();
+    return (
+      dateZone.getFullYear() +
+      "-" +
+      (dateZone.getMonth() + 1) +
+      "-" +
+      dateZone.getDate()
+    );
+  };
+  getTimeSet = async () => {
+    let httpResponTime: any = await this.http.post("getTimeSet");
+    if (httpResponTime.response.success) {
+      return httpResponTime.response.data;
+    } else {
+      return null;
+    }
   };
 
   setCursor = () => {
@@ -166,7 +227,7 @@ export class TimeAddComponent implements OnInit {
     console.log(this.focus);
     this.userStd = null;
   }
-  async getStudent() {
+  async searchStudent() {
     if (this.formLogin.controls["keyStd"].value != "") {
       console.log(this.formLogin.controls["keyStd"].value);
       let formData = new FormData();
@@ -184,16 +245,11 @@ export class TimeAddComponent implements OnInit {
       this.userStd = null;
     }
   }
+
   async checkConfirm() {
     if ((await this.getStdcode()) == true) {
       if (this.confirm.value == true) {
         document.getElementById("success").click();
-        // Swal.fire({
-        //   icon: "success",
-        //   title: "สำเร็จ",
-        //   text: "บันทึกเวลาสำเร็จ !",
-        //   timer: 1000,
-        // });
       } else {
         this.addTime();
         Swal.fire({

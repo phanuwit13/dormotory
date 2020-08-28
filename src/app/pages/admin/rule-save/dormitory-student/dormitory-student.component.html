@@ -1,12 +1,12 @@
 <div class="formInput">
   <form [formGroup]="formStd_code">
     <form [formGroup]="formStd_code" (keydown.enter)="getStdcode()">
-      <mat-form-field class="stdCode">
+      <mat-form-field class="per30">
         <mat-label><span style="color: red;">*</span> รหัสนักศึกษา</mat-label>
         <input matInput formControlName="std_code" (keyup)="getStdcode()" />
       </mat-form-field>
 
-      <mat-form-field *ngIf="nameStudent != null" class="stdName">
+      <mat-form-field *ngIf="nameStudent != null" class="per30">
         <input
           matInput
           placeholder="ชื่อ-นามสกุล"
@@ -15,7 +15,7 @@
           disabled
         />
       </mat-form-field>
-      <mat-form-field *ngIf="nameStudent != null" class="stdRoom">
+      <mat-form-field *ngIf="nameStudent != null" class="per10">
         <input
           matInput
           placeholder="เลขห้อง"
@@ -23,8 +23,7 @@
           disabled
         />
       </mat-form-field>
-      <br />
-      <mat-form-field *ngIf="nameStudent != null" class="stdCode">
+      <mat-form-field *ngIf="nameStudent != null" class="per20">
         <input
           matInput
           placeholder="ระดับการศึกษา"
@@ -32,7 +31,7 @@
           disabled
         />
       </mat-form-field>
-      <mat-form-field *ngIf="nameStudent != null" class="stdFaculty">
+      <mat-form-field *ngIf="nameStudent != null" class="per30">
         <input
           matInput
           placeholder="คณะ"
@@ -41,7 +40,7 @@
           disabled
         />
       </mat-form-field>
-      <mat-form-field *ngIf="nameStudent != null" class="stdName">
+      <mat-form-field *ngIf="nameStudent != null" class="per30">
         <input
           matInput
           placeholder="สาขา"
@@ -50,8 +49,7 @@
           disabled
         />
       </mat-form-field>
-      <br />
-      <mat-form-field *ngIf="nameStudent != null" class="stdRoom">
+      <mat-form-field *ngIf="nameStudent != null" class="per15">
         <input
           matInput
           placeholder="กลุ่มเรียน"
@@ -60,7 +58,7 @@
           disabled
         />
       </mat-form-field>
-      <mat-form-field *ngIf="nameStudent != null" class="phone">
+      <mat-form-field *ngIf="nameStudent != null" class="per15">
         <input
           matInput
           value="{{ nameStudent[0].phone }}
@@ -70,7 +68,7 @@
         />
       </mat-form-field>
     </form>
-    <mat-form-field class="selectRule">
+    <mat-form-field class="per50">
       <mat-label><span style="color: red;">*</span> กระทำผิดกฏข้อที่</mat-label>
       <mat-select formControlName="rulesBreak">
         <mat-option
@@ -82,7 +80,7 @@
     </mat-form-field>
 
     <mat-form-field
-      class="selectRule"
+      class="per50"
       *ngIf="this.formStd_code.value.rulesBreak == 16"
     >
       <input matInput placeholder="กระทำผิดกฏ" formControlName="other" />
@@ -91,21 +89,21 @@
     <table class="dateTime">
       <tr>
         <td>
-          <div class="dateInput">
+          <div style="width: 98%;">
             <mat-form-field>
               <mat-label
                 ><span style="color: red;">*</span> วันที่กระทำผิด</mat-label
               >
               <input
                 matInput
-                [matDatepicker]="picker"
+                [matDatepicker]="picker1"
                 formControlName="date_rule"
               />
               <mat-datepicker-toggle
                 matSuffix
-                [for]="picker"
+                [for]="picker1"
               ></mat-datepicker-toggle>
-              <mat-datepicker #picker> </mat-datepicker>
+              <mat-datepicker #picker1> </mat-datepicker>
             </mat-form-field>
           </div>
         </td>
@@ -123,7 +121,7 @@
     </table>
 
     <br />
-    <mat-form-field style="width: 80%;">
+    <mat-form-field class="per50">
       <textarea
         matInput
         placeholder="รายละเอียด"

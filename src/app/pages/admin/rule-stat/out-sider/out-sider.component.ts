@@ -1,3 +1,4 @@
+import { NgxSpinnerService } from "ngx-spinner";
 import { HttpService } from "src/app/services/http.service";
 import { Component, OnInit } from "@angular/core";
 import {
@@ -41,7 +42,11 @@ export class OutSiderComponent implements OnInit {
     "พฤษจิกายน",
     "ธันวาคม",
   ];
-  constructor(private http: HttpService, private formBuilder: FormBuilder) {}
+  constructor(
+    private http: HttpService,
+    private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService
+  ) {}
 
   async ngOnInit() {
     this.formStd_code = this.formBuilder.group({
@@ -64,8 +69,13 @@ export class OutSiderComponent implements OnInit {
       term: null,
       rules_number: "",
     });
-    this.getStdRule();
     this.getRule();
+    await this.spinner.show();
+    this.getStdRule().then(async (value) => {
+      if (value == true) {
+        this.spinner.hide();
+      }
+    });
   }
 
   getStdRule = async () => {
@@ -74,8 +84,10 @@ export class OutSiderComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
+      return true;
     } else {
       this.userData = null;
+      return true;
     }
   };
 
@@ -243,5 +255,21 @@ export class OutSiderComponent implements OnInit {
       "ผลการกระทำผิดกฎของบุคคลภายนอก_" + this.getDate()
     );
     this.data = [];
+  }
+
+  async searchOut() {
+    this.userData = [];
+    console.log(this.keyStd.value);
+    let formData = new FormData();
+    formData.append("keyStd", this.keyStd.value);
+    let httpRespon: any = await this.http.post("searchRuleStatOut", formData);
+    console.log(httpRespon);
+    if (httpRespon.response.data.length > 0) {
+      this.userData = httpRespon.response.data;
+      console.log("พบ");
+    } else {
+      this.userData = [];
+      console.log("ไม่พบ");
+    }
   }
 }
