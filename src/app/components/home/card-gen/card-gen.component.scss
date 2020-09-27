@@ -30,6 +30,7 @@
 .detail {
   padding-left: 10px;
   width: 100%;
+  line-height: 1.4;
   //background-color: rgb(218, 67, 67);
 }
 .data {
@@ -39,7 +40,10 @@
   margin-left: 10px;
 }
 .data b {
-  font-size: 17px;
+  font-size: 16px;
+}
+.data span {
+  font-size: 15px;
 }
 .title {
   display: flex;
@@ -49,9 +53,9 @@
   font-size: 18px;
 }
 .nameCen {
-  float: right;
+  position: absolute;
+  right: 0;
   padding-right: 20px;
-  margin-bottom: 0px;
 }
 .barcode {
   float: left;
@@ -67,8 +71,19 @@
   width: 70px;
 }
 
+#return {
+  font-size: 70px;
+  cursor: pointer;
+  display: block;
+  margin-top: -20px;
+  width: 70px;
+  float: right;
+  margin-bottom: -50px;
+}
+
 @media print {
-  #print {
+  #print,
+  #return {
     display: none;
   }
 }

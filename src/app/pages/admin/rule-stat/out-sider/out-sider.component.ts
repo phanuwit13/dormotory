@@ -28,6 +28,7 @@ export class OutSiderComponent implements OnInit {
   public checkConnect: any = false;
   public term = [1, 2, 3];
   data: any = [];
+  public showColumn = new FormControl();
   monthsList: string[] = [
     "มกราคม",
     "กุมภาพันธ์",

@@ -30,6 +30,7 @@ export class ImportExcelComponent implements OnInit {
     "สาขา",
     "เบอร์โทรศัพท์",
   ];
+  public editIndex = null
   public header: Array<String> = [];
   p: number = 1;
   public selectedFile: File = null;
@@ -142,8 +143,8 @@ export class ImportExcelComponent implements OnInit {
       cancelButtonText: "ยกเลิก",
     }).then(async (result) => {
       if (result.value) {
-        Object.keys(this.formInsert.value).forEach(async (key) => {
-          formData.append(key, await this.formInsert.value[key].trim());
+        await Object.keys(this.formInsert.value).forEach(async (key) => {
+          formData.append(key, await this.formInsert.value[key]+"".trim());
         });
         let httpRespon: any = await this.http.post("addStudent", formData);
         console.log(httpRespon);
@@ -153,7 +154,15 @@ export class ImportExcelComponent implements OnInit {
             title: "สำเร็จ",
             text: httpRespon.response.message,
           });
+          for(let i = 0 ; i < this.datafail.length ; i++)
+          {
+            if(i == this.editIndex)
+            { 
+              this.datafail[i].error[0] = 1;
+            }
+          }
           this.formInsert.reset();
+          document.getElementById('closebutton').click()
         } else {
           Swal.fire({
             icon: "error",
@@ -228,55 +237,6 @@ export class ImportExcelComponent implements OnInit {
     return true;
   }
 
-  // async readDataStd() {
-  //   this.data.forEach(async (x, index) => {
-  //     if (index != 0) {
-  //       if (x != "") {
-  //         if (x.length == 9) {
-  //           this.importData(
-  //             x[0] + "",
-  //             x[1] + "",
-  //             x[2] + "",
-  //             x[3] + "",
-  //             x[4] + "",
-  //             x[6] + "",
-  //             x[8] + ""
-  //           );
-  //         } else if (x.length == 8) {
-  //           this.importData(
-  //             x[0] + "",
-  //             x[1] + "",
-  //             x[2] + "",
-  //             x[3] + "",
-  //             x[4] + "",
-  //             x[6] + "",
-  //             ""
-  //           );
-  //         } else {
-  //           for (let i = 0; i < 9; i++) {
-  //             if (!x[i]) {
-  //               x[i] = "";
-  //             }
-  //             console.log(x[i]);
-  //           }
-  //           this.datafail.push({
-  //             std_code: x[1] + "",
-  //             room_number: x[0] + "",
-  //             nameTitle: x[2] + "",
-  //             fname: x[3] + "",
-  //             lname: x[4] + "",
-  //             branch_code: x[6] + "",
-  //             phone: x[8] + "",
-  //             error: "กรุณาตรวจสอบข้อมูล",
-  //           });
-  //         }
-  //       }
-  //     }
-  //   });
-  //   console.log(this.datafail);
-  //   return true;
-  // }
-
   async readDataStd() {
     this.data.forEach(async (x, index) => {
       if (index != 0) {
@@ -324,7 +284,7 @@ export class ImportExcelComponent implements OnInit {
         lname: x[4] + "",
         branch_code: x[5] + "",
         phone: x[6] + "",
-        error: "กรุณาตรวจสอบข้อมูล",
+        error: [0,"กรุณาตรวจสอบข้อมูล"],
       });
       return false;
     } else {
@@ -400,7 +360,7 @@ export class ImportExcelComponent implements OnInit {
         lname: lname,
         branch_code: branch_code,
         phone: phone,
-        error: httpRespon.response.message,
+        error: [0,httpRespon.response.message],
       });
       console.log(httpRespon.response);
     }
@@ -442,8 +402,9 @@ export class ImportExcelComponent implements OnInit {
     lname,
     branch_code,
     phone,
-    room_number
+    room_number,index
   ) {
+    this.editIndex = index
     this.getFaculty();
     let str = "";
     let bc = [];

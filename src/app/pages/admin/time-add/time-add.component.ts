@@ -17,7 +17,7 @@ export class TimeAddComponent implements OnInit {
   public formLogin: FormGroup;
   public userStd: any = null;
   public statusTime: any;
-  public timeStart: any;
+  public timeSet: any;
   public timeEnd: any;
   public dataStd: any = null;
   public hours: any;
@@ -52,36 +52,22 @@ export class TimeAddComponent implements OnInit {
   }
 
   addTime = async () => {
-    let dateZone = new Date();
     let formData = new FormData();
     formData.append("std_code", this.formLogin.controls["std_code"].value);
     formData.append("date_stamp", this.setDate());
     formData.append("time_stamp", this.setTime());
-    this.timeStart = await this.getTimeSet();
-    // console.log(this.timeStart[0]);
-    // console.log("Start: " + this.timeStart[0].timeStart);
-    // console.log("End: " + this.timeStart[0].timeEnd);
-    // console.log("Time: " + dateZone.getHours() + ":" + dateZone.getMinutes());
-    let timeStart = this.timeStart[0].timeStart.split(":");
-    let timeEnd = this.timeStart[0].timeEnd.split(":");
-    //console.log(parseInt(h[0].toInteger)+"");
-    //||this.date.getHours() < 5
+    this.timeSet = await this.getTimeSet();
+    let timeStart = this.timeSet[0].timeStart.split(":");
+    let timeEnd = this.timeSet[0].timeEnd.split(":");
     if (timeStart[0] > timeEnd[0]) {
       this.statusTime = await this.startOverEnd(timeStart, timeEnd);
-      console.log("เวลาเริ่มต้นมากกว่าสิ้นสุด");
     } else if (timeStart[0] < timeEnd[0]) {
       this.statusTime = await this.endOverStart(timeStart, timeEnd);
-      console.log("เวลาสิ้นสุดมากกว่าเริ่มต้น");
     } else {
       this.statusTime = await this.timeEqual(timeStart, timeEnd);
-      console.log("เวลาเท่ากัน"); 
     }
 
     formData.append("time_status", this.statusTime);
-    console.log("-------------------------------");
-    formData.forEach((x, key) => {
-      console.log(key + ":" + x);
-    });
     let httpResponData: any = await this.http.post("settime", formData);
     console.log(httpResponData.response.success);
     if (httpResponData.response.success) {
@@ -161,11 +147,14 @@ export class TimeAddComponent implements OnInit {
 
   async timeEqual(timeStart, timeEnd) {
     let dateZone = new Date();
-      if (dateZone.getMinutes() > timeStart[1] && dateZone.getMinutes() < timeEnd[1] ) {
-        return 1;
-      } else {
-        return 0;
-      }
+    if (
+      dateZone.getMinutes() > timeStart[1] &&
+      dateZone.getMinutes() < timeEnd[1]
+    ) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 
   async getStdcode() {

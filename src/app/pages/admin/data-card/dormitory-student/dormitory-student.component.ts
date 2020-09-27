@@ -8,7 +8,7 @@ import { Component, OnInit } from "@angular/core";
 import { HttpService } from "src/app/services/http.service";
 import Swal from "sweetalert2";
 import { NgxSpinnerService } from "ngx-spinner";
-
+import { Sort } from "@angular/material/sort";
 @Component({
   selector: "app-dormitory-student",
   templateUrl: "./dormitory-student.component.html",
@@ -33,8 +33,10 @@ export class DormitoryStudentComponent implements OnInit {
   public fileName = null;
   public selectedFile: File = null;
   public lastNameFile: Array<any> = [];
+  public stdCard: Array<any> = [];
   imagePath: any;
   imgURL: any;
+  public showColumn = new FormControl();
 
   constructor(
     private http: HttpService,
@@ -94,6 +96,7 @@ export class DormitoryStudentComponent implements OnInit {
       return true;
     }
   };
+
   async getStdcodeEdit(std) {
     this.imgURL = null;
     //// สร้างฟังก์ชั่นมาใหม่ ดึงค่าตรงตัวมาเลย เพื่อมาเเก้ไข
@@ -332,13 +335,7 @@ export class DormitoryStudentComponent implements OnInit {
     }
     return year + "-" + month + "-" + day;
   }
-  sortTable = (value: any) => {
-    console.log(this.userData);
-    console.log(value);
-    this.userData.sort((a, b) =>
-      a[value] > b[value] ? 1 : a[value] < b[value] ? -1 : 0
-    );
-  };
+
   advancedSearch = () => {
     this.branch = null;
     this.Faculty = null;
@@ -377,7 +374,12 @@ export class DormitoryStudentComponent implements OnInit {
   }
 
   gennarateCard = () => {
-    window.localStorage.setItem("userData", JSON.stringify(this.userData));
+    if (this.stdCard.length == 0) {
+      Swal.fire("", "กรุณาเลือกนักศึกษา", "error");
+      return;
+    }
+    this.http.navRouter("gencard");
+    window.localStorage.setItem("userData", JSON.stringify(this.stdCard));
     console.log(JSON.parse(window.localStorage.getItem("userData")));
   };
 
@@ -385,6 +387,23 @@ export class DormitoryStudentComponent implements OnInit {
     window.localStorage.setItem("userData", JSON.stringify([value]));
     console.log(JSON.parse(window.localStorage.getItem("userData")));
   };
+
+  addStdCard = async (value, check) => {
+    console.log(check);
+
+    if (check == true) {
+      this.stdCard.push(value);
+    } else {
+      this.stdCard = this.stdCard.filter((item) => {
+        if (item != value) {
+          return item;
+        }
+      });
+    }
+
+    console.log(this.stdCard);
+  };
+
   deleteStudent = async (value) => {
     await Swal.fire({
       title: "",
@@ -439,4 +458,54 @@ export class DormitoryStudentComponent implements OnInit {
       this.imgURL = reader.result;
     };
   }
+
+  checkAll(ev) {
+    if (ev.checked) {
+      this.userData.forEach((x) => {
+        x.state = ev.checked;
+        this.stdCard.push(x);
+      });
+    } else {
+      this.userData.forEach((x) => {
+        x.state = ev.checked;
+      });
+      this.stdCard = [];
+    }
+  }
+  sortData(sort: Sort) {
+    if (this.userData == null) {
+      return;
+    }
+    const data = this.userData.slice();
+    if (!sort.active || sort.direction === "") {
+      this.userData = data;
+      return;
+    }
+
+    this.userData = data.sort((a, b) => {
+      const isAsc = sort.direction === "asc";
+      switch (sort.active) {
+        case "room_number":
+          return compare(a.room_number, b.room_number, isAsc);
+        case "std_code":
+          return compare(a.std_code, b.std_code, isAsc);
+        case "nameStd":
+          return compare(a.nameStd, b.nameStd, isAsc);
+        case "faculty":
+          return compare(a.faculty, b.faculty, isAsc);
+        case "branch":
+          return compare(a.branch, b.branch, isAsc);
+        case "groubStudent":
+          return compare(a.groubStudent, b.groubStudent, isAsc);
+        case "level":
+          return compare(a.level, b.level, isAsc);
+        default:
+          return 0;
+      }
+    });
+  }
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

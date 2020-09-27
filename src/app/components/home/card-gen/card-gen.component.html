@@ -1,6 +1,11 @@
 <div class="contain" *ngIf="dataUser != null">
-  <span class="material-icons" id="print" (click)="printData()">
-    print
+  <span class="material-icons" id="print" (click)="printData()"> print </span>
+  <span
+    class="material-icons"
+    id="return"
+    [routerLink]="['/nav/card_data/dormitoryStudent']"
+  >
+    keyboard_return
   </span>
   <span class="card" *ngFor="let item of dataUser">
     <span class="title">
@@ -9,17 +14,15 @@
     <table>
       <tr>
         <td class="left">
-          <span
-            >
-            <div class="img" >รูปนักศึกษา</div>
-            
+          <span>
+            <div class="img">รูปนักศึกษา</div>
+
             <!-- <img
               class="img"
               src="https://www.seosogood.com/wp-content/uploads/avatar-2.png"
               alt=""
           /> -->
-        
-        </span>
+          </span>
         </td>
         <td class="detail">
           <p class="data">
@@ -27,6 +30,9 @@
           </p>
           <p class="data">
             <b>รหัส</b> <span>{{ item.std_code }}</span>
+          </p>
+          <p class="data">
+            <b>คณะ</b> <span>{{ item.faculty.split("คณะ")[1] }}</span>
           </p>
           <p class="data">
             <b>สาขา</b> <span>{{ item.groubStudent }}</span>
@@ -43,7 +49,7 @@
     <span class="barcode">
       <ngx-barcode
         [bc-width]="1.8"
-        [bc-height]="30"
+        [bc-height]="25"
         [bc-value]="item.std_code"
         [bc-display-value]="false"
       ></ngx-barcode>

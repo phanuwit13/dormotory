@@ -144,8 +144,8 @@ export class ImportStudentComponent implements OnInit {
       cancelButtonText: "ยกเลิก",
     }).then(async (result) => {
       if (result.value) {
-        Object.keys(this.formInsert.value).forEach(async (key) => {
-          formData.append(key, await this.formInsert.value[key].trim());
+        await Object.keys(this.formInsert.value).forEach(async (key) => {
+          formData.append(key, await this.formInsert.value[key]+"".trim());
         });
         let httpRespon: any = await this.http.post("addStudent", formData);
         console.log(httpRespon);

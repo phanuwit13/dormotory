@@ -1,12 +1,12 @@
 <div class="formInput">
   <form [formGroup]="formStd_code">
     <form [formGroup]="formStd_code" (keydown.enter)="getStdcode()">
-      <mat-form-field class="per30">
-        <mat-label><span style="color: red;">*</span> รหัสนักศึกษา</mat-label>
+      <mat-form-field class="per35">
+        <mat-label><span style="color: red">*</span> รหัสนักศึกษา</mat-label>
         <input matInput formControlName="std_code" (keyup)="getStdcode()" />
       </mat-form-field>
 
-      <mat-form-field *ngIf="nameStudent != null" class="per30">
+      <mat-form-field *ngIf="nameStudent != null" class="per35">
         <input
           matInput
           placeholder="ชื่อ-นามสกุล"
@@ -31,7 +31,7 @@
           disabled
         />
       </mat-form-field>
-      <mat-form-field *ngIf="nameStudent != null" class="per30">
+      <mat-form-field *ngIf="nameStudent != null" class="per35">
         <input
           matInput
           placeholder="คณะ"
@@ -40,7 +40,7 @@
           disabled
         />
       </mat-form-field>
-      <mat-form-field *ngIf="nameStudent != null" class="per30">
+      <mat-form-field *ngIf="nameStudent != null" class="per35">
         <input
           matInput
           placeholder="สาขา"
@@ -69,7 +69,7 @@
       </mat-form-field>
     </form>
     <mat-form-field class="per50">
-      <mat-label><span style="color: red;">*</span> กระทำผิดกฏข้อที่</mat-label>
+      <mat-label><span style="color: red">*</span> กระทำผิดกฏข้อที่</mat-label>
       <mat-select formControlName="rulesBreak">
         <mat-option
           *ngFor="let x of ruleChoice; let i = index"
@@ -89,10 +89,10 @@
     <table class="dateTime">
       <tr>
         <td>
-          <div style="width: 98%;">
+          <div style="width: 98%">
             <mat-form-field>
               <mat-label
-                ><span style="color: red;">*</span> วันที่กระทำผิด</mat-label
+                ><span style="color: red">*</span> วันที่กระทำผิด</mat-label
               >
               <input
                 matInput

@@ -32,10 +32,15 @@
       ส่งออกสรุปผลการกระทำผิดกฎระเบียบ
     </button>
   </div>
+  <div class="box1">
+    <mat-slide-toggle [formControl]="showColumn" class="toggle"
+      >แสดงคอลัมน์ทั้งหมด</mat-slide-toggle
+    >
+  </div>
 </div>
 <div class="main">
   <ngx-spinner size="medium" color="#ff5722" type="ball-spin-clockwise"
-    ><p style="color: white;">Loading...</p></ngx-spinner
+    ><p style="color: white">Loading...</p></ngx-spinner
   >
   <table class="table" *ngIf="checkConnect == true">
     <thead class="thead-dark">
@@ -44,9 +49,9 @@
         <th scope="col">เวลา</th>
         <th scope="col">บัตรประชาชน</th>
         <th scope="col">ชื่อ - สกุล</th>
-        <th scope="col">ที่อยู่</th>
-        <th scope="col">ข้อมูลบิดา</th>
-        <th scope="col">ข้อมูลมารดา</th>
+        <th *ngIf="showColumn.value == true" scope="col">ที่อยู่</th>
+        <th *ngIf="showColumn.value == true" scope="col">ข้อมูลบิดา</th>
+        <th *ngIf="showColumn.value == true" scope="col">ข้อมูลมารดา</th>
         <th scope="col">นักศึกษาที่เกี่ยวข้อง</th>
         <th scope="col">เกี่ยวข้องเป็น</th>
         <th scope="col">กระทำผิดกฏ</th>
@@ -64,17 +69,17 @@
         <td>{{ x.time_rule }}</td>
         <td>{{ x.id_card_code }}</td>
         <td>{{ x.nameOutsider }}</td>
-        <td>
+        <td *ngIf="showColumn.value == true">
           <span *ngIf="x.house_no != ''">{{ x.house_no }}</span>
           <span *ngIf="x.moo != ''"> หมู่ {{ x.moo }}</span>
           <span *ngIf="x.sub_district != ''"> ตำบล{{ x.sub_district }}</span>
           <span *ngIf="x.district != ''"> อำเภอ{{ x.district }}</span>
           <span *ngIf="x.province != ''"> จังหวัด{{ x.province }}</span>
         </td>
-        <td>
+        <td *ngIf="showColumn.value == true">
           <span *ngIf="x.father != ''">{{ x.father }}</span>
         </td>
-        <td>
+        <td *ngIf="showColumn.value == true">
           <span *ngIf="x.mother != ''">{{ x.mother }}</span>
         </td>
         <td>{{ x.nameStd }}</td>
@@ -103,9 +108,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          ค้นหาแบบละเอียด
-        </h5>
+        <h5 class="modal-title" id="exampleModalLabel">ค้นหาแบบละเอียด</h5>
         <button
           type="button"
           class="close"

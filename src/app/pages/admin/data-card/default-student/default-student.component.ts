@@ -8,6 +8,7 @@ import { Component, OnInit } from "@angular/core";
 import { HttpService } from "src/app/services/http.service";
 import Swal from "sweetalert2";
 import { NgxSpinnerService } from "ngx-spinner";
+import { Sort } from "@angular/material/sort";
 
 @Component({
   selector: "app-default-student",
@@ -439,4 +440,39 @@ export class DefaultStudentComponent implements OnInit {
       this.imgURL = reader.result;
     };
   }
+  sortData(sort: Sort) {
+    if(this.userData ==null){
+      return;
+    }
+    const data = this.userData.slice();
+    if (!sort.active || sort.direction === "") {
+      this.userData = data;
+      return;
+    }
+
+    this.userData = data.sort((a, b) => {
+      const isAsc = sort.direction === "asc";
+      switch (sort.active) {
+        case "room_number":
+          return compare(a.room_number, b.room_number, isAsc);
+        case "std_code":
+          return compare(a.std_code, b.std_code, isAsc);
+        case "nameStd":
+          return compare(a.nameStd, b.nameStd, isAsc);
+        case "faculty":
+          return compare(a.faculty, b.faculty, isAsc);
+        case "branch":
+          return compare(a.branch, b.branch, isAsc);
+        case "groubStudent":
+          return compare(a.groubStudent, b.groubStudent, isAsc);
+        case "level":
+          return compare(a.level, b.level, isAsc);
+        default:
+          return 0;
+      }
+    });
+  }
+}
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

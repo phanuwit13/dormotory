@@ -12,20 +12,10 @@
     mat-raised-button
     class="uload"
     color="primary"
-    data-toggle="modal"
-    data-target="#exampleModal"
-    (click)="clearFormInsert()"
-  >
-    เพิ่มข้อมูลนักศึกษา
-  </button> -->
-  <button
-    mat-raised-button
-    class="uload"
-    color="primary"
     (click)="deleteDatabase()"
   >
     ลบข้อมูลทั้งหมด
-  </button>
+  </button> -->
   <input
     hidden
     (change)="onFileChange($event)"
@@ -63,7 +53,7 @@
       <tbody>
         <tr
           *ngFor="
-            let x of datafail | paginate: { itemsPerPage: 12, currentPage: p }
+            let x of datafail | paginate: { itemsPerPage: 12, currentPage: p } ; let i = index 
           "
         >
           <td>{{ x.room_number }}</td>
@@ -71,8 +61,10 @@
           <td>{{ x.nameTitle + x.fname + " " + x.lname }}</td>
           <td>{{ x.branch_code }}</td>
           <td>{{ x.phone }}</td>
-          <td>{{ x.error }}</td>
-          <td>
+          <td *ngIf="x.error[0] == 0" >{{ x.error[1] }} </td>
+          <td *ngIf="x.error[0] == 1"><img src="assets\avatar\correct.png" width="36px"></td>
+
+          <td *ngIf="x.error[0] == 0">
             <button
               mat-raised-button
               color="primary"
@@ -86,13 +78,15 @@
                   x.lname,
                   x.branch_code,
                   x.phone,
-                  x.room_number
+                  x.room_number,
+                  i
                 )
               "
             >
               เพิ่มข้อมูลนักศึกษา
             </button>
           </td>
+          <td *ngIf="x.error[0] == 1"></td>
         </tr>
       </tbody>
     </table>
@@ -129,20 +123,18 @@
         </button>
       </div>
       <form [formGroup]="formInsert">
-        <div class="modal-body" align="center">
+        <div class="modal-body">
           <!-- content -->
 
           <div class="frame">
-            <mat-form-field class="per30">
+            <mat-form-field class="per28">
               <input
                 matInput
                 formControlName="std_code"
                 placeholder="รหัสนักศึกษา"
               />
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-
-            <mat-form-field class="selectRule">
+            <mat-form-field class="per16">
               <mat-select
                 formControlName="nameTitle"
                 placeholder="คำนำหน้า"
@@ -159,16 +151,13 @@
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
+            <mat-form-field class="per28" >
               <input matInput formControlName="fname" placeholder="ชื่อจริง" />
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
+            <mat-form-field class="per28">
               <input matInput formControlName="lname" placeholder="นามสกุล" />
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+            <mat-form-field  class="per20">
               <mat-select
                 formControlName="noLevel"
                 placeholder="ระดับวุฒิการศึกษา"
@@ -184,8 +173,7 @@
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+            <mat-form-field  class="per40">
               <mat-select
                 formControlName="faculty_code"
                 placeholder="คณะ"
@@ -203,24 +191,21 @@
                 >
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+            <mat-form-field  class="per40">
               <mat-select formControlName="branch_code" placeholder="สาขา">
                 <mat-option *ngFor="let x of branch" [value]="x.branch_code">{{
                   x.name
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
+            <mat-form-field  class="per16">
               <input
                 matInput
                 formControlName="groupStd"
                 placeholder="กลุ่มเรียน"
               />
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+            <mat-form-field  class="per16">
               <mat-select
                 formControlName="floor"
                 placeholder="ชั้น"
@@ -237,16 +222,14 @@
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field class="selectRule">
+            <mat-form-field class="per20">
               <mat-select formControlName="room_number" placeholder="ห้องพัก">
                 <mat-option *ngFor="let x of room" [value]="x.room_number">{{
                   x.room_number
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <mat-form-field>
+            <mat-form-field class="per20">
               <input
                 matInput
                 formControlName="phone"

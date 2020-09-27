@@ -27,38 +27,64 @@
       class="btn"
       mat-flat-button
       color="primary"
-      [routerLink]="['/gencard']"
       (click)="gennarateCard()"
     >
       สร้างบัตรนักศึกษาหอพัก
     </button>
   </div>
+  <div class="box1">
+    <mat-slide-toggle [formControl]="showColumn" class="toggle"
+      >แสดงคอลัมน์ทั้งหมด</mat-slide-toggle
+    >
+  </div>
 </div>
 <div class="main">
   <ngx-spinner size="medium" color="#ff5722" type="ball-spin-clockwise"
-    ><p style="color: white;">Loading...</p></ngx-spinner
+    ><p style="color: white">Loading...</p></ngx-spinner
   >
-  <table class="table" *ngIf="checkConnect == true">
+  <table
+    matSort
+    (matSortChange)="sortData($event)"
+    class="table"
+    *ngIf="checkConnect == true"
+  >
     <thead class="thead-dark">
       <tr>
         <th scope="col">
-          <span (click)="sortTable('room_number')">เลขห้อง</span>
+          <mat-checkbox (change)="checkAll($event)"> </mat-checkbox>
         </th>
-        <th scope="col">
-          <span (click)="sortTable('std_code')">รหัสนักศึกษา</span>
+        <th scope="col" mat-sort-header="room_number">
+          <span>เลขห้อง</span>
         </th>
-        <th scope="col">
-          <span (click)="sortTable('nameStd')">ชื่อ - สกุล</span>
+        <th scope="col" mat-sort-header="std_code">
+          <span>รหัสนักศึกษา </span>
         </th>
-        <th scope="col"><span (click)="sortTable('faculty')">คณะ</span></th>
-        <th scope="col">
-          <span (click)="sortTable('branch')">สาขา</span>
+        <th scope="col" mat-sort-header="nameStd">
+          <span>ชื่อ - สกุล</span>
         </th>
-        <th scope="col">
-          <span (click)="sortTable('groubStudent')">กลุ่มเรียน</span>
+        <th
+          *ngIf="showColumn.value == true"
+          scope="col"
+          mat-sort-header="faculty"
+        >
+          <span>คณะ</span>
         </th>
-        <th scope="col">
-          <span (click)="sortTable('level')">ระดับวุฒิการศึกษา</span>
+        <th
+          *ngIf="showColumn.value == true"
+          scope="col"
+          mat-sort-header="branch"
+        >
+          <span>สาขา</span>
+        </th>
+        <th scope="col" mat-sort-header="groubStudent">
+          <span>กลุ่มเรียน</span>
+        </th>
+        <th
+          *ngIf="showColumn.value == true"
+          scope="col"
+          mat-sort-header="level"
+        >
+          <span>ระดับวุฒิการศึกษา</span>
         </th>
         <th scope="col">เบอร์โทร</th>
         <th scope="col"></th>
@@ -71,13 +97,21 @@
           let x of userData | paginate: { itemsPerPage: 12, currentPage: p }
         "
       >
+        <td>
+          <mat-checkbox
+            [(ngModel)]="x.state"
+            #check
+            (change)="addStdCard(x, check.checked)"
+          >
+          </mat-checkbox>
+        </td>
         <td>{{ x.room_number }}</td>
         <td>{{ x.std_code }}</td>
         <td>{{ x.nameStd }}</td>
-        <td>{{ x.faculty }}</td>
-        <td>{{ x.branch }}</td>
+        <td *ngIf="showColumn.value == true">{{ x.faculty }}</td>
+        <td *ngIf="showColumn.value == true">{{ x.branch }}</td>
         <td>{{ x.groubStudent }}</td>
-        <td>{{ x.level }}</td>
+        <td *ngIf="showColumn.value == true">{{ x.level }}</td>
         <td>{{ x.phone }}</td>
         <td>
           <div class="btn-group">
@@ -137,9 +171,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          แก้ไขข้อมูลนักศึกษา
-        </h5>
+        <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูลนักศึกษา</h5>
         <button
           type="button"
           class="close"
@@ -374,9 +406,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          ค้นหาแบบละเอียด
-        </h5>
+        <h5 class="modal-title" id="exampleModalLabel">ค้นหาแบบละเอียด</h5>
         <button
           type="button"
           class="close"

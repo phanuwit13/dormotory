@@ -55,10 +55,15 @@
       ส่งออกสรุปผลการกระทำผิดกฎระเบียบ
     </button>
   </div>
+  <div class="box1">
+    <mat-slide-toggle [formControl]="showColumn" class="toggle"
+      >แสดงคอลัมน์ทั้งหมด</mat-slide-toggle
+    >
+  </div>
 </div>
 <div class="main">
   <ngx-spinner size="medium" color="#ff5722" type="ball-spin-clockwise"
-    ><p style="color: white;">Loading...</p></ngx-spinner
+    ><p style="color: white">Loading...</p></ngx-spinner
   >
   <table class="table" *ngIf="checkConnect == true">
     <thead class="thead-dark">
@@ -68,10 +73,10 @@
         <th scope="col">เลขห้อง</th>
         <th scope="col">รหัสนักศึกษา</th>
         <th scope="col">ชื่อ - สกุล</th>
-        <th scope="col">คณะ</th>
-        <th scope="col">สาขา</th>
+        <th *ngIf="showColumn.value == true" scope="col">คณะ</th>
+        <th *ngIf="showColumn.value == true" scope="col">สาขา</th>
         <th scope="col">กลุ่มเรียน</th>
-        <th scope="col">ระดับวุฒิการศึกษา</th>
+        <th *ngIf="showColumn.value == true" scope="col">ระดับวุฒิการศึกษา</th>
         <th scope="col">กระทำผิดกฏ</th>
         <th scope="col">รายละเอียด</th>
       </tr>
@@ -88,10 +93,10 @@
         <td>{{ x.room_number }}</td>
         <td>{{ x.std_code }}</td>
         <td>{{ x.nameStd }}</td>
-        <td>{{ x.faculty }}</td>
-        <td>{{ x.branch }}</td>
+        <td *ngIf="showColumn.value == true">{{ x.faculty }}</td>
+        <td *ngIf="showColumn.value == true">{{ x.branch }}</td>
         <td>{{ x.groubStudent }}</td>
-        <td>{{ x.level }}</td>
+        <td *ngIf="showColumn.value == true">{{ x.level }}</td>
         <td *ngIf="x.other == ''">{{ x.rules_name }}</td>
         <td *ngIf="x.other != ''">{{ x.other }}</td>
         <td>{{ x.details }}</td>
@@ -116,9 +121,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          ค้นหาแบบละเอียด
-        </h5>
+        <h5 class="modal-title" id="exampleModalLabel">ค้นหาแบบละเอียด</h5>
         <button
           type="button"
           class="close"

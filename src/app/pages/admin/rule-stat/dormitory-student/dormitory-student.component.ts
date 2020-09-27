@@ -27,6 +27,7 @@ export class DormitoryStudentComponent implements OnInit {
   public levels = [];
   public checkConnect: any = false;
   public term = [1, 2, 3];
+  public showColumn = new FormControl();
 
   monthsList: string[] = [
     "มกราคม",
