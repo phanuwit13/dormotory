@@ -12,6 +12,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 })
 export class ImportExcelComponent implements OnInit {
   public formInsert: FormGroup;
+  public formLogin: FormGroup;
   public data: Array<any> = [];
   public Faculty = [];
   public titleName = ["นาย", "นาง", "นางสาว", "MR.", "MISS.", "MRS."];
@@ -30,7 +31,7 @@ export class ImportExcelComponent implements OnInit {
     "สาขา",
     "เบอร์โทรศัพท์",
   ];
-  public editIndex = null
+  public editIndex = null;
   public header: Array<String> = [];
   p: number = 1;
   public selectedFile: File = null;
@@ -41,6 +42,10 @@ export class ImportExcelComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.formLogin = this.formBuilder.group({
+      username: ["", Validators.required],
+      password: ["", Validators.required],
+    });
     this.formInsert = this.formBuilder.group({
       std_code: ["", Validators.required],
       nameTitle: ["", Validators.required],
@@ -144,7 +149,7 @@ export class ImportExcelComponent implements OnInit {
     }).then(async (result) => {
       if (result.value) {
         await Object.keys(this.formInsert.value).forEach(async (key) => {
-          formData.append(key, await this.formInsert.value[key]+"".trim());
+          formData.append(key, (await this.formInsert.value[key]) + "".trim());
         });
         let httpRespon: any = await this.http.post("addStudent", formData);
         console.log(httpRespon);
@@ -154,15 +159,13 @@ export class ImportExcelComponent implements OnInit {
             title: "สำเร็จ",
             text: httpRespon.response.message,
           });
-          for(let i = 0 ; i < this.datafail.length ; i++)
-          {
-            if(i == this.editIndex)
-            { 
+          for (let i = 0; i < this.datafail.length; i++) {
+            if (i == this.editIndex) {
               this.datafail[i].error[0] = 1;
             }
           }
           this.formInsert.reset();
-          document.getElementById('closebutton').click()
+          document.getElementById("closebutton").click();
         } else {
           Swal.fire({
             icon: "error",
@@ -284,7 +287,7 @@ export class ImportExcelComponent implements OnInit {
         lname: x[4] + "",
         branch_code: x[5] + "",
         phone: x[6] + "",
-        error: [0,"กรุณาตรวจสอบข้อมูล"],
+        error: [0, "กรุณาตรวจสอบข้อมูล"],
       });
       return false;
     } else {
@@ -360,20 +363,21 @@ export class ImportExcelComponent implements OnInit {
         lname: lname,
         branch_code: branch_code,
         phone: phone,
-        error: [0,httpRespon.response.message],
+        error: [0, httpRespon.response.message],
       });
       console.log(httpRespon.response);
     }
   }
+
   deleteDatabase() {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "ยืนยันการลบข้อมูล?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "ตกลง !",
+      cancelButtonText: "ยกเลิก",
     }).then(async (result) => {
       if (result.value) {
         let httpRespone: any = await this.http.post("deleteData");
@@ -402,9 +406,10 @@ export class ImportExcelComponent implements OnInit {
     lname,
     branch_code,
     phone,
-    room_number,index
+    room_number,
+    index
   ) {
-    this.editIndex = index
+    this.editIndex = index;
     this.getFaculty();
     let str = "";
     let bc = [];
@@ -450,4 +455,27 @@ export class ImportExcelComponent implements OnInit {
   clearFormInsert() {
     this.formInsert.reset();
   }
+  public onSubmitLogin = async () => {
+    let formData = new FormData();
+    //วนลูบเก็บค่า key และ value
+    Object.keys(this.formLogin.value).forEach((key) => {
+      formData.append(key, this.formLogin.value[key]);
+    });
+    let httpRespon: any = await this.http.post("login", formData);
+    console.log(httpRespon);
+    if (httpRespon.connect) {
+      if (httpRespon.response.success) {
+        if (httpRespon.response.data.role == "admin") {
+          this.deleteDatabase();
+          document.getElementById("closeModal").click()
+        } else {
+          await Swal.fire("ไม่ใช่ Admin", "", "error");
+        }
+      } else {
+        Swal.fire(httpRespon.response.message, "", "error");
+      }
+    } else {
+      Swal.fire("เชื่อมต่อเซิร์ฟเวอร์ผิดพลาด", "", "warning");
+    }
+  };
 }

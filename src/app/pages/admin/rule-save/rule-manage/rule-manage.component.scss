@@ -4,10 +4,19 @@
   padding-right: 2%;
 }
 .example-chip-list {
-  width: 50%;
+  width: 100%;
+}
+.start {
+  width: 60%;
+  float: left; //ลอยไปอยู่ด้ายซ้าย
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #f7f7f7;
 }
 mat-chip {
-  width: 50%;
+  width: 100%;
   max-width: max-content;
 }
 // .rule {
@@ -21,5 +30,14 @@ mat-chip {
     width: 99%;
     padding-left: 1%;
     padding-left: 1%;
+  }
+  .start {
+    width: 100%;
+    float: left; //ลอยไปอยู่ด้ายซ้าย
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #f7f7f7;
   }
 }

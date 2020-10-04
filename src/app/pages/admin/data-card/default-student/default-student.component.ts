@@ -39,6 +39,7 @@ export class DefaultStudentComponent implements OnInit {
   public lastNameFile: Array<any> = [];
   imagePath: any;
   imgURL: any;
+  public showColumn = new FormControl();
   constructor(
     private http: HttpService,
     private formBuilder: FormBuilder,

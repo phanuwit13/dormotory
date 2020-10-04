@@ -29,7 +29,8 @@ export class RoomHistoryComponent implements OnInit {
   public levels = [];
   public checkConnect: any = false;
   data: any = [];
-
+  public showColumn = new FormControl();
+  
   constructor(
     private http: HttpService,
     private formBuilder: FormBuilder,

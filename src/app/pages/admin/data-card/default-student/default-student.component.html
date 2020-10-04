@@ -22,17 +22,11 @@
       ค้นหาแบบละเอียด
     </button>
   </div>
-  <!-- <div class="box1">
-    <button
-      class="btn"
-      mat-flat-button
-      color="primary"
-      [routerLink]="['/gencard']"
-      (click)="gennarateCard()"
+  <div class="box1">
+    <mat-slide-toggle [formControl]="showColumn" class="toggle"
+      >แสดงคอลัมน์ทั้งหมด</mat-slide-toggle
     >
-      สร้างบัตรนักศึกษาหอพัก
-    </button>
-  </div> -->
+  </div>
 </div>
 <div class="main">
   <ngx-spinner size="medium" color="#ff5722" type="ball-spin-clockwise"
@@ -55,16 +49,16 @@
         <th scope="col" mat-sort-header="nameStd">
           <span>ชื่อ - สกุล</span>
         </th>
-        <th scope="col" mat-sort-header="faculty">
+        <th *ngIf="showColumn.value == true" scope="col" mat-sort-header="faculty">
           <span>คณะ</span>
         </th>
-        <th scope="col" mat-sort-header="branch">
+        <th *ngIf="showColumn.value == true" scope="col" mat-sort-header="branch">
           <span>สาขา</span>
         </th>
         <th scope="col" mat-sort-header="groubStudent">
           <span>กลุ่มเรียน</span>
         </th>
-        <th scope="col" mat-sort-header="level">
+        <th *ngIf="showColumn.value == true" scope="col" mat-sort-header="level">
           <span>ระดับวุฒิการศึกษา</span>
         </th>
         <th scope="col">เบอร์โทร</th>
@@ -81,10 +75,10 @@
         <td>{{ x.room_number }}</td>
         <td>{{ x.std_code }}</td>
         <td>{{ x.nameStd }}</td>
-        <td>{{ x.faculty }}</td>
-        <td>{{ x.branch }}</td>
+        <td *ngIf="showColumn.value == true">{{ x.faculty }}</td>
+        <td *ngIf="showColumn.value == true">{{ x.branch }}</td>
         <td>{{ x.groubStudent }}</td>
-        <td>{{ x.level }}</td>
+        <td *ngIf="showColumn.value == true">{{ x.level }}</td>
         <td>{{ x.phone }}</td>
         <td>
           <div class="btn-group">

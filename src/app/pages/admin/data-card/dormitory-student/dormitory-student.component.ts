@@ -359,6 +359,7 @@ export class DormitoryStudentComponent implements OnInit {
       this.userData = httpRespon.response.data;
       this.clearFormSearch();
     } else {
+      this.userData = null;
       console.log(httpRespon.response.message);
       this.clearFormSearch();
     }

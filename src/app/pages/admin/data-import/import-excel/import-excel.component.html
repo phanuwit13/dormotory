@@ -8,14 +8,23 @@
   >
     อัพโหลดไฟล์
   </button>
-  <!-- <button
+  <button
     mat-raised-button
     class="uload"
     color="primary"
     (click)="deleteDatabase()"
   >
+    ส่งออกไฟล์ข้อมูลนักศึกษา
+  </button>
+  <button
+  data-toggle="modal" data-target="#staticBackdrop"
+    mat-raised-button
+    class="uload"
+    color="primary"
+    
+  >
     ลบข้อมูลทั้งหมด
-  </button> -->
+  </button>
   <input
     hidden
     (change)="onFileChange($event)"
@@ -252,6 +261,66 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">ยืนยันตัวตน</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="host">
+      
+              <form
+                class="formInput"
+                [formGroup]="formLogin"
+              >
+                <p class="inputField">
+                  <mat-form-field appearance="outline" color="accent" >
+                    <mat-label>ชื่อผู้ใช้งาน</mat-label>
+                    <input  type="text" formControlName="username" matInput placeholder="ชื่อผู้ใช้งาน">
+                  </mat-form-field>
+                  <!-- <mat-form-field class="inputUser">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="ชื่อผู้ใช้"
+                      
+                    />
+                  </mat-form-field> -->
+                </p>
+    
+                <p class="inputField">
+                  <mat-form-field appearance="outline" color="accent">
+                    <mat-label>รหัสผ่าน</mat-label>
+                    <input  type="password" formControlName="password" matInput placeholder="รหัสผ่าน">
+                  </mat-form-field>
+                  <!-- <mat-form-field class="inputUser">
+                    <input
+                      type="password"
+                      matInput
+                      placeholder="รหัสผ่าน"
+                      formControlName="password"
+                    />
+                  </mat-form-field> -->
+                </p>
+
+              </form>
+ 
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmitLogin()" >ยืนยัน</button>
+      </div>
     </div>
   </div>
 </div>

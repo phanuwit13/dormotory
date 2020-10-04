@@ -11,18 +11,6 @@
         mdbInput
       />
     </div>
-    <!-- <div class="box1">
-      <button
-        class="btn"
-        data-toggle="modal"
-        data-target="#ModalSearch"
-        mat-flat-button
-        color="primary"
-        (click)="advancedSearch()"
-      >
-        ค้นหาแบบละเอียด
-      </button>
-    </div> -->
     <div class="box1">
       <button
         class="btn"
@@ -32,6 +20,11 @@
       >
         ส่งออกสรุปผลการย้ายห้องพัก
       </button>
+    </div>
+    <div class="box1">
+      <mat-slide-toggle [formControl]="showColumn" class="toggle"
+        >แสดงคอลัมน์ทั้งหมด</mat-slide-toggle
+      >
     </div>
   </div>
 
@@ -45,10 +38,10 @@
           <th scope="col">วันที่</th>
           <th scope="col">รหัสนักศึกษา</th>
           <th scope="col">ชื่อ - สกุล</th>
-          <th scope="col">คณะ</th>
-          <th scope="col">สาขา</th>
+          <th *ngIf="showColumn.value == true" scope="col">คณะ</th>
+          <th *ngIf="showColumn.value == true" scope="col">สาขา</th>
           <th scope="col">กลุ่มเรียน</th>
-          <th scope="col">ระดับวุฒิการศึกษา</th>
+          <th *ngIf="showColumn.value == true" scope="col">ระดับวุฒิการศึกษา</th>
           <th scope="col">ห้องเก่า</th>
           <th scope="col">ห้องใหม่</th>
           <th scope="col">สถานะ</th>
@@ -64,10 +57,10 @@
           <td>{{ x.date_room }}</td>
           <td>{{ x.std_code }}</td>
           <td>{{ x.nameStd }}</td>
-          <td>{{ x.faculty }}</td>
-          <td>{{ x.branch }}</td>
+          <td *ngIf="showColumn.value == true">{{ x.faculty }}</td>
+          <td *ngIf="showColumn.value == true">{{ x.branch }}</td>
           <td>{{ x.groubStudent }}</td>
-          <td>{{ x.level }}</td>
+          <td *ngIf="showColumn.value == true">{{ x.level }}</td>
           <td>{{ x.room_number_old }}</td>
           <td>{{ x.room_number_new }}</td>
           <td>{{ x.status_name }}</td>

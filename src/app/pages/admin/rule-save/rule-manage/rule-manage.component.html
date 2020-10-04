@@ -1,27 +1,40 @@
 <div class="containerCT">
-  <div class="rule">
-    <mat-form-field class="example-chip-list">
-      <mat-chip-list #chipList aria-label="Fruit selection">
-        <input
-          placeholder="เพิ่มกฎระเบียบ"
-          [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="addOnBlur"
-          (matChipInputTokenEnd)="add($event)"
-        />
+  <mat-card class="example-card start">
+    <mat-card-header>
+      <mat-card-title>เพิ่มข้อมูลระดับวุฒิการศึกษา</mat-card-title>
+      <!-- <mat-card-subtitle>เวลาเข้าสาย</mat-card-subtitle> -->
+    </mat-card-header>
+
+    <mat-card-content
+     
+      style="text-align: center; font-size: 17px;"
+    >
+    <div class="rule">
+      <mat-form-field appearance="outline" class="example-chip-list">
+        <mat-label>เพิ่มกฎระเบียบ</mat-label>
+        <mat-chip-list #chipList aria-label="Fruit selection">
+          <input
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)"
+          />
+        </mat-chip-list>
+      </mat-form-field>
+      <mat-chip-list class="mat-chip-list-stacked" aria-label="Color selection">
+        <mat-chip
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(item)"
+          *ngFor="let item of ruleChoice"
+          selected
+        >
+          {{ item.rules_name }}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
       </mat-chip-list>
-    </mat-form-field>
-    <mat-chip-list class="mat-chip-list-stacked" aria-label="Color selection">
-      <mat-chip
-        [selectable]="selectable"
-        [removable]="removable"
-        (removed)="remove(item)"
-        *ngFor="let item of ruleChoice"
-        selected
-      >
-        {{ item.rules_name }}
-        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-      </mat-chip>
-    </mat-chip-list>
-  </div>
+    </div>
+    </mat-card-content>
+  </mat-card>
+  
 </div>
