@@ -97,7 +97,6 @@ export class TimeAddComponent implements OnInit {
       dateZone.getHours() <= timeStart[0] &&
       dateZone.getHours() >= timeEnd[0]
     ) {
-      //this.statusTime = 0;
       if (dateZone.getHours() == timeStart[0]) {
         if (dateZone.getMinutes() > timeStart[1]) {
           return 1;
@@ -124,7 +123,6 @@ export class TimeAddComponent implements OnInit {
       dateZone.getHours() >= timeStart[0] &&
       dateZone.getHours() <= timeEnd[0]
     ) {
-      //this.statusTime = 0;
       if (dateZone.getHours() == timeStart[0]) {
         if (dateZone.getMinutes() > timeStart[1]) {
           return 1;
