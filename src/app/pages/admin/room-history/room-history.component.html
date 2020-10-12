@@ -22,6 +22,16 @@
       </button>
     </div>
     <div class="box1">
+      <button
+        class="btn"
+        (click)="deleteHis()"
+        mat-flat-button
+        style="background-color: #fdc92d;"
+      >
+        ลบการย้ายห้องพัก
+      </button>
+    </div>
+    <div class="box1">
       <mat-slide-toggle [formControl]="showColumn" class="toggle"
         >แสดงคอลัมน์ทั้งหมด</mat-slide-toggle
       >
@@ -32,19 +42,23 @@
     <ngx-spinner size="medium" color="#ff5722" type="ball-spin-clockwise"
       ><p style="color: white;">Loading...</p></ngx-spinner
     >
-    <table class="table" *ngIf="checkConnect == true">
+    <table matSort
+    (matSortChange)="sortData($event)" class="table" *ngIf="checkConnect == true">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">วันที่</th>
-          <th scope="col">รหัสนักศึกษา</th>
-          <th scope="col">ชื่อ - สกุล</th>
-          <th *ngIf="showColumn.value == true" scope="col">คณะ</th>
-          <th *ngIf="showColumn.value == true" scope="col">สาขา</th>
-          <th scope="col">กลุ่มเรียน</th>
-          <th *ngIf="showColumn.value == true" scope="col">ระดับวุฒิการศึกษา</th>
-          <th scope="col">ห้องเก่า</th>
-          <th scope="col">ห้องใหม่</th>
-          <th scope="col">สถานะ</th>
+          <th scope="col">
+            <mat-checkbox [(ngModel)]="allComplete" (change)="checkAll($event)"> </mat-checkbox>
+          </th>
+          <th mat-sort-header="date_room" scope="col">วันที่</th>
+          <th mat-sort-header="std_code" scope="col">รหัสนักศึกษา</th>
+          <th mat-sort-header="nameStd" scope="col">ชื่อ - สกุล</th>
+          <th mat-sort-header="faculty" *ngIf="showColumn.value == true" scope="col">คณะ</th>
+          <th mat-sort-header="branch" *ngIf="showColumn.value == true" scope="col">สาขา</th>
+          <th mat-sort-header="groubStudent" scope="col">กลุ่มเรียน</th>
+          <th mat-sort-header="level" *ngIf="showColumn.value == true" scope="col">ระดับวุฒิการศึกษา</th>
+          <th mat-sort-header="room_number_old" scope="col">ห้องเก่า</th>
+          <th mat-sort-header="room_number_new" scope="col">ห้องใหม่</th>
+          <th mat-sort-header="status_name" scope="col">สถานะ</th>
         </tr>
       </thead>
 
@@ -53,7 +67,14 @@
           *ngFor="
             let x of userData | paginate: { itemsPerPage: 12, currentPage: p }
           "
-        >
+        ><td>
+          <mat-checkbox
+            [(ngModel)]="x.state"
+            #check
+            (change)="addStdCard(x, check.checked)"
+          >
+          </mat-checkbox>
+        </td>
           <td>{{ x.date_room }}</td>
           <td>{{ x.std_code }}</td>
           <td>{{ x.nameStd }}</td>

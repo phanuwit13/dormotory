@@ -59,12 +59,19 @@ export class TimeAddComponent implements OnInit {
     this.timeSet = await this.getTimeSet();
     let timeStart = this.timeSet[0].timeStart.split(":");
     let timeEnd = this.timeSet[0].timeEnd.split(":");
-    if (timeStart[0] > timeEnd[0]) {
+
+    console.log("เริ่มต้น "+timeStart[0]  +" สิ้นสุด "+ timeEnd[0])
+
+    if (parseInt( timeStart[0]) > parseInt(timeEnd[0])) {
       this.statusTime = await this.startOverEnd(timeStart, timeEnd);
-    } else if (timeStart[0] < timeEnd[0]) {
+      console.log("เริ่มต้น มากกว่าสิ้นสุด");
+      
+    } else if (parseInt( timeStart[0]) < parseInt(timeEnd[0])) {
       this.statusTime = await this.endOverStart(timeStart, timeEnd);
+      console.log("เริ่มต้น น้อยกว่าสิ้นสุด");
     } else {
       this.statusTime = await this.timeEqual(timeStart, timeEnd);
+      console.log("เท่ากัน");
     }
 
     formData.append("time_status", this.statusTime);

@@ -34,6 +34,7 @@ export class DormitoryStudentComponent implements OnInit {
   public selectedFile: File = null;
   public lastNameFile: Array<any> = [];
   public stdCard: Array<any> = [];
+  allComplete: boolean = false;
   imagePath: any;
   imgURL: any;
   public showColumn = new FormControl();
@@ -90,6 +91,9 @@ export class DormitoryStudentComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = await httpRespon.response.data;
+      this.userData.forEach((x) => {
+        x.state = false;
+      });
       return true;
     } else {
       this.userData = null;
@@ -151,21 +155,21 @@ export class DormitoryStudentComponent implements OnInit {
       alert("ไม่พบข้อมูล");
     }
   }
-  async getStdcode(std) {
-    //// สร้างฟังก์ชั่นมาใหม่ ดึงค่าตรงตัวมาเลย เพื่อมาเเก้ไข
-    this.nameStudent = null;
-    let formData = new FormData();
-    formData.append("std_code", std);
-    let httpRespon: any = await this.http.post("getStudent", formData);
+  // async getStdcode(std) {
+  //   //// สร้างฟังก์ชั่นมาใหม่ ดึงค่าตรงตัวมาเลย เพื่อมาเเก้ไข
+  //   this.nameStudent = null;
+  //   let formData = new FormData();
+  //   formData.append("std_code", std);
+  //   let httpRespon: any = await this.http.post("getStudent", formData);
 
-    console.log(httpRespon);
-    if (httpRespon.response.data.length > 0) {
-      this.nameStudent = httpRespon.response.data;
-    } else {
-      this.nameStudent = null;
-      alert("ไม่พบข้อมูล");
-    }
-  }
+  //   console.log(httpRespon);
+  //   if (httpRespon.response.data.length > 0) {
+  //     this.nameStudent = httpRespon.response.data;
+  //   } else {
+  //     this.nameStudent = null;
+  //     alert("ไม่พบข้อมูล");
+  //   }
+  // }
   async getFloor() {
     let httpRespon: any = await this.http.post("floor");
     console.log(httpRespon);
@@ -187,6 +191,9 @@ export class DormitoryStudentComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
+      this.userData.forEach((x) => {
+        x.state = false;
+      });
       console.log("พบ");
     } else {
       this.userData = null;
@@ -357,6 +364,9 @@ export class DormitoryStudentComponent implements OnInit {
     if (httpRespon.response.data.length > 0) {
       console.log(httpRespon.response.success);
       this.userData = httpRespon.response.data;
+      this.userData.forEach((x) => {
+        x.state = false;
+      });
       this.clearFormSearch();
     } else {
       this.userData = null;
@@ -389,21 +399,7 @@ export class DormitoryStudentComponent implements OnInit {
     console.log(JSON.parse(window.localStorage.getItem("userData")));
   };
 
-  addStdCard = async (value, check) => {
-    console.log(check);
 
-    if (check == true) {
-      this.stdCard.push(value);
-    } else {
-      this.stdCard = this.stdCard.filter((item) => {
-        if (item != value) {
-          return item;
-        }
-      });
-    }
-
-    console.log(this.stdCard);
-  };
 
   deleteStudent = async (value) => {
     await Swal.fire({
@@ -460,15 +456,71 @@ export class DormitoryStudentComponent implements OnInit {
     };
   }
 
+  // addStdCard = async (value, check) => {
+  //   console.log(check);
+
+  //   if (check == true) {
+  //     this.stdCard.push(value);
+  //   } else {
+  //     this.stdCard = this.stdCard.filter((item) => {
+  //       if (item != value) {
+  //         return item;
+  //       }
+  //     });
+  //   }
+  //   console.log(this.stdCard);
+  // };
+  addStdCard = async (value, check) => {
+    console.log(check);
+
+    if (check == true) {
+      this.stdCard.push(value);
+    } else {
+      this.stdCard = this.stdCard.filter((item) => {
+        if (item != value) {
+          return item;
+        }
+      });
+    }
+    if (this.stdCard.length == this.userData.length) {
+      this.allComplete = true;
+      console.log("userData");
+      console.log(this.userData);
+      console.log("his");
+      console.log(this.stdCard);
+    } else {
+      this.allComplete = false;
+    }
+    console.log(this.stdCard);
+  };
+
+  // checkAll(ev) {
+  //   if (ev.checked) {
+  //     this.userData.forEach((x) => {
+  //       x.state = ev.checked;
+  //       this.stdCard.push(x);
+  //     });
+  //   } else {
+  //     this.userData.forEach((x) => {
+  //       x.state = ev.checked;
+  //     });
+  //     this.stdCard = [];
+  //   }
+  // }
+
   checkAll(ev) {
     if (ev.checked) {
       this.userData.forEach((x) => {
-        x.state = ev.checked;
-        this.stdCard.push(x);
+        if (x.state != ev.checked) {
+          this.stdCard.push(x);
+          x.state = ev.checked;
+          console.log("หมด");
+        }
       });
     } else {
       this.userData.forEach((x) => {
         x.state = ev.checked;
+        console.log("ไม่หมด");
       });
       this.stdCard = [];
     }

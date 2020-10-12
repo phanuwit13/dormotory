@@ -51,7 +51,7 @@
     <thead class="thead-dark">
       <tr>
         <th scope="col">
-          <mat-checkbox (change)="checkAll($event)"> </mat-checkbox>
+          <mat-checkbox [(ngModel)]="allComplete" (change)="checkAll($event)"> </mat-checkbox>
         </th>
         <th scope="col" mat-sort-header="room_number">
           <span>เลขห้อง</span>
