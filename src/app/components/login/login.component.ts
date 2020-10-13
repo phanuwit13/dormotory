@@ -47,7 +47,8 @@ export class LoginComponent implements OnInit {
           await Swal.fire({
             position: 'center',
             icon: 'success',
-            title: httpRespon.response.message,
+            title: "",
+            text: httpRespon.response.message,
             showConfirmButton: false,
             timer: 1000
           })
@@ -57,16 +58,16 @@ export class LoginComponent implements OnInit {
             JSON.stringify(httpRespon.response.data)
           );
         } else {
-          await Swal.fire("ไม่ใช่ Admin", "", "error");
+          await Swal.fire("", "ไม่ใช่บัญชีของ Admin", "error");
         }
 
         this.userLogin = JSON.parse(window.localStorage.getItem("userLogin"));
         //alert(httpRespon.response.message);
       } else {
-        Swal.fire(httpRespon.response.message, "", "error");
+        Swal.fire("", httpRespon.response.message, "error");
       }
     } else {
-      Swal.fire("เชื่อมต่อเซิร์ฟเวอร์ผิดพลาด", "", "warning");
+      Swal.fire("", "เชื่อมต่อเซิร์ฟเวอร์ผิดพลาด", "warning");
     }
   };
 }

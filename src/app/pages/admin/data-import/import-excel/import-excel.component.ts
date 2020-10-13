@@ -11,6 +11,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   styleUrls: ["./import-excel.component.scss"],
 })
 export class ImportExcelComponent implements OnInit {
+  public userData: Array<any> = [];
   public formInsert: FormGroup;
   public formLogin: FormGroup;
   public data: Array<any> = [];
@@ -59,11 +60,24 @@ export class ImportExcelComponent implements OnInit {
       phone: "",
       noLevel: ["", Validators.required],
     });
+    this.getStudentAll()
     this.getFaculty();
     this.getLevels();
     this.getFloor();
     this.getBranchAll();
   }
+
+  getStudentAll = async () => {
+    let formData = new FormData();
+    formData.append("status", "1");
+    let httpRespon: any = await this.http.post("getStudentExport", formData);
+    console.log(httpRespon);
+    if (httpRespon.response.data.length > 0) {
+      this.userData = await httpRespon.response.data;
+    } else {
+      this.userData = null;
+    }
+  };
   async getLevels() {
     let httpRespon: any = await this.http.post("level");
     console.log(httpRespon);
@@ -478,4 +492,41 @@ export class ImportExcelComponent implements OnInit {
       Swal.fire("เชื่อมต่อเซิร์ฟเวอร์ผิดพลาด", "", "warning");
     }
   };
+
+  async exportAsXLSX() {
+    await this.spinner.show();          
+    this.userData.forEach((item) => {
+      this.data.push({
+        เลขห้อง: item.room_number,
+        รหัสนักศึกษา: item.std_code,
+        คำนำหน้า: item.nameTitle,
+        ชื่อ: item.fname,
+        นามสกุล: item.lname,
+        สาขา: item.groubStudent,
+        เบอร์โทรศัพท์: item.std_code,
+      });
+    });
+
+    this.http.exportAsExcelFile(
+      this.data,
+      "ไฟล์ข้อมูลนักศึกษา_" + this.getDate()
+    );
+    this.data = [];
+    this.spinner.hide();
+    }
+
+    getDate() {
+      let date = new Date();
+      let year = date.getFullYear().toString();
+      let month = date.getMonth().toString();
+      let day = date.getDate().toString();
+      if (parseInt(month)  < 10) {
+        month = "0" + (month + 1);
+      }
+      if (parseInt(day) < 10) {
+        day = "0" + day;
+      }
+      return year + "-" + month + "-" + day;
+    }
+  
 }

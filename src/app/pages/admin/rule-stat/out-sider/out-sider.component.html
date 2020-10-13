@@ -33,6 +33,16 @@
     </button>
   </div>
   <div class="box1">
+    <button
+      class="btn"
+      (click)="deleteHis()"
+      mat-flat-button
+      style="background-color: #fdc92d"
+    >
+      ลบผลการกระทำผิดกฎระเบียบ
+    </button>
+  </div>
+  <div class="box1">
     <mat-slide-toggle [formControl]="showColumn" class="toggle"
       >แสดงคอลัมน์ทั้งหมด</mat-slide-toggle
     >
@@ -42,20 +52,47 @@
   <ngx-spinner size="medium" color="#ff5722" type="ball-spin-clockwise"
     ><p style="color: white">Loading...</p></ngx-spinner
   >
-  <table class="table" *ngIf="checkConnect == true">
+  <table
+    matSort
+    (matSortChange)="sortData($event)"
+    class="table"
+    *ngIf="checkConnect == true"
+  >
     <thead class="thead-dark">
       <tr>
-        <th scope="col">วันที่</th>
-        <th scope="col">เวลา</th>
-        <th scope="col">บัตรประชาชน</th>
-        <th scope="col">ชื่อ - สกุล</th>
-        <th *ngIf="showColumn.value == true" scope="col">ที่อยู่</th>
-        <th *ngIf="showColumn.value == true" scope="col">ข้อมูลบิดา</th>
-        <th *ngIf="showColumn.value == true" scope="col">ข้อมูลมารดา</th>
-        <th scope="col">นักศึกษาที่เกี่ยวข้อง</th>
-        <th scope="col">เกี่ยวข้องเป็น</th>
-        <th scope="col">กระทำผิดกฏ</th>
-        <th scope="col">รายละเอียด</th>
+        <th scope="col">
+          <mat-checkbox [(ngModel)]="allComplete" (change)="checkAll($event)">
+          </mat-checkbox>
+        </th>
+        <th mat-sort-header="date_rule" scope="col">วันที่</th>
+        <th mat-sort-header="time_rule" scope="col">เวลา</th>
+        <th mat-sort-header="id_card_code" scope="col">บัตรประชาชน</th>
+        <th mat-sort-header="nameOutsider" scope="col">ชื่อ - สกุล</th>
+        <th
+          mat-sort-header="district"
+          *ngIf="showColumn.value == true"
+          scope="col"
+        >
+          ที่อยู่
+        </th>
+        <th
+          mat-sort-header="father"
+          *ngIf="showColumn.value == true"
+          scope="col"
+        >
+          ข้อมูลบิดา
+        </th>
+        <th
+          mat-sort-header="mother"
+          *ngIf="showColumn.value == true"
+          scope="col"
+        >
+          ข้อมูลมารดา
+        </th>
+        <th mat-sort-header="nameStd" scope="col">นักศึกษาที่เกี่ยวข้อง</th>
+        <th mat-sort-header="student_relation" scope="col">เกี่ยวข้องเป็น</th>
+        <th mat-sort-header="rules_name" scope="col">กระทำผิดกฏ</th>
+        <th mat-sort-header="details" scope="col">รายละเอียด</th>
       </tr>
     </thead>
 
@@ -65,6 +102,14 @@
           let x of userData | paginate: { itemsPerPage: 12, currentPage: p }
         "
       >
+        <td>
+          <mat-checkbox
+            [(ngModel)]="x.state"
+            #check
+            (change)="addStdCard(x, check.checked)"
+          >
+          </mat-checkbox>
+        </td>
         <td>{{ x.date_rule }}</td>
         <td>{{ x.time_rule }}</td>
         <td>{{ x.id_card_code }}</td>
