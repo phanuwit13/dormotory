@@ -35,6 +35,16 @@
       </button>
     </div>
     <div class="box1">
+      <button
+        class="btn"
+        (click)="deleteHis()"
+        mat-flat-button
+        style="background-color: #fdc92d"
+      >
+        ลบประวัติการเข้าหอพัก
+      </button>
+    </div>
+    <div class="box1">
       <mat-slide-toggle
         (change)="getTimeStat()"
         [formControl]="all"
@@ -42,24 +52,38 @@
         >แสดงการเข้าหอพักทั้งหมด</mat-slide-toggle
       >
     </div>
+    <div class="box1">
+      <mat-slide-toggle [formControl]="showColumn" class="toggle"
+        >แสดงคอลัมน์ทั้งหมด</mat-slide-toggle
+      >
+    </div>
   </div>
   <div class="main">
     <ngx-spinner size="medium" color="#ff5722" type="ball-spin-clockwise"
-      ><p style="color: white;">Loading...</p></ngx-spinner
+      ><p style="color: white">Loading...</p></ngx-spinner
     >
-    <table class="table" *ngIf="checkConnect == true">
+    <table
+      matSort
+      (matSortChange)="sortData($event)"
+      class="table"
+      *ngIf="checkConnect == true"
+    >
       <thead class="thead-dark">
         <tr>
-          <th scope="col">วันที่</th>
-          <th scope="col">เลขห้อง</th>
-          <th scope="col">รหัสนักศึกษา</th>
-          <th scope="col">ชื่อ - สกุล</th>
-          <th scope="col">คณะ</th>
-          <th scope="col">สาขา</th>
-          <th scope="col">กลุ่มเรียน</th>
-          <th scope="col">ระดับวุฒิการศึกษา</th>
-          <th scope="col">เบอร์โทร</th>
-          <th scope="col">เวลาเข้าหอ</th>
+          <th scope="col">
+            <mat-checkbox [(ngModel)]="allComplete" (change)="checkAll($event)">
+            </mat-checkbox>
+          </th>
+          <th mat-sort-header="date_stamp" scope="col">วันที่</th>
+          <th mat-sort-header="room_number" scope="col">เลขห้อง</th>
+          <th mat-sort-header="std_code" scope="col">รหัสนักศึกษา</th>
+          <th mat-sort-header="nameStd" scope="col">ชื่อ - สกุล</th>
+          <th mat-sort-header="name" *ngIf="showColumn.value == true" scope="col">คณะ</th>
+          <th mat-sort-header="branch" *ngIf="showColumn.value == true" scope="col">สาขา</th>
+          <th mat-sort-header="groubStudent" scope="col">กลุ่มเรียน</th>
+          <th mat-sort-header="level" *ngIf="showColumn.value == true" scope="col">ระดับวุฒิการศึกษา</th>
+          <th mat-sort-header="phone" scope="col">เบอร์โทร</th>
+          <th mat-sort-header="time_stamp" scope="col">เวลาเข้าหอ</th>
         </tr>
       </thead>
       <tbody>
@@ -67,15 +91,22 @@
           *ngFor="
             let x of userData | paginate: { itemsPerPage: 12, currentPage: p }
           "
-        >
+        ><td>
+          <mat-checkbox
+            [(ngModel)]="x.state"
+            #check
+            (change)="addStdCard(x, check.checked)"
+          >
+          </mat-checkbox>
+        </td>
           <td>{{ x.date_stamp }}</td>
           <td>{{ x.room_number }}</td>
           <td>{{ x.std_code }}</td>
           <td>{{ x.nameStd }}</td>
-          <td>{{ x.name }}</td>
-          <td>{{ x.branch }}</td>
+          <td *ngIf="showColumn.value == true">{{ x.name }}</td>
+          <td *ngIf="showColumn.value == true">{{ x.branch }}</td>
           <td>{{ x.groubStudent }}</td>
-          <td>{{ x.level }}</td>
+          <td *ngIf="showColumn.value == true">{{ x.level }}</td>
           <td>{{ x.phone }}</td>
           <td>{{ x.time_stamp }}</td>
         </tr>
@@ -101,9 +132,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          ค้นหาแบบละเอียด
-        </h5>
+        <h5 class="modal-title" id="exampleModalLabel">ค้นหาแบบละเอียด</h5>
         <button
           type="button"
           class="close"

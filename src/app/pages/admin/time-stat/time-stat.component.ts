@@ -1,6 +1,8 @@
 import { NgxSpinnerService } from "ngx-spinner";
 import { HttpService } from "src/app/services/http.service";
 import { Component, OnInit } from "@angular/core";
+import { Sort } from "@angular/material/sort";
+import Swal from "sweetalert2";
 import {
   FormControl,
   FormGroup,
@@ -15,11 +17,14 @@ import {
 })
 export class TimeStatComponent implements OnInit {
   public userData: Array<any> = [];
+  public dataOld: Array<any> = [];
+  public timeHistory: Array<any> = [];
   public floor: any;
   public formStd_code: FormGroup;
   public formSearch: FormGroup;
   public all = new FormControl();
   // term = new FormControl();
+  public showColumn = new FormControl();
   public p: number = 1;
   public keyStd = new FormControl();
   public Faculty = [];
@@ -28,6 +33,7 @@ export class TimeStatComponent implements OnInit {
   public checkConnect = false;
   public term = [1, 2, 3];
   data: any = [];
+  allComplete: boolean = false;
   monthsList: string[] = [
     "มกราคม",
     "กุมภาพันธ์",
@@ -88,6 +94,7 @@ export class TimeStatComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.success) {
       this.userData = httpRespon.response.data;
+      this.dataOld = httpRespon.response.data;
       this.spinner.hide();
     } else {
       this.userData = [];
@@ -216,7 +223,10 @@ export class TimeStatComponent implements OnInit {
     this.formSearch.controls["female"].setValue(false);
   }
   exportAsXLSX(): void {
-    this.userData.forEach((item) => {
+    if (this.timeHistory.length == 0) {
+      Swal.fire("", "กรุณาเลือกข้อมูล", "error");
+    } else {
+    this.timeHistory.forEach((item) => {
       this.data.push({
         วันที่: item.date_stamp,
         เลขห้อง: item.room_number,
@@ -236,5 +246,131 @@ export class TimeStatComponent implements OnInit {
       "ผลการเข้าหอพักของนักศึกษา_" + this.getDate()
     );
     this.data = [];
+    }
   }
+
+  async deleteHis() {
+    if (this.timeHistory.length == 0) {
+      Swal.fire("", "กรุณาเลือกข้อมูล", "error");
+    } else {
+      Swal.fire({
+        title: "",
+        text: "ยืนยันการลบข้อมูล!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง !",
+        cancelButtonText: "ยกเลิก",
+      }).then(async (result) => {
+        let formData = new FormData();
+        var noHistory: any = this.timeHistory.map((x) => {
+          return x.time_number;
+        });
+        console.log(noHistory);
+        formData.append("noHistory", noHistory);
+        let httpRespon: any = await this.http.post("deleteTimeHis", formData);
+        console.log(httpRespon);
+        if (httpRespon.response.success) {
+          this.getTimeStat()
+          console.log(httpRespon);
+          this.timeHistory = [];
+          this.allComplete = false;
+        } else {
+          Swal.fire("", httpRespon.response.message, "error");
+        }
+      });
+    }
+  }
+
+  checkAll(ev) {
+    if (ev.checked) {
+      this.userData.forEach((x) => {
+        if (x.state != ev.checked) {
+          this.timeHistory.push(x);
+          x.state = ev.checked;
+          console.log("หมด");
+        }
+      });
+    } else {
+      this.userData.forEach((x) => {
+        x.state = ev.checked;
+        console.log("ไม่หมด");
+      });
+      this.timeHistory = [];
+    }
+  }
+
+  addStdCard = async (value, check) => {
+    console.log(check);
+
+    if (check == true) {
+      this.timeHistory.push(value);
+    } else {
+      this.timeHistory = this.timeHistory.filter((item) => {
+        if (item != value) {
+          return item;
+        }
+      });
+    }
+    if (this.timeHistory.length == this.userData.length) {
+      this.allComplete = true;
+      console.log("userData");
+      console.log(this.userData);
+      console.log("his");
+      console.log(this.timeHistory);
+    } else {
+      this.allComplete = false;
+    }
+    console.log(this.timeHistory);
+  };
+
+  sortData(sort: Sort) {
+    if (this.userData == null) {
+      return;
+    }
+    const data = this.userData.slice();
+    if (!sort.active || sort.direction === "") {
+      this.userData = this.dataOld.slice();
+      return;
+    }
+    this.userData = data.sort((a, b) => {
+      const isAsc = sort.direction === "asc";
+      switch (sort.active) {
+        case "date_stamp":
+          return compare(a.date_stamp, b.date_stamp, isAsc);
+        case "std_code":
+          return compare(a.std_code, b.std_code, isAsc);
+        case "nameStd":
+          return compare(a.nameStd, b.nameStd, isAsc);
+        case "name":
+          return compare(a.name, b.name, isAsc);
+        case "branch":
+          return compare(a.branch, b.branch, isAsc);
+        case "groubStudent":
+          return compare(a.groubStudent, b.groubStudent, isAsc);
+        case "level":
+          return compare(a.level, b.level, isAsc);
+        case "room_number":
+          return compare(a.room_number, b.room_number, isAsc);
+        case "phone":
+          return compare(a.phone, b.phone, isAsc);
+        case "time_stamp":
+          if(a.time_stamp.split(':')[0] == b.time_stamp.split(':')[0]){
+            console.log(a.time_stamp.split(':')[1] +" เทียบกับ "+b.time_stamp.split(':')[1]);
+            return compare(a.time_stamp.split(':')[1], b.time_stamp.split(':')[1], isAsc);
+
+          }
+          else{
+            return compare(a.time_stamp, b.time_stamp, isAsc);
+          }
+         
+        default:
+          return 0;
+      }
+    });
+  }
+}
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

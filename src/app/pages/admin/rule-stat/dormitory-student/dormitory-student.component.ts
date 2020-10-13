@@ -7,6 +7,8 @@ import {
   FormBuilder,
   Validators,
 } from "@angular/forms";
+import Swal from "sweetalert2";
+import { Sort } from "@angular/material/sort";
 
 @Component({
   selector: "app-dormitory-student",
@@ -15,6 +17,9 @@ import {
 })
 export class DormitoryStudentComponent implements OnInit {
   public userData: Array<any> = null;
+  public dataOld: Array<any> = null;
+  public ruleHistory: Array<any> = [];
+  allComplete: boolean = false;
   //term = new FormControl();
   public ruleChoice = [];
   public formStd_code: FormGroup;
@@ -83,9 +88,14 @@ export class DormitoryStudentComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
+      this.userData.forEach((x) => {
+        x.state = false;
+      });
+      this.dataOld = this.userData
       return true;
     } else {
       this.userData = null;
+      this.dataOld = this.userData
       return true;
     }
   };
@@ -144,6 +154,7 @@ export class DormitoryStudentComponent implements OnInit {
   }
   async searchStd() {
     this.userData = [];
+    this.dataOld = this.userData
     console.log(this.keyStd.value);
     let formData = new FormData();
     formData.append("keyStd", this.keyStd.value);
@@ -152,9 +163,11 @@ export class DormitoryStudentComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
+      this.dataOld = this.userData
       console.log("พบ");
     } else {
       this.userData = [];
+      this.dataOld = this.userData
       console.log("ไม่พบ");
     }
   }
@@ -190,8 +203,10 @@ export class DormitoryStudentComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.success) {
       this.userData = httpRespon.response.data;
+      this.dataOld = this.userData
     } else {
       this.userData = null;
+      this.dataOld = this.userData
     }
     this.clearFormSearch();
   };
@@ -216,7 +231,10 @@ export class DormitoryStudentComponent implements OnInit {
     this.formSearch.controls["female"].setValue(false);
   }
   exportAsXLSX(): void {
-    this.userData.forEach((item) => {
+    if (this.ruleHistory.length == 0) {
+      Swal.fire("", "กรุณาเลือกข้อมูล", "error");
+    } else {
+    this.ruleHistory.forEach((item) => {
       if (item.other != "") {
         this.data.push({
           วันที่: item.date_rule,
@@ -253,5 +271,130 @@ export class DormitoryStudentComponent implements OnInit {
       "ผลการกระทำผิดกฎของนักศึกษาหอพัก_" + this.getDate()
     );
     this.data = [];
+
+    }
   }
+  async deleteHis() {
+    if (this.ruleHistory.length == 0) {
+      Swal.fire("", "กรุณาเลือกข้อมูล", "error");
+    } else {
+      Swal.fire({
+        title: "",
+        text: "ยืนยันการลบข้อมูล!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง !",
+        cancelButtonText: "ยกเลิก",
+      }).then(async (result) => {
+        let formData = new FormData();
+        var noHistory: any = this.ruleHistory.map((x) => {
+          return x.rules_no;
+        });
+        console.log(noHistory);
+        formData.append("noHistory", noHistory);
+        let httpRespon: any = await this.http.post("deleteRuleHis", formData);
+        console.log(httpRespon);
+        if (httpRespon.response.success) {
+          await this.spinner.show();
+          this.getStdRule().then(async (value) => {
+            if (value == true) {
+              this.spinner.hide();
+            }
+          });
+          console.log(httpRespon);
+          this.ruleHistory = [];
+          this.allComplete = false;
+        } else {
+          Swal.fire("", httpRespon.response.message, "error");
+        }
+      });
+    }
+  }
+  checkAll(ev) {
+    if (ev.checked) {
+      this.userData.forEach((x) => {
+        if (x.state != ev.checked) {
+          this.ruleHistory.push(x);
+          x.state = ev.checked;
+          console.log("หมด");
+        }
+      });
+    } else {
+      this.userData.forEach((x) => {
+        x.state = ev.checked;
+        console.log("ไม่หมด");
+      });
+      this.ruleHistory = [];
+    }
+  }
+
+  addStdCard = async (value, check) => {
+    console.log(check);
+
+    if (check == true) {
+      this.ruleHistory.push(value);
+    } else {
+      this.ruleHistory = this.ruleHistory.filter((item) => {
+        if (item != value) {
+          return item;
+        }
+      });
+    }
+    if (this.ruleHistory.length == this.userData.length) {
+      this.allComplete = true;
+      console.log("userData");
+      console.log(this.userData);
+      console.log("his");
+      console.log(this.ruleHistory);
+    } else {
+      this.allComplete = false;
+    }
+    console.log(this.ruleHistory);
+  };
+
+  sortData(sort: Sort) {
+    if (this.userData == null) {
+      return;
+    }
+    const data = this.userData.slice();
+    if (!sort.active || sort.direction === "") {
+      this.userData = this.dataOld.slice();
+      return;
+    }
+    this.userData = data.sort((a, b) => {
+      const isAsc = sort.direction === "asc";
+      switch (sort.active) {
+        case "date_rule":
+          return compare(a.date_rule, b.date_rule, isAsc);
+        case "time_rule":
+          return compare(a.time_rule, b.time_rule, isAsc);
+        case "room_number":
+          return compare(a.room_number, b.room_number, isAsc);
+        case "std_code":
+          return compare(a.std_code, b.std_code, isAsc);
+        case "nameStd":
+          return compare(a.nameStd, b.nameStd, isAsc);
+        case "faculty":
+          return compare(a.faculty, b.faculty, isAsc);
+        case "branch":
+          return compare(a.branch, b.branch, isAsc);
+        case "groubStudent":
+          return compare(a.groubStudent, b.groubStudent, isAsc);
+        case "level":
+          return compare(a.level, b.level, isAsc);
+        case "rules_name":
+          return compare(a.rules_name, b.rules_name, isAsc);
+          case "details":
+            return compare(a.details, b.details, isAsc);
+        default:
+          return 0;
+        
+      }
+    });
+  }
+}
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

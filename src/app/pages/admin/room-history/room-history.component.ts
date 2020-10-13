@@ -6,8 +6,9 @@ import {
   Validators,
 } from "@angular/forms";
 import Swal from "sweetalert2";
-import { HttpService } from "src/app/services/http.service";
 import { Sort } from "@angular/material/sort";
+import { HttpService } from "src/app/services/http.service";
+
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
@@ -20,6 +21,7 @@ export class RoomHistoryComponent implements OnInit {
   public formSearch: FormGroup;
 
   public userData: Array<any> = null;
+  public dataOld: Array<any> = null;
   public floor = [];
   public keyStd = new FormControl();
   p: number = 1;
@@ -81,11 +83,13 @@ export class RoomHistoryComponent implements OnInit {
         x.room_number_old == "null" ? (x.room_number_old = "") : 1;
         x.state = false;
       });
+      this.dataOld = this.userData
       console.log(this.userData);
 
       return true;
     } else {
       this.userData = null;
+      this.dataOld = null
       return true;
     }
   };
@@ -93,6 +97,7 @@ export class RoomHistoryComponent implements OnInit {
   async searchStd() {
     this.p = 1;
     this.userData = null;
+    this.dataOld = null
     console.log(this.keyStd.value);
     let formData = new FormData();
     formData.append("keyStd", this.keyStd.value);
@@ -103,15 +108,17 @@ export class RoomHistoryComponent implements OnInit {
       this.userData.forEach((x) => {
         x.room_number_old == "null" ? (x.room_number_old = "") : 1;
       });
+      this.dataOld = this.userData
       console.log("พบ");
     } else {
       this.userData = null;
+      this.dataOld = null
       console.log("ไม่พบ");
     }
   }
   exportAsXLSX(): void {
     if (this.roomHistory.length == 0) {
-      Swal.fire("กรุณาเลือกข้อมูล", "", "error");
+      Swal.fire("", "กรุณาเลือกข้อมูล", "error");
     } else {
       this.roomHistory.forEach((item) => {
         this.data.push({
@@ -194,7 +201,7 @@ export class RoomHistoryComponent implements OnInit {
 
   async deleteHis() {
     if (this.roomHistory.length == 0) {
-      Swal.fire("กรุณาเลือกข้อมูล", "", "error");
+      Swal.fire("", "กรุณาเลือกข้อมูล", "error");
     } else {
       Swal.fire({
         title: "",
@@ -225,7 +232,7 @@ export class RoomHistoryComponent implements OnInit {
           this.roomHistory = [];
           this.allComplete = false;
         } else {
-          Swal.fire(httpRespon.response.message, "", "error");
+          Swal.fire("", httpRespon.response.message, "error");
         }
       });
     }
@@ -237,7 +244,7 @@ export class RoomHistoryComponent implements OnInit {
     }
     const data = this.userData.slice();
     if (!sort.active || sort.direction === "") {
-      this.userData = data;
+      this.userData = this.dataOld.slice();
       return;
     }
     this.userData = data.sort((a, b) => {

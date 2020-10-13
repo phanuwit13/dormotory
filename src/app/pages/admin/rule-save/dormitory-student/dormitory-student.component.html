@@ -3,7 +3,7 @@
     <form [formGroup]="formStd_code" (keydown.enter)="getStdcode()">
       <mat-form-field class="per35">
         <mat-label><span style="color: red">*</span> รหัสนักศึกษา</mat-label>
-        <input matInput formControlName="std_code" (keyup)="getStdcode()" />
+        <input matInput formControlName="std_code" placeholder="Ex.60000000000-0" (keyup)="getStdcode()" />
       </mat-form-field>
 
       <mat-form-field *ngIf="nameStudent != null" class="per35">
@@ -131,7 +131,7 @@
     </mat-form-field>
     <br />
     <button
-      [disabled]="formStd_code.invalid"
+      [disabled]="(formStd_code.invalid || nameStudent == null)"
       (click)="setStd_rule()"
       mat-raised-button
       color="primary"

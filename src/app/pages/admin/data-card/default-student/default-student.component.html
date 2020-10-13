@@ -49,19 +49,31 @@
         <th scope="col" mat-sort-header="nameStd">
           <span>ชื่อ - สกุล</span>
         </th>
-        <th *ngIf="showColumn.value == true" scope="col" mat-sort-header="faculty">
+        <th
+          *ngIf="showColumn.value == true"
+          scope="col"
+          mat-sort-header="faculty"
+        >
           <span>คณะ</span>
         </th>
-        <th *ngIf="showColumn.value == true" scope="col" mat-sort-header="branch">
+        <th
+          *ngIf="showColumn.value == true"
+          scope="col"
+          mat-sort-header="branch"
+        >
           <span>สาขา</span>
         </th>
         <th scope="col" mat-sort-header="groubStudent">
           <span>กลุ่มเรียน</span>
         </th>
-        <th *ngIf="showColumn.value == true" scope="col" mat-sort-header="level">
+        <th
+          *ngIf="showColumn.value == true"
+          scope="col"
+          mat-sort-header="level"
+        >
           <span>ระดับวุฒิการศึกษา</span>
         </th>
-        <th scope="col">เบอร์โทร</th>
+        <th mat-sort-header="phone" scope="col">เบอร์โทร</th>
         <th scope="col"></th>
       </tr>
     </thead>

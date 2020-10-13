@@ -138,9 +138,7 @@ export class DefaultStudentComponent implements OnInit {
     });
     this.formStd_code.controls["date_rule"].setValue(new Date());
     this.formStd_code.controls["id_card_code"].setValue(null);
-    this.formStd_code.controls["time_rule"].setValue(
-      new Date().getHours() + ":" + new Date().getMinutes()
-    );
+    this.formStd_code.controls["time_rule"].setValue(this.setTime());
   }
   getDate() {
     let year: any = this.formStd_code.value.date_rule.getFullYear();

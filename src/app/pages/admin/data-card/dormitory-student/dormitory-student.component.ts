@@ -20,6 +20,7 @@ export class DormitoryStudentComponent implements OnInit {
   public nameStudent: Array<any> = null;
   public floor = [];
   public userData: Array<any> = null;
+  public dataOld: Array<any> = null;
   public keyStd = new FormControl();
   p: number = 1;
   public Faculty = [];
@@ -94,9 +95,11 @@ export class DormitoryStudentComponent implements OnInit {
       this.userData.forEach((x) => {
         x.state = false;
       });
+      this.dataOld = this.userData
       return true;
     } else {
       this.userData = null;
+      this.dataOld = this.userData
       return true;
     }
   };
@@ -183,6 +186,7 @@ export class DormitoryStudentComponent implements OnInit {
   async searchStd() {
     this.p = 1;
     this.userData = null;
+    this.dataOld = this.userData
     console.log(this.keyStd.value);
     let formData = new FormData();
     formData.append("status", "1");
@@ -194,9 +198,11 @@ export class DormitoryStudentComponent implements OnInit {
       this.userData.forEach((x) => {
         x.state = false;
       });
+      this.dataOld = this.userData
       console.log("พบ");
     } else {
       this.userData = null;
+      this.dataOld = this.userData
       console.log("ไม่พบ");
     }
   }
@@ -367,9 +373,11 @@ export class DormitoryStudentComponent implements OnInit {
       this.userData.forEach((x) => {
         x.state = false;
       });
+      this.dataOld = this.userData
       this.clearFormSearch();
     } else {
       this.userData = null;
+      this.dataOld = this.userData
       console.log(httpRespon.response.message);
       this.clearFormSearch();
     }
@@ -531,7 +539,7 @@ export class DormitoryStudentComponent implements OnInit {
     }
     const data = this.userData.slice();
     if (!sort.active || sort.direction === "") {
-      this.userData = data;
+      this.userData = this.dataOld.slice();
       return;
     }
 
@@ -552,6 +560,8 @@ export class DormitoryStudentComponent implements OnInit {
           return compare(a.groubStudent, b.groubStudent, isAsc);
         case "level":
           return compare(a.level, b.level, isAsc);
+        case "phone":
+          return compare(a.phone, b.phone, isAsc);
         default:
           return 0;
       }

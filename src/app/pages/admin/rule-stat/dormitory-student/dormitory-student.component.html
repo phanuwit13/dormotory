@@ -1,27 +1,4 @@
 <div class="top">
-  <!-- <section class="example-section">
-    <input
-      class="form-control form-control-sm ml-3 w-25"
-      type="text"
-      [formControl]="keyStd"
-      placeholder="Search"
-      aria-label="Search"
-      mdbInput
-    />
-    <button
-      class="btn"
-      data-toggle="modal"
-      data-target="#ModalSearch"
-      mat-flat-button
-      color="primary"
-      (click)="advancedSearch()"
-    >
-      ค้นหาแบบละเอียด
-    </button>
-    <button class="btn" mat-flat-button color="primary">
-      ส่งออกสรุปผลการย้ายห้องพัก
-    </button>
-  </section> -->
   <div class="box1 search">
     <input
       class="form-control form-control-sm ml-3 w-100"
@@ -56,6 +33,16 @@
     </button>
   </div>
   <div class="box1">
+    <button
+      class="btn"
+      (click)="deleteHis()"
+      mat-flat-button
+      style="background-color: #fdc92d"
+    >
+      ลบผลการกระทำผิดกฎระเบียบ
+    </button>
+  </div>
+  <div class="box1">
     <mat-slide-toggle [formControl]="showColumn" class="toggle"
       >แสดงคอลัมน์ทั้งหมด</mat-slide-toggle
     >
@@ -65,20 +52,47 @@
   <ngx-spinner size="medium" color="#ff5722" type="ball-spin-clockwise"
     ><p style="color: white">Loading...</p></ngx-spinner
   >
-  <table class="table" *ngIf="checkConnect == true">
+  <table
+    matSort
+    (matSortChange)="sortData($event)"
+    class="table"
+    *ngIf="checkConnect == true"
+  >
     <thead class="thead-dark">
       <tr>
-        <th scope="col">วันที่</th>
-        <th scope="col">เวลา</th>
-        <th scope="col">เลขห้อง</th>
-        <th scope="col">รหัสนักศึกษา</th>
-        <th scope="col">ชื่อ - สกุล</th>
-        <th *ngIf="showColumn.value == true" scope="col">คณะ</th>
-        <th *ngIf="showColumn.value == true" scope="col">สาขา</th>
-        <th scope="col">กลุ่มเรียน</th>
-        <th *ngIf="showColumn.value == true" scope="col">ระดับวุฒิการศึกษา</th>
-        <th scope="col">กระทำผิดกฏ</th>
-        <th scope="col">รายละเอียด</th>
+        <th scope="col">
+          <mat-checkbox [(ngModel)]="allComplete" (change)="checkAll($event)">
+          </mat-checkbox>
+        </th>
+        <th mat-sort-header="date_rule" scope="col">วันที่</th>
+        <th mat-sort-header="time_rule" scope="col">เวลา</th>
+        <th mat-sort-header="room_number" scope="col">เลขห้อง</th>
+        <th mat-sort-header="std_code" scope="col">รหัสนักศึกษา</th>
+        <th mat-sort-header="nameStd" scope="col">ชื่อ - สกุล</th>
+        <th
+          mat-sort-header="faculty"
+          *ngIf="showColumn.value == true"
+          scope="col"
+        >
+          คณะ
+        </th>
+        <th
+          mat-sort-header="branch"
+          *ngIf="showColumn.value == true"
+          scope="col"
+        >
+          สาขา
+        </th>
+        <th mat-sort-header="groubStudent" scope="col">กลุ่มเรียน</th>
+        <th
+          mat-sort-header="level"
+          *ngIf="showColumn.value == true"
+          scope="col"
+        >
+          ระดับวุฒิการศึกษา
+        </th>
+        <th mat-sort-header="rules_name" scope="col">กระทำผิดกฏ</th>
+        <th mat-sort-header="details" scope="col">รายละเอียด</th>
       </tr>
     </thead>
 
@@ -88,6 +102,14 @@
           let x of userData | paginate: { itemsPerPage: 12, currentPage: p }
         "
       >
+        <td>
+          <mat-checkbox
+            [(ngModel)]="x.state"
+            #check
+            (change)="addStdCard(x, check.checked)"
+          >
+          </mat-checkbox>
+        </td>
         <td>{{ x.date_rule }}</td>
         <td>{{ x.time_rule }}</td>
         <td>{{ x.room_number }}</td>

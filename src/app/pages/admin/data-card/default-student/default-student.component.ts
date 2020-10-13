@@ -22,6 +22,7 @@ export class DefaultStudentComponent implements OnInit {
   public nameStudent: Array<any> = null;
   public floor = [];
   public userData: Array<any> = null;
+  public dataOld: Array<any> = null;
   public keyStd = new FormControl();
   p: number = 1;
 
@@ -93,9 +94,11 @@ export class DefaultStudentComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = await httpRespon.response.data;
+      this.dataOld = this.userData
       return true;
     } else {
       this.userData = null;
+      this.dataOld = this.userData
       return true;
     }
   };
@@ -180,6 +183,7 @@ export class DefaultStudentComponent implements OnInit {
   async searchStd() {
     this.p = 1;
     this.userData = null;
+    this.dataOld = this.userData
     let formData = new FormData();
     formData.append("keyStd", this.keyStd.value);
     formData.append("status", "2");
@@ -187,9 +191,11 @@ export class DefaultStudentComponent implements OnInit {
     console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
+      this.dataOld = this.userData
       console.log("พบ");
     } else {
       this.userData = null;
+      this.dataOld = this.userData
       console.log("ไม่พบ");
     }
   }
@@ -323,13 +329,13 @@ export class DefaultStudentComponent implements OnInit {
       Swal.fire("กรอกข้อมูลให้ครบ", "", "error");
     }
   }
-  sortTable = (value: any) => {
-    console.log(this.userData);
-    console.log(value);
-    this.userData.sort((a, b) =>
-      a[value] > b[value] ? 1 : a[value] < b[value] ? -1 : 0
-    );
-  };
+  // sortTable = (value: any) => {
+  //   console.log(this.userData);
+  //   console.log(value);
+  //   this.userData.sort((a, b) =>
+  //     a[value] > b[value] ? 1 : a[value] < b[value] ? -1 : 0
+  //   );
+  // };
   getDate() {
     let year: any = new Date().getFullYear();
     let month: any = new Date().getMonth();
@@ -364,9 +370,11 @@ export class DefaultStudentComponent implements OnInit {
     if (httpRespon.response.data.length > 0) {
       console.log(httpRespon.response.success);
       this.userData = httpRespon.response.data;
+      this.dataOld = this.userData
       this.clearFormSearch();
     } else {
       this.userData = null;
+      this.dataOld = this.userData
       console.log(httpRespon.response.message);
       this.clearFormSearch();
     }
@@ -447,7 +455,7 @@ export class DefaultStudentComponent implements OnInit {
     }
     const data = this.userData.slice();
     if (!sort.active || sort.direction === "") {
-      this.userData = data;
+      this.userData =  this.dataOld.slice();
       return;
     }
 
@@ -468,6 +476,8 @@ export class DefaultStudentComponent implements OnInit {
           return compare(a.groubStudent, b.groubStudent, isAsc);
         case "level":
           return compare(a.level, b.level, isAsc);
+          case "phone":
+            return compare(a.phone, b.phone, isAsc);
         default:
           return 0;
       }
