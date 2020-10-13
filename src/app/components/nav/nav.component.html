@@ -78,6 +78,13 @@
           ><i class="material-icons"> backup </i>&nbsp;
           นำเข้าไฟล์ข้อมูลนักศึกษา</a
         >
+        <a
+        data-toggle="modal" data-target="#passwordEdit"
+          mat-list-item
+          routerLinkActive="router-link-active"
+          ><i class="material-icons"> vpn_key </i>&nbsp;
+          แก้ไขรหัสผ่าน</a
+        >
         <a mat-list-item (click)="logOut()"
           ><span class="material-icons"> login </span>&nbsp; ออกจากระบบ</a
         >
@@ -99,4 +106,54 @@
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
+</div>
+
+-- Modal -->
+<div class="modal fade" id="passwordEdit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">แก้ไขรหัสผ่าน</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="host">
+      
+              <form
+                class="formInput"
+                [formGroup]="formLogin"
+              >
+                <p class="inputField">
+                  <mat-form-field appearance="outline" color="accent" >
+                    <mat-label>รหัสผ่านเดิม</mat-label>
+                    <input  type="text" formControlName="passwordOld" matInput placeholder="Ex.123">
+                  </mat-form-field>
+                </p>
+    
+                <p class="inputField">
+                  <mat-form-field appearance="outline" color="accent">
+                    <mat-label>รหัสผ่านใหม่</mat-label>
+                    <input  type="password" formControlName="passwordNew1" matInput >
+                  </mat-form-field>
+                </p>
+
+                <p class="inputField">
+                  <mat-form-field appearance="outline" color="accent">
+                    <mat-label>ยืนยันรหัสผ่านใหม่</mat-label>
+                    <input  type="password" formControlName="passwordNew2" matInput >
+                  </mat-form-field>
+                </p>
+
+              </form>
+ 
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="closeModalPass" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+        <button type="button" class="btn btn-primary" (click)="changePassword()" >ยืนยัน</button>
+      </div>
+    </div>
+  </div>
 </div>
