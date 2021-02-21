@@ -2,7 +2,7 @@
   <form class="frame" [formGroup]="formStd_code">
     <mat-form-field class="per30">
       <mat-label><span style="color: red;">*</span> บัตรประชาชน</mat-label>
-      <input matInput placeholder="Ex.130XXXXXXXXXX" formControlName="id_card_code" />
+      <input matInput (keyup)="checkType('id_card_code','num')" placeholder="Ex.130XXXXXXXXXX" formControlName="id_card_code" />
     </mat-form-field>
 
     <mat-form-field class="per15">
@@ -14,16 +14,16 @@
 
     <mat-form-field class="per20">
       <mat-label><span style="color: red;">*</span> ชื่อจริง</mat-label>
-      <input matInput placeholder="Ex.ใจดี" formControlName="fname" />
+      <input matInput  (keyup)="checkType('fname','')" placeholder="Ex.ใจดี" formControlName="fname" />
     </mat-form-field>
 
     <mat-form-field class="per20">
       <mat-label><span style="color: red;">*</span> นามสกุล</mat-label>
-      <input matInput placeholder="Ex.จริงใจ" formControlName="lname" />
+      <input matInput (keyup)="checkType('lname','')" placeholder="Ex.จริงใจ" formControlName="lname" />
     </mat-form-field>
     <mat-form-field class="per15">
       <mat-label><span style="color: red;">*</span> เบอร์โทรศัพท์</mat-label>
-      <input matInput placeholder="Ex.08XXXXXXXX" formControlName="phone" />
+      <input matInput (keyup)="checkType('phone','num')" placeholder="Ex.08XXXXXXXX" formControlName="phone" />
     </mat-form-field>
     <br />
     <mat-form-field class="per30">
@@ -33,6 +33,7 @@
       <input
         matInput
         (keyup)="getStdcode()"
+        (keyup)="checkType('std_code','num')"
         formControlName="std_code"
         placeholder="Ex.60000000000-0"
       />
@@ -105,18 +106,18 @@
     </mat-form-field>
     <br />
     <mat-form-field class="per30">
-      <input matInput placeholder="Ex.สมชาย ชายชาย" formControlName="father" placeholder="ชื่อบิดา" />
+      <input matInput placeholder="Ex.สมชาย ชายชาย" (keyup)="checkType('father','')"  formControlName="father" placeholder="ชื่อบิดา" />
     </mat-form-field>
 
     <mat-form-field class="per20">
-      <input matInput placeholder="Ex.08XXXXXXXX" formControlName="f_phone" placeholder="เบอร์โทร-บิดา" />
+      <input matInput placeholder="Ex.08XXXXXXXX" (keyup)="checkType('f_phone','num')" formControlName="f_phone" placeholder="เบอร์โทร-บิดา" />
     </mat-form-field>
     <mat-form-field class="per30">
-      <input matInput placeholder="Ex.สมหญิง หญิงหญิง" formControlName="mother" placeholder="ชื่อมารดา" />
+      <input matInput placeholder="Ex.สมหญิง หญิงหญิง" (keyup)="checkType('mother','')" formControlName="mother" placeholder="ชื่อมารดา" />
     </mat-form-field>
 
     <mat-form-field class="per20">
-      <input matInput placeholder="Ex.08XXXXXXXX"  formControlName="m_phone" placeholder="เบอร์โทร-มารดา" />
+      <input matInput placeholder="Ex.08XXXXXXXX" (keyup)="checkType('m_phone','num')"  formControlName="m_phone" placeholder="เบอร์โทร-มารดา" />
     </mat-form-field>
     <br />
     <mat-form-field class="per50">

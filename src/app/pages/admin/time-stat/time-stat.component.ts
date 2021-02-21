@@ -80,8 +80,7 @@ export class TimeStatComponent implements OnInit {
       typeSelect: "",
       months: null,
       term: null,
-    });
-
+    });    
     this.getTimeStat();
   }
 
@@ -91,7 +90,6 @@ export class TimeStatComponent implements OnInit {
     await this.spinner.show();
     let httpRespon: any = await this.http.post("getTimeStat", formData);
     this.checkConnect = true;
-    console.log(httpRespon);
     if (httpRespon.response.success) {
       this.userData = httpRespon.response.data;
       this.dataOld = httpRespon.response.data;
@@ -104,7 +102,6 @@ export class TimeStatComponent implements OnInit {
 
   async getFloor() {
     let httpRespon: any = await this.http.post("floor");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.floor = httpRespon.response.data;
     } else {
@@ -115,18 +112,14 @@ export class TimeStatComponent implements OnInit {
   async searchStd() {
     this.p = 1;
     this.userData = [];
-    console.log(this.keyStd.value);
     let formData = new FormData();
     formData.append("keyStd", this.keyStd.value);
     formData.append("all", this.all.value);
     let httpRespon: any = await this.http.post("searchTimeStat", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
-      console.log("พบ");
     } else {
       this.userData = [];
-      console.log("ไม่พบ");
     }
   }
 
@@ -136,7 +129,6 @@ export class TimeStatComponent implements OnInit {
   };
   async getLevels() {
     let httpRespon: any = await this.http.post("level");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.levels = httpRespon.response.data;
     } else {
@@ -145,7 +137,6 @@ export class TimeStatComponent implements OnInit {
   }
   async getFaculty() {
     let httpRespon: any = await this.http.post("Faculty");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.Faculty = httpRespon.response.data;
     } else {
@@ -158,7 +149,6 @@ export class TimeStatComponent implements OnInit {
     formData.append("noLevel", lev);
 
     let httpRespon: any = await this.http.post("Branch", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branch = httpRespon.response.data;
     } else {
@@ -188,11 +178,8 @@ export class TimeStatComponent implements OnInit {
     formData.append("all", this.all.value);
     Object.keys(this.formSearch.value).forEach((key) => {
       formData.append(key, this.formSearch.value[key]);
-      console.log(key + " : " + this.formSearch.value[key]);
     });
     let httpRespon: any = await this.http.post("getTimeStatAdvance", formData);
-
-    console.log(httpRespon);
     if (httpRespon.response.success) {
       this.userData = httpRespon.response.data;
     } else {
@@ -205,8 +192,9 @@ export class TimeStatComponent implements OnInit {
     let year = this.formSearch.value.date.getFullYear();
     let month = this.formSearch.value.date.getMonth();
     let day = this.formSearch.value.date.getDate();
+    month = (month + 1)
     if (month < 10) {
-      month = "0" + (month + 1);
+      month = "0" + month
     }
     if (day < 10) {
       day = "0" + day;
@@ -267,13 +255,10 @@ export class TimeStatComponent implements OnInit {
         var noHistory: any = this.timeHistory.map((x) => {
           return x.time_number;
         });
-        console.log(noHistory);
         formData.append("noHistory", noHistory);
         let httpRespon: any = await this.http.post("deleteTimeHis", formData);
-        console.log(httpRespon);
         if (httpRespon.response.success) {
           this.getTimeStat()
-          console.log(httpRespon);
           this.timeHistory = [];
           this.allComplete = false;
         } else {
@@ -289,20 +274,17 @@ export class TimeStatComponent implements OnInit {
         if (x.state != ev.checked) {
           this.timeHistory.push(x);
           x.state = ev.checked;
-          console.log("หมด");
         }
       });
     } else {
       this.userData.forEach((x) => {
         x.state = ev.checked;
-        console.log("ไม่หมด");
       });
       this.timeHistory = [];
     }
   }
 
   addStdCard = async (value, check) => {
-    console.log(check);
 
     if (check == true) {
       this.timeHistory.push(value);
@@ -315,14 +297,9 @@ export class TimeStatComponent implements OnInit {
     }
     if (this.timeHistory.length == this.userData.length) {
       this.allComplete = true;
-      console.log("userData");
-      console.log(this.userData);
-      console.log("his");
-      console.log(this.timeHistory);
     } else {
       this.allComplete = false;
     }
-    console.log(this.timeHistory);
   };
 
   sortData(sort: Sort) {
@@ -357,7 +334,6 @@ export class TimeStatComponent implements OnInit {
           return compare(a.phone, b.phone, isAsc);
         case "time_stamp":
           if(a.time_stamp.split(':')[0] == b.time_stamp.split(':')[0]){
-            console.log(a.time_stamp.split(':')[1] +" เทียบกับ "+b.time_stamp.split(':')[1]);
             return compare(a.time_stamp.split(':')[1], b.time_stamp.split(':')[1], isAsc);
 
           }

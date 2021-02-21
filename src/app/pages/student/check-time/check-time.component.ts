@@ -35,10 +35,8 @@ export class CheckTimeComponent implements OnInit {
     formData.append("std_code", this.formLogin.controls["std_code"].value);
     formData.append("status", "1");
     let httpRespon: any = await this.http.post("getStudent", formData);
-    console.log(httpRespon);
     if (httpRespon.response.success) {
       this.dataStd = httpRespon.response.data;
-      console.log(httpRespon.response);
       return true;
     } else {
       this.dataStd = null;
@@ -69,13 +67,10 @@ export class CheckTimeComponent implements OnInit {
     formData.append("keyStd", this.formLogin.controls["std_code"].value);
     formData.append("all", "false");
     let httpRespon: any = await this.http.post("searchTimeStat", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.timeStat = httpRespon.response.data;
-      console.log("พบ");
     } else {
       this.timeStat = null;
-      console.log("ไม่พบ");
     }
   }
 }

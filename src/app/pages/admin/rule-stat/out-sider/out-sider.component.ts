@@ -87,7 +87,6 @@ export class OutSiderComponent implements OnInit {
   getStdRule = async () => {
     let httpRespon: any = await this.http.post("getOutsiderRule");
     this.checkConnect = true;
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
       this.dataOld = this.userData
@@ -101,7 +100,6 @@ export class OutSiderComponent implements OnInit {
 
   async getRule() {
     let httpRespon: any = await this.http.post("Rule");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.ruleChoice = httpRespon.response.data;
     } else {
@@ -114,7 +112,6 @@ export class OutSiderComponent implements OnInit {
   };
   async getLevels() {
     let httpRespon: any = await this.http.post("level");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.levels = httpRespon.response.data;
     } else {
@@ -123,7 +120,6 @@ export class OutSiderComponent implements OnInit {
   }
   async getFloor() {
     let httpRespon: any = await this.http.post("floor");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.floor = httpRespon.response.data;
     } else {
@@ -132,7 +128,6 @@ export class OutSiderComponent implements OnInit {
   }
   async getFaculty() {
     let httpRespon: any = await this.http.post("Faculty");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.Faculty = httpRespon.response.data;
     } else {
@@ -144,7 +139,6 @@ export class OutSiderComponent implements OnInit {
     formData.append("faculty_code", fcl);
     formData.append("noLevel", lev);
     let httpRespon: any = await this.http.post("Branch", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branch = httpRespon.response.data;
     } else {
@@ -173,13 +167,11 @@ export class OutSiderComponent implements OnInit {
     //วนลูบเก็บค่า key และ value
     Object.keys(this.formSearch.value).forEach((key) => {
       formData.append(key, this.formSearch.value[key]);
-      console.log(key + " : " + this.formSearch.controls[key].value);
     });
     let httpRespon: any = await this.http.post(
       "advancedSearchRuleOut",
       formData
     );
-    console.log(httpRespon);
     if (httpRespon.response.success) {
       this.userData = httpRespon.response.data;
       this.dataOld = this.userData
@@ -193,8 +185,9 @@ export class OutSiderComponent implements OnInit {
     let year = this.formSearch.value.date.getFullYear();
     let month = this.formSearch.value.date.getMonth();
     let day = this.formSearch.value.date.getDate();
+    month = (month + 1)
     if (month < 10) {
-      month = "0" + (month + 1);
+      month = "0" + month
     }
     if (day < 10) {
       day = "0" + day;
@@ -274,19 +267,15 @@ export class OutSiderComponent implements OnInit {
   async searchOut() {
     this.userData = [];
     this.dataOld = this.userData
-    console.log(this.keyStd.value);
     let formData = new FormData();
     formData.append("keyStd", this.keyStd.value);
     let httpRespon: any = await this.http.post("searchRuleStatOut", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
       this.dataOld = this.userData
-      console.log("พบ");
     } else {
       this.userData = [];
       this.dataOld = this.userData
-      console.log("ไม่พบ");
     }
   }
   async deleteHis() {
@@ -307,10 +296,8 @@ export class OutSiderComponent implements OnInit {
         var noHistory: any = this.ruleHistory.map((x) => {
           return x.rules_no;
         });
-        console.log(noHistory);
         formData.append("noHistory", noHistory);
         let httpRespon: any = await this.http.post("deleteRuleHis", formData);
-        console.log(httpRespon);
         if (httpRespon.response.success) {
           await this.spinner.show();
           this.getStdRule().then(async (value) => {
@@ -318,7 +305,6 @@ export class OutSiderComponent implements OnInit {
               this.spinner.hide();
             }
           });
-          console.log(httpRespon);
           this.ruleHistory = [];
           this.allComplete = false;
         } else {
@@ -334,20 +320,17 @@ export class OutSiderComponent implements OnInit {
         if (x.state != ev.checked) {
           this.ruleHistory.push(x);
           x.state = ev.checked;
-          console.log("หมด");
         }
       });
     } else {
       this.userData.forEach((x) => {
         x.state = ev.checked;
-        console.log("ไม่หมด");
       });
       this.ruleHistory = [];
     }
   }
 
   addStdCard = async (value, check) => {
-    console.log(check);
 
     if (check == true) {
       this.ruleHistory.push(value);
@@ -360,14 +343,9 @@ export class OutSiderComponent implements OnInit {
     }
     if (this.ruleHistory.length == this.userData.length) {
       this.allComplete = true;
-      console.log("userData");
-      console.log(this.userData);
-      console.log("his");
-      console.log(this.ruleHistory);
     } else {
       this.allComplete = false;
     }
-    console.log(this.ruleHistory);
   };
 
   sortData(sort: Sort) {

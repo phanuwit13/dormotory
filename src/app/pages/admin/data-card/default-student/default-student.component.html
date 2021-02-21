@@ -249,6 +249,7 @@
                 formControlName="fname"
                 value="{{ item.fname }}"
                 placeholder="ชื่อจริง"
+                (keyup)="checkType('fname', '')"
               />
             </mat-form-field>
 
@@ -258,6 +259,7 @@
                 formControlName="lname"
                 value="{{ item.lname }}"
                 placeholder="นามสกุล"
+                (keyup)="checkType('lname', '')"
               />
             </mat-form-field>
 
@@ -348,6 +350,7 @@
             ><br />
             <mat-form-field class="phone">
               <input
+              (keyup)="checkType('phone', 'num')"
                 matInput
                 formControlName="phone"
                 placeholder="เบอร์โทรศัพท์"

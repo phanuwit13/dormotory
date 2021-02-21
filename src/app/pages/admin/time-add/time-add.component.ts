@@ -40,15 +40,6 @@ export class TimeAddComponent implements OnInit {
       time_status: ["", Validators.required],
       keyStd: "",
     });
-    console.log(
-      this.date.getFullYear() +
-        "-" +
-        (this.date.getMonth() + 1) +
-        "-" +
-        this.date.getDate()
-    );
-    console.log(this.date.getHours() + ":" + this.date.getMinutes());
-    console.log(this.date.getTime());
   }
 
   addTime = async () => {
@@ -59,26 +50,18 @@ export class TimeAddComponent implements OnInit {
     this.timeSet = await this.getTimeSet();
     let timeStart = this.timeSet[0].timeStart.split(":");
     let timeEnd = this.timeSet[0].timeEnd.split(":");
-
-    console.log("เริ่มต้น "+timeStart[0]  +" สิ้นสุด "+ timeEnd[0])
-
     if (parseInt( timeStart[0]) > parseInt(timeEnd[0])) {
       this.statusTime = await this.startOverEnd(timeStart, timeEnd);
-      console.log("เริ่มต้น มากกว่าสิ้นสุด");
       
     } else if (parseInt( timeStart[0]) < parseInt(timeEnd[0])) {
       this.statusTime = await this.endOverStart(timeStart, timeEnd);
-      console.log("เริ่มต้น น้อยกว่าสิ้นสุด");
     } else {
       this.statusTime = await this.timeEqual(timeStart, timeEnd);
-      console.log("เท่ากัน");
     }
 
     formData.append("time_status", this.statusTime);
     let httpResponData: any = await this.http.post("settime", formData);
-    console.log(httpResponData.response.success);
     if (httpResponData.response.success) {
-      console.log(httpResponData.response.data);
       this.setCursor();
       Swal.fire({
         showConfirmButton: false,
@@ -167,10 +150,8 @@ export class TimeAddComponent implements OnInit {
     formData.append("std_code", this.formLogin.controls["std_code"].value);
     formData.append("status", "1");
     let httpRespon: any = await this.http.post("getStudent", formData);
-    console.log(httpRespon);
     if (httpRespon.response.success) {
       this.dataStd = httpRespon.response.data;
-      console.log(httpRespon.response);
       return true;
     } else {
       this.dataStd = null;
@@ -218,20 +199,16 @@ export class TimeAddComponent implements OnInit {
   };
   setFocus(str) {
     this.focus = str;
-    console.log(this.focus);
     this.userStd = null;
   }
   async searchStudent() {
     if (this.formLogin.controls["keyStd"].value != "") {
-      console.log(this.formLogin.controls["keyStd"].value);
       let formData = new FormData();
       formData.append("keyStd", this.formLogin.controls["keyStd"].value);
       formData.append("status", "1");
       let httpRespon: any = await this.http.post("searchNameStd", formData);
-      console.log(httpRespon);
       if (httpRespon.response.success) {
         this.userStd = httpRespon.response.data;
-        console.log(httpRespon.response);
       } else {
         this.userStd = null;
       }

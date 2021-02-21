@@ -3,7 +3,7 @@
     <form [formGroup]="formStd_code" (keydown.enter)="getStdcode()">
       <mat-form-field class="per35">
         <mat-label><span style="color: red">*</span> รหัสนักศึกษา</mat-label>
-        <input matInput formControlName="std_code" placeholder="Ex.60000000000-0" (keyup)="getStdcode()" />
+        <input matInput (keyup)="checkType('std_code','num')"  formControlName="std_code" placeholder="Ex.60000000000-0" (keyup)="getStdcode()" />
       </mat-form-field>
 
       <mat-form-field *ngIf="nameStudent != null" class="per35">

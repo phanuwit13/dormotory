@@ -76,7 +76,6 @@ export class RoomHistoryComponent implements OnInit {
   getRoomHistory = async () => {
     let httpRespon: any = await this.http.post("getRoomHistory");
     this.checkConnect = true;
-    //console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
       this.userData.forEach((x) => {
@@ -84,8 +83,6 @@ export class RoomHistoryComponent implements OnInit {
         x.state = false;
       });
       this.dataOld = this.userData
-      console.log(this.userData);
-
       return true;
     } else {
       this.userData = null;
@@ -98,22 +95,18 @@ export class RoomHistoryComponent implements OnInit {
     this.p = 1;
     this.userData = null;
     this.dataOld = null
-    console.log(this.keyStd.value);
     let formData = new FormData();
     formData.append("keyStd", this.keyStd.value);
     let httpRespon: any = await this.http.post("SearchRoomHistory", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
       this.userData.forEach((x) => {
         x.room_number_old == "null" ? (x.room_number_old = "") : 1;
       });
       this.dataOld = this.userData
-      console.log("พบ");
     } else {
       this.userData = null;
       this.dataOld = null
-      console.log("ไม่พบ");
     }
   }
   exportAsXLSX(): void {
@@ -163,21 +156,17 @@ export class RoomHistoryComponent implements OnInit {
         if (x.state != ev.checked) {
           this.roomHistory.push(x);
           x.state = ev.checked;
-          console.log("หมด");
         }
       });
     } else {
       this.userData.forEach((x) => {
         x.state = ev.checked;
-        console.log("ไม่หมด");
       });
       this.roomHistory = [];
     }
   }
 
   addStdCard = async (value, check) => {
-    console.log(check);
-
     if (check == true) {
       this.roomHistory.push(value);
     } else {
@@ -189,14 +178,9 @@ export class RoomHistoryComponent implements OnInit {
     }
     if (this.roomHistory.length == this.userData.length) {
       this.allComplete = true;
-      console.log("userData");
-      console.log(this.userData);
-      console.log("his");
-      console.log(this.roomHistory);
     } else {
       this.allComplete = false;
     }
-    console.log(this.roomHistory);
   };
 
   async deleteHis() {
@@ -217,10 +201,9 @@ export class RoomHistoryComponent implements OnInit {
         var noHistory: any = this.roomHistory.map((x) => {
           return x.no_room_history;
         });
-        console.log(noHistory);
+
         formData.append("noHistory", noHistory);
         let httpRespon: any = await this.http.post("deleteRoomHis", formData);
-        console.log(httpRespon);
         if (httpRespon.response.success) {
           await this.spinner.show();
           this.getRoomHistory().then(async (value) => {
@@ -228,7 +211,6 @@ export class RoomHistoryComponent implements OnInit {
               this.spinner.hide();
             }
           });
-          console.log(httpRespon);
           this.roomHistory = [];
           this.allComplete = false;
         } else {

@@ -2,7 +2,7 @@
   <button
     type="button"
     mat-raised-button
-    color="primary"
+    style="background-color: #4285F4; color: #ffffff;"
     class="uload"
     (click)="fileInput.click()"
   >
@@ -11,16 +11,25 @@
   <button
     mat-raised-button
     class="uload"
-    color="primary"
+    style="background-color: #F4B400; color: #ffffff;"
     (click)="exportAsXLSX()"
   >
     ส่งออกไฟล์ข้อมูลนักศึกษา
   </button>
   <button
+    mat-raised-button
+    class="uload"
+    style="background-color: #0F9D58; color: #ffffff;"
+    (click)="exportFormX()"
+
+  >
+  ส่งออกไฟล์ฟอร์มข้อมูลนักศึกษา
+  </button>
+  <button
   data-toggle="modal" data-target="#staticBackdrop"
     mat-raised-button
     class="uload"
-    color="primary"
+    style="background-color: #DB4437; color: #ffffff;"
     
   >
     ลบข้อมูลทั้งหมด

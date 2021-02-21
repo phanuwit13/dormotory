@@ -14,6 +14,8 @@ const EXCEL_EXTENSION = ".xlsx";
 export class HttpService {
   public rootPath: string =
     "http://cpe.rmuti.ac.th/project/dormitory/webtest/index.php/";
+  // public rootPath: string =
+  //   "http://127.0.0.1/webtest/index.php/";
   private userLogin: any = null;
 
   constructor(private http: HttpClient, private router: Router) {}

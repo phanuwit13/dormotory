@@ -82,16 +82,11 @@ export class DefaultStudentComponent implements OnInit {
     });
   }
 
-  showdata() {
-    console.log(this.titleName);
-  }
-
   getStudentAll = async () => {
     let formData = new FormData();
     formData.append("status", "2");
     let httpRespon: any = await this.http.post("getStudentAll", formData);
     this.checkConnect = true;
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = await httpRespon.response.data;
       this.dataOld = this.userData
@@ -109,7 +104,6 @@ export class DefaultStudentComponent implements OnInit {
     formData.append("std_code", std);
     let httpRespon: any = await this.http.post("getStudentEdit", formData);
     await this.editData();
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.nameStudent = httpRespon.response.data;
 
@@ -162,7 +156,6 @@ export class DefaultStudentComponent implements OnInit {
     formData.append("std_code", std);
     let httpRespon: any = await this.http.post("getStudent", formData);
 
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.nameStudent = httpRespon.response.data;
     } else {
@@ -172,7 +165,6 @@ export class DefaultStudentComponent implements OnInit {
   }
   async getFloor() {
     let httpRespon: any = await this.http.post("floor");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.floor = httpRespon.response.data;
     } else {
@@ -188,15 +180,12 @@ export class DefaultStudentComponent implements OnInit {
     formData.append("keyStd", this.keyStd.value);
     formData.append("status", "2");
     let httpRespon: any = await this.http.post("search", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = httpRespon.response.data;
       this.dataOld = this.userData
-      console.log("พบ");
     } else {
       this.userData = null;
       this.dataOld = this.userData
-      console.log("ไม่พบ");
     }
   }
 
@@ -208,7 +197,6 @@ export class DefaultStudentComponent implements OnInit {
 
   async getLevels() {
     let httpRespon: any = await this.http.post("level");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.levels = httpRespon.response.data;
     } else {
@@ -218,7 +206,6 @@ export class DefaultStudentComponent implements OnInit {
 
   async getFaculty() {
     let httpRespon: any = await this.http.post("Faculty");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.Faculty = httpRespon.response.data;
     } else {
@@ -226,13 +213,11 @@ export class DefaultStudentComponent implements OnInit {
     }
   }
   async getBranch(fcl, lev) {
-    console.log(fcl + " " + lev);
 
     let formData = new FormData();
     formData.append("faculty_code", fcl);
     formData.append("noLevel", lev);
     let httpRespon: any = await this.http.post("Branch", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branch = httpRespon.response.data;
     } else {
@@ -242,7 +227,6 @@ export class DefaultStudentComponent implements OnInit {
   async getBranchAll() {
     let formData = new FormData();
     let httpRespon: any = await this.http.post("BranchAll");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branch = httpRespon.response.data;
     } else {
@@ -259,7 +243,6 @@ export class DefaultStudentComponent implements OnInit {
       formData.append("floor", "2");
     }
     let httpRespon: any = await this.http.post("room", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.room = httpRespon.response.data;
     } else {
@@ -311,7 +294,6 @@ export class DefaultStudentComponent implements OnInit {
             formData.append("img", this.fileName);
           }
           let httpRespon: any = await this.http.post("editStd", formData);
-          console.log(httpRespon);
           if (httpRespon.response.success) {
             await Swal.fire(httpRespon.response.message, "", "success");
             this.formStd_code.controls["outRoom"].setValue(false);
@@ -329,13 +311,6 @@ export class DefaultStudentComponent implements OnInit {
       Swal.fire("กรอกข้อมูลให้ครบ", "", "error");
     }
   }
-  // sortTable = (value: any) => {
-  //   console.log(this.userData);
-  //   console.log(value);
-  //   this.userData.sort((a, b) =>
-  //     a[value] > b[value] ? 1 : a[value] < b[value] ? -1 : 0
-  //   );
-  // };
   getDate() {
     let year: any = new Date().getFullYear();
     let month: any = new Date().getMonth();
@@ -362,20 +337,16 @@ export class DefaultStudentComponent implements OnInit {
     //วนลูบเก็บค่า key และ value
     Object.keys(this.formSearch.value).forEach((key) => {
       formData.append(key, this.formSearch.value[key]);
-      console.log(key + " : " + this.formSearch.value[key]);
     });
     formData.append("status", "2");
     let httpRespon: any = await this.http.post("advancedSearch", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
-      console.log(httpRespon.response.success);
       this.userData = httpRespon.response.data;
       this.dataOld = this.userData
       this.clearFormSearch();
     } else {
       this.userData = null;
       this.dataOld = this.userData
-      console.log(httpRespon.response.message);
       this.clearFormSearch();
     }
   };
@@ -389,12 +360,10 @@ export class DefaultStudentComponent implements OnInit {
   }
   gennarateCard = () => {
     window.localStorage.setItem("userData", JSON.stringify(this.userData));
-    console.log(JSON.parse(window.localStorage.getItem("userData")));
   };
 
   gennarateCardSigle = (value: any) => {
     window.localStorage.setItem("userData", JSON.stringify([value]));
-    console.log(JSON.parse(window.localStorage.getItem("userData")));
   };
   deleteStudent = async (value) => {
     await Swal.fire({
@@ -411,7 +380,6 @@ export class DefaultStudentComponent implements OnInit {
         let formData = new FormData();
         formData.append("std_code", value);
         let httpRespon: any = await this.http.post("deleteStudent", formData);
-        console.log(httpRespon);
         if (httpRespon.response.success) {
           await Swal.fire(httpRespon.response.message, "", "success");
           this.getStudentAll();
@@ -424,8 +392,6 @@ export class DefaultStudentComponent implements OnInit {
   };
   async onFileSelected(event) {
     this.selectedFile = <File>event.target.files[0];
-    //console.log(event.target.files);
-    //console.log(this.selectedFile);
     if (event.target.files.length === 0) {
       Swal.fire("กรุณาเลือกไฟล์รูปภาพ", "", "error");
       return;
@@ -440,7 +406,6 @@ export class DefaultStudentComponent implements OnInit {
       new Date().getTime() +
       "." +
       this.lastNameFile[this.lastNameFile.length - 1];
-    //console.log(this.selectedFile.name);
 
     var reader = new FileReader();
     this.imagePath = event.target.files;
@@ -482,6 +447,35 @@ export class DefaultStudentComponent implements OnInit {
           return 0;
       }
     });
+  }
+  checkType(st, value) {
+    let str = this.formStd_code.value[st].split("");
+    let strValue = this.formStd_code.value[st].substring(0,(str.length-1))
+    if (value == "num") {
+      for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= "0" && str[i] <= "9") || str[i] == "-") {
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ป้อนค่าได้แค่ตัวเลข",
+          });
+          this.formStd_code.controls[st].setValue(strValue);
+        }
+      }
+    } else {
+      for (let i = 0; i < str.length; i++) {
+        if (str[i] >= "0" && str[i] <= "9") {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ห้ามใส่ตัวเลข",
+          });
+          this.formStd_code.controls[st].setValue(strValue);
+        } else {
+        }
+      }
+    }
   }
 }
 function compare(a: number | string, b: number | string, isAsc: boolean) {

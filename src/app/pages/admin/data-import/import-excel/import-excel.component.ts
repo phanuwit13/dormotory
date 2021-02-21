@@ -16,6 +16,7 @@ export class ImportExcelComponent implements OnInit {
   public formLogin: FormGroup;
   public data: Array<any> = [];
   public Faculty = [];
+  public roomEmpty = [];
   public titleName = ["นาย", "นาง", "นางสาว", "MR.", "MISS.", "MRS."];
   public branch = [];
   public floor = [];
@@ -71,16 +72,25 @@ export class ImportExcelComponent implements OnInit {
     let formData = new FormData();
     formData.append("status", "1");
     let httpRespon: any = await this.http.post("getStudentExport", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.userData = await httpRespon.response.data;
     } else {
       this.userData = null;
     }
   };
+  getRoomEmpty = async (nameTitle) => {
+    let formData = new FormData();
+    formData.append("nameTitle", nameTitle);
+    let httpRespon: any = await this.http.post("getRoomEmpty", formData);
+    if (httpRespon.response.data.length > 0) {
+      this.roomEmpty = await httpRespon.response.data;
+    } else {
+      this.roomEmpty = null;
+    }
+  };
+
   async getLevels() {
     let httpRespon: any = await this.http.post("level");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.levels = httpRespon.response.data;
     } else {
@@ -90,7 +100,6 @@ export class ImportExcelComponent implements OnInit {
 
   async getFaculty() {
     let httpRespon: any = await this.http.post("Faculty");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.Faculty = httpRespon.response.data;
     } else {
@@ -102,7 +111,6 @@ export class ImportExcelComponent implements OnInit {
     formData.append("faculty_code", fcl);
     formData.append("noLevel", lev);
     let httpRespon: any = await this.http.post("Branch", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branch = httpRespon.response.data;
     } else {
@@ -112,7 +120,6 @@ export class ImportExcelComponent implements OnInit {
   async getBranchAll() {
     let formData = new FormData();
     let httpRespon: any = await this.http.post("BranchAll");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branchAll = httpRespon.response.data;
     } else {
@@ -121,7 +128,6 @@ export class ImportExcelComponent implements OnInit {
   }
   async getFloor() {
     let httpRespon: any = await this.http.post("floor");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.floor = httpRespon.response.data;
     } else {
@@ -137,9 +143,7 @@ export class ImportExcelComponent implements OnInit {
     } else {
       formData.append("floor", "2");
     }
-    console.log(title);
     let httpRespon: any = await this.http.post("room", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.room = httpRespon.response.data;
       return;
@@ -166,7 +170,6 @@ export class ImportExcelComponent implements OnInit {
           formData.append(key, (await this.formInsert.value[key]) + "".trim());
         });
         let httpRespon: any = await this.http.post("addStudent", formData);
-        console.log(httpRespon);
         if (httpRespon.response.success) {
           await Swal.fire({
             icon: "success",
@@ -192,9 +195,8 @@ export class ImportExcelComponent implements OnInit {
   }
   /* <input type="file" (change)="onFileChange($event)" multiple="false" /> */
   /* ... (within the component class definition) ... */
-  onFileChange(evt: any) {
+   async onFileChange(evt: any) {
     this.selectedFile = <File>evt.target.files[0];
-    console.log(this.selectedFile);
     if (evt.target.files.length === 0) {
       Swal.fire("", "กรุณาเลือกไฟล์", "error");
       return;
@@ -212,7 +214,7 @@ export class ImportExcelComponent implements OnInit {
     const target: DataTransfer = <DataTransfer>evt.target;
     if (target.files.length !== 1) throw new Error("Cannot use multiple files");
     const reader: FileReader = new FileReader();
-    reader.onload = (e: any) => {
+    reader.onload = async (e: any) => {
       /* read workbook */
       const bstr: string = e.target.result;
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: "binary" });
@@ -223,17 +225,20 @@ export class ImportExcelComponent implements OnInit {
 
       /* save data */
       this.data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      console.log(this.data);
-
+      
       this.checkColumn().then(async (value) => {
-        console.log(value);
         if (value == true) {
+          this.spinner.show();
           this.datafail = [];
-          await this.spinner.show();
-          await this.readDataStd();
-          this.spinner.hide();
-          Swal.fire("", "เสร็จสิ้น", "success");
-          this.data = [];
+          this.readDataStd().then((resule)=>{
+            if(resule ==true)
+            {
+              this.spinner.hide();
+              Swal.fire("", "เสร็จสิ้น", "success");
+              this.data = [];
+            }
+          });
+
         } else {
           Swal.fire("", "คอลัมน์ไม่ถูกต้อง", "error");
           return;
@@ -243,10 +248,10 @@ export class ImportExcelComponent implements OnInit {
     reader.readAsBinaryString(target.files[0]);
   }
   async checkColumn() {
-    console.log(this.data[0]);
     let i = 0;
     for (let n = 0; n < this.data[0].length; n++) {
-      console.log(this.data[0][n] + " : " + this.columnName[n]);
+      console.log();
+      
       if (this.data[0][n] != this.columnName[n]) {
         return false;
       }
@@ -255,15 +260,15 @@ export class ImportExcelComponent implements OnInit {
   }
 
   async readDataStd() {
-    this.data.forEach(async (x, index) => {
+    const promises = this.data.map(async (x, index) => {
       if (index != 0) {
         if (x != "") {
-          console.log(x);
+
           if ((await this.chekNullCullumn(x)) == true) {
             if (!x[6]) {
               x[6] = "";
             }
-            this.importData(
+            await this.importData(
               x[0] + "",
               x[1] + "",
               x[2] + "",
@@ -275,8 +280,8 @@ export class ImportExcelComponent implements OnInit {
           }
         }
       }
-    });
-    console.log(this.datafail);
+    })
+    await Promise.all(promises)
     return true;
   }
 
@@ -284,11 +289,11 @@ export class ImportExcelComponent implements OnInit {
     let n = 0;
     for (let i = 0; i < 6; i++) {
       if (!x[i]) {
-        console.log(x);
         x[i] = "";
         n = n + 1;
       }
     }
+
     if (n > 0) {
       if (!x[6]) {
         x[6] = "";
@@ -301,10 +306,37 @@ export class ImportExcelComponent implements OnInit {
         lname: x[4] + "",
         branch_code: x[5] + "",
         phone: x[6] + "",
-        error: [0, "กรุณาตรวจสอบข้อมูล"],
+        error: [0, "กรุณาตรวจสอบข้อมูลนักศึกษา"],
       });
       return false;
-    } else {
+    } 
+    else {
+      let checkTitle = 0
+      for(let i =0 ; i<this.titleName.length ; i++)
+      {
+        
+        if(x[2] == this.titleName[i])
+        {
+          checkTitle = checkTitle+1
+        }
+      }
+      if(checkTitle == 0)
+      { 
+        if (!x[6]) {
+          x[6] = "";
+        }
+        this.datafail.push({
+          std_code: x[1] + "",
+          room_number: x[0] + "",
+          nameTitle: x[2] + "",
+          fname: x[3] + "",
+          lname: x[4] + "",
+          branch_code: x[5] + "",
+          phone: x[6] + "",
+          error: [0, "กรุณาตรวจสอบคำนำหน้า"],
+        });
+        return false;
+      }
       return true;
     }
   }
@@ -364,10 +396,18 @@ export class ImportExcelComponent implements OnInit {
     formData.append("phone", phone);
     let httpRespon: any = await this.http.post("addStudent", formData);
     formData.forEach((value, key) => {
-      console.log(key + " : " + value);
     });
     if (httpRespon.response.success) {
-      console.log(httpRespon.response);
+      this.datafail.push({
+        std_code: std_code,
+        room_number: room_number,
+        nameTitle: nameTitle,
+        fname: fname,
+        lname: lname,
+        branch_code: branch_code,
+        phone: phone,
+        error: [1, httpRespon.response.message],
+      });
     } else {
       this.datafail.push({
         std_code: std_code,
@@ -379,8 +419,8 @@ export class ImportExcelComponent implements OnInit {
         phone: phone,
         error: [0, httpRespon.response.message],
       });
-      console.log(httpRespon.response);
     }
+    return true
   }
 
   deleteDatabase() {
@@ -476,7 +516,6 @@ export class ImportExcelComponent implements OnInit {
       formData.append(key, this.formLogin.value[key]);
     });
     let httpRespon: any = await this.http.post("login", formData);
-    console.log(httpRespon);
     if (httpRespon.connect) {
       if (httpRespon.response.success) {
         if (httpRespon.response.data.role == "admin") {
@@ -503,7 +542,7 @@ export class ImportExcelComponent implements OnInit {
         ชื่อ: item.fname,
         นามสกุล: item.lname,
         สาขา: item.groubStudent,
-        เบอร์โทรศัพท์: item.std_code,
+        เบอร์โทรศัพท์: item.phone,
       });
     });
 
@@ -514,6 +553,26 @@ export class ImportExcelComponent implements OnInit {
     this.data = [];
     this.spinner.hide();
     }
+
+    async exportFormX() {
+      await this.spinner.show();          
+        this.data.push({
+          เลขห้อง: "",
+          รหัสนักศึกษา: "",
+          คำนำหน้า: "",
+          ชื่อ: "",
+          นามสกุล: "",
+          สาขา: "",
+          เบอร์โทรศัพท์: "",
+        });
+
+      this.http.exportAsExcelFile(
+        this.data,
+        "ฟอร์มข้อมูลนักศึกษา_" + this.getDate()
+      );
+      this.data = [];
+      this.spinner.hide();
+      }
 
     getDate() {
       let date = new Date();

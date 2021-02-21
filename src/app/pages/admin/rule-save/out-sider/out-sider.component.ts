@@ -11,7 +11,7 @@ declare var require: any;
 export class OutSiderComponent implements OnInit {
   public formStd_code: FormGroup;
   public titleName = ["นาย", "นาง", "นางสาว", "MR.", "MISS.", "MRS."];
-
+  public other = { rules_number: 16, rules_name: "อื่นๆ" };
   public provinces: Array<
     any
   > = require("../../../../services/Thailand-Address-master/provinces.json");
@@ -55,7 +55,6 @@ export class OutSiderComponent implements OnInit {
     this.district = this.district.filter((item) => {
       return item.PROVINCE_ID == PROVINCE_ID;
     });
-    console.log(this.district);
   }
   async getSubDistrict(DISTRICT_ID) {
     this.sub_district = await require("../../../../services/Thailand-Address-master/subDistricts.json");
@@ -64,14 +63,16 @@ export class OutSiderComponent implements OnInit {
     this.sub_district = this.sub_district.filter((item) => {
       return item.DISTRICT_ID == DISTRICT_ID;
     });
-    console.log(this.sub_district);
   }
 
   async getRule() {
     let httpRespon: any = await this.http.post("Rule");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.ruleChoice = httpRespon.response.data;
+      this.ruleChoice = this.ruleChoice.filter((item) => {
+        return item.rules_number != 16;
+      });
+      this.ruleChoice.push(this.other);
     } else {
       this.ruleChoice = null;
     }
@@ -82,7 +83,6 @@ export class OutSiderComponent implements OnInit {
     formData.append("std_code", this.formStd_code.value.std_code);
     formData.append("status", "1");
     let httpRespon: any = await this.http.post("getStudent", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.nameStudent = httpRespon.response.data;
     } else {
@@ -114,15 +114,12 @@ export class OutSiderComponent implements OnInit {
             formData.append("district", this.formStd_code.value["district"][1]);
           }
         }
-
-        console.log(this.formStd_code.value);
         let httpRespon: any = await this.http.post("setOutsider", formData);
         if (httpRespon.response.success) {
           let httpRespon: any = await this.http.post(
             "setStudentRule",
             formData
           );
-          console.log(httpRespon);
           if (httpRespon.response.success) {
             Swal.fire("สำเร็จ", httpRespon.response.message, "success");
             this.clearFormSearch();
@@ -176,4 +173,32 @@ export class OutSiderComponent implements OnInit {
     }
     return hours + ":" + minutes;
   };
+  checkType(st, value) {
+    let str = this.formStd_code.value[st].split("");
+    if ((value == "num")) {
+      for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= "0" && str[i] <= "9") || str[i] == "-") {
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ป้อนค่าได้แค่ตัวเลข",
+          });
+          this.formStd_code.controls[st].setValue("");
+        }
+      }
+    } else {
+      for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= "0" && str[i] <= "9")) {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ห้ามใส่ตัวเลข",
+          });
+          this.formStd_code.controls[st].setValue("");
+        } else {
+        }
+      }
+    }
+  }
 }

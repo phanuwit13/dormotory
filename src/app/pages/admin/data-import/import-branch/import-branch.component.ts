@@ -38,7 +38,6 @@ export class ImportBranchComponent implements OnInit {
 
   async getFaculty() {
     let httpRespon: any = await this.http.post("Faculty");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.Faculty = httpRespon.response.data;
     } else {
@@ -47,7 +46,6 @@ export class ImportBranchComponent implements OnInit {
   }
   async getLevels() {
     let httpRespon: any = await this.http.post("level");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.levels = httpRespon.response.data;
     } else {

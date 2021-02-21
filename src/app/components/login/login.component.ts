@@ -35,11 +35,9 @@ export class LoginComponent implements OnInit {
     //วนลูบเก็บค่า key และ value
 
     Object.keys(this.formLogin.value).forEach((key) => {
-      //console.log(this.formLogin.value[key]);
       formData.append(key, this.formLogin.value[key]);
     });
     let httpRespon: any = await this.http.post("login", formData);
-    console.log(httpRespon);
     if (httpRespon.connect) {
       if (httpRespon.response.success) {
         if (httpRespon.response.data.role == "admin") {

@@ -33,7 +33,6 @@ export class TimeManageComponent implements OnInit {
 
   getTime = async () => {
     let httpRespon: any = await this.http.post("/getTimeSet");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.time = await httpRespon.response.data;
     } else {
@@ -52,7 +51,6 @@ export class TimeManageComponent implements OnInit {
       minute: parseInt(this.time[0].timeEnd.split(":")[1]),
       second: 0,
     };
-    console.log(this.timeStart);
   }
 
   setTimeStart = async () => {
@@ -62,17 +60,14 @@ export class TimeManageComponent implements OnInit {
       this.timeStart.hour + ":" + this.timeStart.minute
     );
     let httpRespone = await this.http.post("/setTimeSet", formData);
-    console.log(httpRespone);
     await this.getTime();
     this.setTimeShoew();
     this.canseltimeSet("start");
   };
-
   setTimeEnd = async () => {
     let formData = new FormData();
     formData.append("timeEnd", this.timeEnd.hour + ":" + this.timeEnd.minute);
     let httpRespone = await this.http.post("/setTimeSet", formData);
-    console.log(httpRespone);
     await this.getTime();
     this.setTimeShoew();
     this.canseltimeSet("end");

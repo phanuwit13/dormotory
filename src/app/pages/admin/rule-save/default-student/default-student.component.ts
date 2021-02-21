@@ -12,6 +12,7 @@ export class DefaultStudentComponent implements OnInit {
   public formStd_code: FormGroup;
 
   public titleName = ["นาย", "นาง", "นางสาว", "MR.", "MISS.", "MRS."];
+  public other = { rules_number: 16, rules_name: "อื่นๆ" };
   public levels = [];
   public branch = [];
   public Faculty = [];
@@ -19,8 +20,6 @@ export class DefaultStudentComponent implements OnInit {
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   async ngOnInit() {
-    console.log(this.setTime());
-
     this.formStd_code = this.formBuilder.group({
       std_code: ["", Validators.required],
       rulesBreak: ["", Validators.required],
@@ -45,9 +44,12 @@ export class DefaultStudentComponent implements OnInit {
 
   async getRule() {
     let httpRespon: any = await this.http.post("Rule");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.ruleChoice = httpRespon.response.data;
+      this.ruleChoice = this.ruleChoice.filter((item) => {
+        return item.rules_number != 16;
+      });
+      this.ruleChoice.push(this.other);
     } else {
       this.ruleChoice = null;
     }
@@ -55,7 +57,6 @@ export class DefaultStudentComponent implements OnInit {
 
   async getFaculty() {
     let httpRespon: any = await this.http.post("Faculty");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.Faculty = httpRespon.response.data;
     } else {
@@ -68,7 +69,6 @@ export class DefaultStudentComponent implements OnInit {
     formData.append("faculty_code", fcl);
     formData.append("noLevel", lev);
     let httpRespon: any = await this.http.post("Branch", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branch = httpRespon.response.data;
     } else {
@@ -78,7 +78,6 @@ export class DefaultStudentComponent implements OnInit {
 
   async getLevels() {
     let httpRespon: any = await this.http.post("level");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.levels = httpRespon.response.data;
     } else {
@@ -102,6 +101,8 @@ export class DefaultStudentComponent implements OnInit {
         let date_rule = this.getDate();
         Object.keys(this.formStd_code.value).forEach((key) => {
           formData.append(key, this.formStd_code.value[key]);
+          console.log(key+" : "+this.formStd_code.value[key]);
+                 
         });
         formData.append("date_rule", date_rule);
 
@@ -114,7 +115,6 @@ export class DefaultStudentComponent implements OnInit {
             "setStudentRule",
             formData
           );
-          console.log(httpRespon);
           if (httpRespon.response.success) {
             Swal.fire("สำเร็จ", httpRespon.response.message, "success");
             this.clearFormSearch();
@@ -168,4 +168,33 @@ export class DefaultStudentComponent implements OnInit {
     }
     return hours + ":" + minutes;
   };
+
+  checkType(st, value) {
+    let str = this.formStd_code.value[st].split("");
+    if ((value == "num")) {
+      for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= "0" && str[i] <= "9") || str[i] == "-") {
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ป้อนค่าได้แค่ตัวเลข",
+          });
+          this.formStd_code.controls[st].setValue("");
+        }
+      }
+    } else {
+      for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= "0" && str[i] <= "9")) {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ห้ามใส่ตัวเลข",
+          });
+          this.formStd_code.controls[st].setValue("");
+        } else {
+        }
+      }
+    }
+  }
 }

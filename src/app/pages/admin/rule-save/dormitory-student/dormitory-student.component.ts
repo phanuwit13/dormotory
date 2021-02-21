@@ -36,7 +36,6 @@ export class DormitoryStudentComponent implements OnInit {
   }
   async getRule() {
     let httpRespon: any = await this.http.post("Rule");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.ruleChoice = httpRespon.response.data;
       this.ruleChoice = this.ruleChoice.filter((item) => {
@@ -49,7 +48,6 @@ export class DormitoryStudentComponent implements OnInit {
   }
   async getFaculty() {
     let httpRespon: any = await this.http.post("Faculty");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.Faculty = httpRespon.response.data;
     } else {
@@ -61,7 +59,6 @@ export class DormitoryStudentComponent implements OnInit {
     formData.append("faculty_code", fcl);
     formData.append("noLevel", lev);
     let httpRespon: any = await this.http.post("Branch", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branch = httpRespon.response.data;
     } else {
@@ -70,7 +67,6 @@ export class DormitoryStudentComponent implements OnInit {
   }
   async getLevels() {
     let httpRespon: any = await this.http.post("level");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.levels = httpRespon.response.data;
     } else {
@@ -83,7 +79,6 @@ export class DormitoryStudentComponent implements OnInit {
     formData.append("std_code", this.formStd_code.value.std_code);
     formData.append("status", "1");
     let httpRespon: any = await this.http.post("getStudent", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.nameStudent = httpRespon.response.data;
     } else {
@@ -112,7 +107,6 @@ export class DormitoryStudentComponent implements OnInit {
         formData.append("date_rule", date_rule);
 
         let httpRespon: any = await this.http.post("setStudentRule", formData);
-        console.log(httpRespon);
         if (httpRespon.response.data > 0) {
           Swal.fire("สำเร็จ", httpRespon.response.message, "success");
           this.clearFormSearch();
@@ -163,4 +157,34 @@ export class DormitoryStudentComponent implements OnInit {
     }
     return hours + ":" + minutes;
   };
+
+  
+  checkType(st, value) {
+    let str = this.formStd_code.value[st].split("");
+    if ((value == "num")) {
+      for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= "0" && str[i] <= "9") || str[i] == "-") {
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ป้อนค่าได้แค่ตัวเลข",
+          });
+          this.formStd_code.controls[st].setValue("");
+        }
+      }
+    } else {
+      for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= "0" && str[i] <= "9")) {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ห้ามใส่ตัวเลข",
+          });
+          this.formStd_code.controls[st].setValue("");
+        } else {
+        }
+      }
+    }
+  }
 }

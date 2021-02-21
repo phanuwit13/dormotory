@@ -63,7 +63,6 @@ export class RuleManageComponent implements OnInit {
   }
 
   remove(ruleChoice): void {
-    console.log(ruleChoice);
     Swal.fire({
       title: "คุณมั่นใจที่จะลบข้อมูล??",
       text: "คุณจะไม่สามารถยกเลิกสิ่งนี้ได้!",
@@ -95,10 +94,8 @@ export class RuleManageComponent implements OnInit {
     let formData = new FormData();
     formData.append("rules_name", rules_name);
     formData.forEach((itex) => {
-      console.log(itex);
     });
     let httpRespon: any = await this.http.post("setRules", formData);
-    console.log(httpRespon);
     if (httpRespon.response.success) {
       return true;
     } else {
@@ -109,10 +106,8 @@ export class RuleManageComponent implements OnInit {
     let formData = new FormData();
     formData.append("rules_number", rules_number);
     formData.forEach((itex) => {
-      console.log(itex);
     });
     let httpRespon: any = await this.http.post("delRules", formData);
-    console.log(httpRespon);
     if (httpRespon.response.success) {
       return true;
     } else {
@@ -121,7 +116,6 @@ export class RuleManageComponent implements OnInit {
   }
   async getRule() {
     let httpRespon: any = await this.http.post("Rule");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.ruleChoice = httpRespon.response.data;
       this.ruleChoice = this.ruleChoice.filter((item) => {

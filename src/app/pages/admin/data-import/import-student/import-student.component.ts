@@ -62,7 +62,6 @@ export class ImportStudentComponent implements OnInit {
 
   async getLevels() {
     let httpRespon: any = await this.http.post("level");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.levels = httpRespon.response.data;
     } else {
@@ -72,7 +71,6 @@ export class ImportStudentComponent implements OnInit {
 
   async getFaculty() {
     let httpRespon: any = await this.http.post("Faculty");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.Faculty = httpRespon.response.data;
     } else {
@@ -84,7 +82,6 @@ export class ImportStudentComponent implements OnInit {
     formData.append("faculty_code", fcl);
     formData.append("noLevel", lev);
     let httpRespon: any = await this.http.post("Branch", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branch = httpRespon.response.data;
     } else {
@@ -94,7 +91,6 @@ export class ImportStudentComponent implements OnInit {
   async getBranchAll() {
     let formData = new FormData();
     let httpRespon: any = await this.http.post("BranchAll");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.branchAll = httpRespon.response.data;
     } else {
@@ -103,7 +99,6 @@ export class ImportStudentComponent implements OnInit {
   }
   async getFloor() {
     let httpRespon: any = await this.http.post("floor");
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.floor = httpRespon.response.data;
     } else {
@@ -119,9 +114,7 @@ export class ImportStudentComponent implements OnInit {
     } else {
       formData.append("floor", "2");
     }
-    console.log(title);
     let httpRespon: any = await this.http.post("room", formData);
-    console.log(httpRespon);
     if (httpRespon.response.data.length > 0) {
       this.room = httpRespon.response.data;
       return;
@@ -145,10 +138,9 @@ export class ImportStudentComponent implements OnInit {
     }).then(async (result) => {
       if (result.value) {
         await Object.keys(this.formInsert.value).forEach(async (key) => {
-          formData.append(key, await this.formInsert.value[key]+"".trim());
+          formData.append(key, (await this.formInsert.value[key]) + "".trim());
         });
         let httpRespon: any = await this.http.post("addStudent", formData);
-        console.log(httpRespon);
         if (httpRespon.response.success) {
           await Swal.fire({
             icon: "success",
@@ -170,5 +162,34 @@ export class ImportStudentComponent implements OnInit {
     Object.keys(this.formInsert.value).forEach((key) => {
       this.formInsert.controls[key].setValue("");
     });
+  }
+
+  checkType(st, value) {
+    let str = this.formInsert.value[st].split("");
+    if ((value == "num")) {
+      for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= "0" && str[i] <= "9") || str[i] == "-") {
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ป้อนค่าได้แค่ตัวเลข",
+          });
+          this.formInsert.controls[st].setValue("");
+        }
+      }
+    } else {
+      for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= "0" && str[i] <= "9")) {
+          Swal.fire({
+            icon: "error",
+            title: "",
+            text: "ห้ามใส่ตัวเลข",
+          });
+          this.formInsert.controls[st].setValue("");
+        } else {
+        }
+      }
+    }
   }
 }
