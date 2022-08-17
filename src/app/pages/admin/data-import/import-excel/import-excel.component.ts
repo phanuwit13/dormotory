@@ -61,7 +61,7 @@ export class ImportExcelComponent implements OnInit {
       phone: "",
       noLevel: ["", Validators.required],
     });
-    this.getStudentAll()
+    this.getStudentAll();
     this.getFaculty();
     this.getLevels();
     this.getFloor();
@@ -195,7 +195,7 @@ export class ImportExcelComponent implements OnInit {
   }
   /* <input type="file" (change)="onFileChange($event)" multiple="false" /> */
   /* ... (within the component class definition) ... */
-   async onFileChange(evt: any) {
+  async onFileChange(evt: any) {
     this.selectedFile = <File>evt.target.files[0];
     if (evt.target.files.length === 0) {
       Swal.fire("", "กรุณาเลือกไฟล์", "error");
@@ -225,20 +225,18 @@ export class ImportExcelComponent implements OnInit {
 
       /* save data */
       this.data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      
+
       this.checkColumn().then(async (value) => {
         if (value == true) {
           this.spinner.show();
           this.datafail = [];
-          this.readDataStd().then((resule)=>{
-            if(resule ==true)
-            {
+          this.readDataStd().then((resule) => {
+            if (resule == true) {
               this.spinner.hide();
               Swal.fire("", "เสร็จสิ้น", "success");
               this.data = [];
             }
           });
-
         } else {
           Swal.fire("", "คอลัมน์ไม่ถูกต้อง", "error");
           return;
@@ -251,7 +249,7 @@ export class ImportExcelComponent implements OnInit {
     let i = 0;
     for (let n = 0; n < this.data[0].length; n++) {
       console.log();
-      
+
       if (this.data[0][n] != this.columnName[n]) {
         return false;
       }
@@ -263,11 +261,11 @@ export class ImportExcelComponent implements OnInit {
     const promises = this.data.map(async (x, index) => {
       if (index != 0) {
         if (x != "") {
-
           if ((await this.chekNullCullumn(x)) == true) {
             if (!x[6]) {
               x[6] = "";
             }
+            console.log();
             await this.importData(
               x[0] + "",
               x[1] + "",
@@ -275,13 +273,13 @@ export class ImportExcelComponent implements OnInit {
               x[3] + "",
               x[4] + "",
               x[5] + "",
-              x[6] + ""
+              `${x[6]}`.length === 9 ? "0" + x[6] : x[6] + ""
             );
           }
         }
       }
-    })
-    await Promise.all(promises)
+    });
+    await Promise.all(promises);
     return true;
   }
 
@@ -309,19 +307,14 @@ export class ImportExcelComponent implements OnInit {
         error: [0, "กรุณาตรวจสอบข้อมูลนักศึกษา"],
       });
       return false;
-    } 
-    else {
-      let checkTitle = 0
-      for(let i =0 ; i<this.titleName.length ; i++)
-      {
-        
-        if(x[2] == this.titleName[i])
-        {
-          checkTitle = checkTitle+1
+    } else {
+      let checkTitle = 0;
+      for (let i = 0; i < this.titleName.length; i++) {
+        if (x[2] == this.titleName[i]) {
+          checkTitle = checkTitle + 1;
         }
       }
-      if(checkTitle == 0)
-      { 
+      if (checkTitle == 0) {
         if (!x[6]) {
           x[6] = "";
         }
@@ -395,8 +388,7 @@ export class ImportExcelComponent implements OnInit {
     formData.append("groupStd", groupStd[1]);
     formData.append("phone", phone);
     let httpRespon: any = await this.http.post("addStudent", formData);
-    formData.forEach((value, key) => {
-    });
+    formData.forEach((value, key) => {});
     if (httpRespon.response.success) {
       this.datafail.push({
         std_code: std_code,
@@ -420,7 +412,7 @@ export class ImportExcelComponent implements OnInit {
         error: [0, httpRespon.response.message],
       });
     }
-    return true
+    return true;
   }
 
   deleteDatabase() {
@@ -520,7 +512,7 @@ export class ImportExcelComponent implements OnInit {
       if (httpRespon.response.success) {
         if (httpRespon.response.data.role == "admin") {
           this.deleteDatabase();
-          document.getElementById("closeModal").click()
+          document.getElementById("closeModal").click();
         } else {
           await Swal.fire("ไม่ใช่ Admin", "", "error");
         }
@@ -533,7 +525,7 @@ export class ImportExcelComponent implements OnInit {
   };
 
   async exportAsXLSX() {
-    await this.spinner.show();          
+    await this.spinner.show();
     this.userData.forEach((item) => {
       this.data.push({
         เลขห้อง: item.room_number,
@@ -552,40 +544,39 @@ export class ImportExcelComponent implements OnInit {
     );
     this.data = [];
     this.spinner.hide();
+  }
+
+  async exportFormX() {
+    await this.spinner.show();
+    this.data.push({
+      เลขห้อง: "",
+      รหัสนักศึกษา: "",
+      คำนำหน้า: "",
+      ชื่อ: "",
+      นามสกุล: "",
+      สาขา: "",
+      เบอร์โทรศัพท์: "",
+    });
+
+    this.http.exportAsExcelFile(
+      this.data,
+      "ฟอร์มข้อมูลนักศึกษา_" + this.getDate()
+    );
+    this.data = [];
+    this.spinner.hide();
+  }
+
+  getDate() {
+    let date = new Date();
+    let year = date.getFullYear().toString();
+    let month = date.getMonth().toString();
+    let day = date.getDate().toString();
+    if (parseInt(month) < 10) {
+      month = "0" + (month + 1);
     }
-
-    async exportFormX() {
-      await this.spinner.show();          
-        this.data.push({
-          เลขห้อง: "",
-          รหัสนักศึกษา: "",
-          คำนำหน้า: "",
-          ชื่อ: "",
-          นามสกุล: "",
-          สาขา: "",
-          เบอร์โทรศัพท์: "",
-        });
-
-      this.http.exportAsExcelFile(
-        this.data,
-        "ฟอร์มข้อมูลนักศึกษา_" + this.getDate()
-      );
-      this.data = [];
-      this.spinner.hide();
-      }
-
-    getDate() {
-      let date = new Date();
-      let year = date.getFullYear().toString();
-      let month = date.getMonth().toString();
-      let day = date.getDate().toString();
-      if (parseInt(month)  < 10) {
-        month = "0" + (month + 1);
-      }
-      if (parseInt(day) < 10) {
-        day = "0" + day;
-      }
-      return year + "-" + month + "-" + day;
+    if (parseInt(day) < 10) {
+      day = "0" + day;
     }
-  
+    return year + "-" + month + "-" + day;
+  }
 }
